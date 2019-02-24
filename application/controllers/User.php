@@ -35,5 +35,26 @@ class User extends CI_Controller {
 
 	}
 
+	public function profile(){
+		$data['page_title'] = 'Profile';
+		$this->load->view('fragments/head', $data);
+		$this->load->view('fragments/navigation');
+		$this->load->view('profile');
+		$this->load->view('fragments/footer');
+	}
+
+	public function activityLogs(){
+		$data['page_title'] = 'Profile';
+		$this->load->view('fragments/head', $data);
+		$this->load->view('fragments/navigation');
+		$this->load->view('acivity_log');
+		$this->load->view('fragments/footer');
+	}
+
+	public function logout(){
+		$this->session->sess_destroy();
+		redirect('user');
+	}
+
 	
 }

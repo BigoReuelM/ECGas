@@ -8,7 +8,7 @@
 
 		public function login($username, $password){
 
-			$this->db->select('user_id, concat(first_name, " ", last_name) as name');
+			$this->db->select('user_id, concat(first_name, " ", last_name) as name, user_type');
 			$this->db->from('users');
 			$this->db->where('username like binary', $username);
 			$this->db->where('password', $password);

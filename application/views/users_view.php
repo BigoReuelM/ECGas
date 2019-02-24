@@ -10,12 +10,79 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div>
               <h1 class="h3 mb-2 text-gray-800">Users Management</h1>
-              <p class="mb-4">User management is where the admin can <strong>ADD</strong>,<strong> EDIT or DELETE</strong> a user of this web application.</p>
+              <p class="mb-4">User management is where the admin can <strong>ADD, EDIT, DELETE and ACTIVATE or DEACTIVATE</strong> a user of this web application.</p>
             </div>
             <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#user_add_modal">
               <i class="fas fa-plus fa-sm text-white-50"></i>
               Add User
             </button>
+          </div>
+
+          <div class="row">
+            <!-- total number of users -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Number of Users</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $user_count ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <p class="text-xs font-weight-bold text-warning text-uppercase mb-1">Admin Users: <span class="mb-0 font-weight-bold text-gray-800"><?php echo $admin_users_count ?></span></p>
+                      <p class="text-xs font-weight-bold text-warning text-uppercase mb-1">Employees: <span class="mb-0 font-weight-bold text-gray-800"><?php echo $employee_users_count ?></span></p>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- active users -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Users</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $active_users ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-toggle-on fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- inactive users -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Deactivated Users</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $inactive_users ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-toggle-off fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- DataTales Example -->
@@ -31,6 +98,8 @@
                       <th>First Name</th>
                       <th>Middle Name</th>
                       <th>Last Name</th>
+                      <th>Contact No.</th>
+                      <th>Account Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -39,27 +108,48 @@
                       <th>First Name</th>
                       <th>Middle Name</th>
                       <th>Last Name</th>
+                      <th>Contact No.</th>
+                      <th>Account Status</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody>
                     <?php foreach ($users as $user): ?>
                       <tr>
-                        <td><?php echo $user['first_name'] ?></td>
-                        <td><?php echo $user['middle_name'] ?></td>
-                        <td><?php echo $user['last_name'] ?></td>
+                        <td class="first_name"><?php echo $user['first_name'] ?></td>
+                        <td class="middle_name"><?php echo $user['middle_name'] ?></td>
+                        <td class="last_name"><?php echo $user['last_name'] ?></td>
+                        <td><?php echo $user['contact'] ?></td>
+                        <td><?php echo $user['status'] ?></td>
                         <td>
                           <div class="row justify-content-center">
                             <div class="btn-group">
-                              <button type="button" class="btn btn-success btn-circle btn-sm">
-                                <i class="fa fa-pen"></i>
-                              </button>
-                              <button type="button" class="btn btn-info btn-circle btn-sm">
-                                <i class="fa fa-eye"></i>
-                              </button>
-                              <button type="button" class="btn btn-danger btn-circle btn-sm delete_btn">
-                                <i class="fa fa-trash"></i>
-                              </button>
+                              <span data-toggle="tooltip" data-placement="top" title="Edit">
+                                <form action="<?php echo base_url('admin/setSelectedUserId') ?>" method="POST">
+                                  <button type="submit" name="user_id" class="btn btn-success btn-circle btn-sm edit_btn" value="<?php echo $user['user_id'] ?>">
+                                    <i class="fa fa-pen"></i>
+                                  </button>
+                                </form>
+                              </span>
+                              <?php if ($user['status'] == 'active'): ?>
+                                <span data-toggle="tooltip" data-placement="top" title="Deactivate">
+                                  <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $user['user_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
+                                    <i class="fas fa-toggle-off"></i>
+                                  </button>
+                                </span>
+                              <?php endif ?>
+                              <?php if ($user['status'] == 'inactive'): ?>
+                                <span data-toggle="tooltip" data-placement="top" title="Activate">
+                                  <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $user['user_id'] ?>,activate" data-toggle="modal" data-target="#update_status_modal">
+                                    <i class="fas fa-toggle-on"></i>
+                                  </button>
+                                </span>
+                              <?php endif ?>
+                              <span data-toggle="tooltip" data-placement="top" title="Delete">
+                                <button type="button" class="btn btn-danger btn-circle btn-sm delete_btn" value="<?php echo $user['user_id'] ?>" data-toggle="modal" data-target="#user_delete_modal">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </span>
                             </div>
                           </div>
                         </td>
@@ -85,10 +175,10 @@
 
 <!-- Modal for adding users-->
 <div class="modal fade" id="user_add_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Add new <strong>USER</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>ADD</strong> new user!</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -98,38 +188,76 @@
           
         </div>
         <form type="POST" action="<?php echo base_url('admin/addUser') ?>" id="add_user_form" autocomplete="off">
-          <div class="form-group row">
-            <label for="first_name" class="col-3 col-form-label">First Name:</label>
-            <div class="col-9">
-              <input type="text" class="form-control" id="first_name" name="first_name" placeholder="first name..." valrequired="true" elementname="First Name">
+          <label for="name_input"><small>Enter Full Name:<span class="required_sign">*</span></small></label>
+          <div id="name_input" class="row justify-content-center">
+            <div class="col">
+              <div class="form-group">
+                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="first name..." valrequired="true" elementname="First Name">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="middle name optional..." valrequired="false">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="last name..." valrequired = "true" elementname="Last Name">
+              </div>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="middle_name" class="col-3 col-form-label">Middle Name:</label>
-            <div class="col-9">
-              <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="middle name..." valrequired="false">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="user_type"><small>User Type:<span class="required_sign">*</span></small></label>
+                <select name="user_type" id="user_type" class="form-control" valrequired="true" elementname="User Type">
+                  <option disabled selected hidden>choose user type..</option>
+                  <option value="admin">Admin</option>
+                  <option value="employee">Employee</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="gender"><small>Gender:<span class="required_sign">*</span></small></label>
+                <select name="gender" id="gender" class="form-control" valrequired="true" elementname="Gender">
+                  <option disabled selected hidden>choose gender..</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="last_name" class="col-3 col-form-label">Last Name:</label>
-            <div class="col-9">
-              <input type="text" class="form-control" id="last_name" name="last_name" placeholder="last name..." valrequired = "true" elementname="Last Name">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="contact"><small>Contact No.:<span class="required_sign">*</span></small></label>
+                <input type="text" class="form-control" id="contact" name="contact" placeholder="contact number..." valrequired="true" elementname="Contact Number">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="Username"><small>Username:<span class="required_sign">*</span></small></label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="username..." valrequired="true" elementname="User Name">
+              </div>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="user_type" class="col-3 col-form-label">User Type:</label>
-            <div class="col-9">
-              <select name="user_type" id="user_type" class="form-control" valrequired="true" elementname="User Type">
-                <option disabled selected hidden>Choose user type..</option>
-                <option value="admin">Admin</option>
-                <option value="employee">Employee</option>
-              </select>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="address"><small>Address:<span class="required_sign">*</span></small></label>
+                <textarea name="address" id="address" cols="30" rows="5" class="form-control" valrequired="true" elementname="Address" style="resize: none"></textarea>
+              </div>
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="Username" class="col-3 col-form-label">Username:</label>
-            <div class="col-9">
-              <input type="text" class="form-control" id="username" name="username" placeholder="username..." valrequired="true" elementname="User Name">
+            <div class="col">
+              <div class="form-group">
+                <label for="password_initial"><small>Password:<span class="required_sign">*</span></small></label>
+                <input type="text" class="form-control" id="password_initial" name="password_initial" placeholder="password..." valrequired="true" elementname="Initial Password">
+              </div>
+              <div class="form-group">
+                <label for="password"><small>Confirm:<span class="required_sign">*</span></small></label>
+                <input type="text" class="form-control" id="password" name="password" placeholder="confirm password..." valrequired="true" elementname="Password">
+              </div>
             </div>
           </div>
         </form>
@@ -137,6 +265,68 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button form="add_user_form" type="submit" class="btn btn-primary">Add User</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for delete users-->
+<div class="modal fade" id="user_delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>Delete</strong> User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="delete_message">
+          
+        </div>
+        <div class="text-center jumbotron">
+          <p>Delete this user?</p>
+          <p><strong id="user_name"></strong></p>
+        </div>
+        <form method="POST" action="<?php echo base_url('admin/deleteUser') ?>" id="delete_user_form">
+          <input type="text" id="user_id" name="user_id" hidden>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button form="delete_user_form" type="submit" class="btn btn-primary">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal for activate or deactivate account users-->
+<div class="modal fade" id="update_status_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong class="status_action"></strong> User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="status_message">
+          
+        </div>
+        <div class="text-center jumbotron">
+          <p><strong class="status_action"></strong> this user?</p>
+          <p><strong id="status_user_name"></strong></p>
+        </div>
+        <form method="POST" action="<?php echo base_url('admin/updateUserStatus') ?>" id="status_update_form">
+          <input type="text" id="status_user_id" name="status_user_id" hidden>
+          <input type="text" id="update_action" name="update_action" hidden>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button form="status_update_form" type="submit" class="btn btn-primary">Confirm</button>
       </div>
     </div>
   </div>
@@ -162,3 +352,4 @@
 
   <script src="<?php echo base_url() ?>public/js/users.js"></script>
   <script src="<?php echo base_url() ?>public/js/validation.js"></script>
+  <script src="<?php echo base_url() ?>public/js/custom.js"></script>

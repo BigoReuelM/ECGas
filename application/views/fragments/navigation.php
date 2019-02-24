@@ -37,65 +37,64 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
+      <!-- Nav Item - products -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>POS</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
-          </div>
-        </div>
+        <a class="nav-link" href="<?php echo base_url('pages/pointOfSale') ?>">
+          <i class="fas fa-fw fa-list"></i>
+          <span>Point of Sail</span></a>
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
-          <span>INVENTORY</span>
+          <span>Products</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+            <a class="collapse-item" href="<?php echo base_url('pages/allProducts') ?>">All Products</a>
+            <a class="collapse-item" href="<?php echo base_url('pages/inventory') ?>">Inventory</a>
           </div>
         </div>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Admin Control
-      </div>
-
-      <!-- Nav Item - products -->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo base_url('admin/products') ?>">
-          <i class="fas fa-fw fa-list"></i>
-          <span>Products</span></a>
-      </li>
-
       <!-- Nav Item - clients -->
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo base_url('admin/clients') ?>">
+        <a class="nav-link" href="<?php echo base_url('pages/clients') ?>">
           <i class="fas fa-fw fa-users"></i>
           <span>Clients</span></a>
       </li>
 
-      <!-- Nav Item - users -->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo base_url('admin/users') ?>">
-          <i class="fas fa-fw fa-users"></i>
-          <span>Users</span></a>
-      </li>
+      <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+          Admin Control
+        </div>
+        
+        <!-- Nav Item - users -->
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo base_url('admin/products') ?>">
+            <i class="fas fa-fw fa-list"></i>
+            <span>Products</span></a>
+        </li>
+
+        <!-- Nav Item - users -->
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo base_url('admin/clients') ?>">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Clients</span></a>
+        </li>
+
+        <!-- Nav Item - users -->
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo base_url('admin/users') ?>">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Users</span></a>
+        </li>
+      <?php endif ?>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -136,20 +135,16 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="<?php echo base_url('user/profile') ?>">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="<?php echo base_url('user/activityLogs') ?>">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="<?php echo base_url('user/logout') ?>">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>

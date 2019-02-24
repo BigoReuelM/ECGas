@@ -2,6 +2,8 @@ function validateRequired(formID){
 	
 	var element = '#' + formID;
 
+	var success = true;
+
 	$(element).find('[valrequired = true]').each(function(){
 		var fieldname = $(this).attr('elementname');
 
@@ -19,7 +21,9 @@ function validateRequired(formID){
 		if (value == null || value == "") {
 			//if input field empty, add class invalid on selected element and add warning message after the elemet
 			$(this).addClass('is-invalid')
-			.after('<p class="text-danger text-center"><small>The ' + fieldname + ' field is required!</small></p>');	
+			.after('<p class="text-danger text-center"><small>The ' + fieldname + ' field is required!</small></p>');
+
+			success = false;	
 		}else{
 			//remove style/class(is-invalid) on selected element if the field is not null/empty
 			$(this).removeClass('is-invalid');
@@ -31,4 +35,6 @@ function validateRequired(formID){
 	$(element).find('[valrequired = false]').each(function(){
 		$(this).addClass('is-valid');
 	})
+
+	return success;
 }
