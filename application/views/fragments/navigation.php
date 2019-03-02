@@ -22,7 +22,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="<?php echo base_url('pages') ?>">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
@@ -54,6 +54,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="<?php echo base_url('pages/allProducts') ?>">All Products</a>
             <a class="collapse-item" href="<?php echo base_url('pages/inventory') ?>">Inventory</a>
+            <a class="collapse-item" href="<?php echo base_url('pages/issues') ?>">Issues</a>
           </div>
         </div>
       </li>
@@ -73,20 +74,6 @@
         <div class="sidebar-heading">
           Admin Control
         </div>
-        
-        <!-- Nav Item - users -->
-        <li class="nav-item">
-          <a class="nav-link" href="<?php echo base_url('admin/products') ?>">
-            <i class="fas fa-fw fa-list"></i>
-            <span>Products</span></a>
-        </li>
-
-        <!-- Nav Item - users -->
-        <li class="nav-item">
-          <a class="nav-link" href="<?php echo base_url('admin/clients') ?>">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Clients</span></a>
-        </li>
 
         <!-- Nav Item - users -->
         <li class="nav-item">
@@ -114,7 +101,7 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-2 static-top shadow">
 
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">

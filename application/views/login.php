@@ -41,11 +41,9 @@
                   <hr>
                   <form class="user" id="login" autocomplete="off">
                     <div class="form-group">
-                      <label for="username">Username</label>
                       <input type="text" class="form-control form-control-user" id="username" name="username" placeholder="Enter Username">
                     </div>
                     <div class="form-group">
-                      <label for="password">Password</label>
                       <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Enter Password">
                     </div>
                     <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>

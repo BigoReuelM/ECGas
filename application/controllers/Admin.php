@@ -16,25 +16,7 @@
 
 		}
 
-		public function products(){
 
-			$data['page_title'] = 'Admin | Products';
-
-			$this->load->view('fragments/head', $data);
-			$this->load->view('fragments/navigation');
-			$this->load->view('products_view_admin');
-			$this->load->view('fragments/footer');
-		}
-
-		public function clients(){
-
-			$data['page_title'] = 'Admin | Clients';
-
-			$this->load->view('fragments/head', $data);
-			$this->load->view('fragments/navigation');
-			$this->load->view('clients_view_admin');
-			$this->load->view('fragments/footer');
-		}
 
 		public function users(){
 

@@ -91,73 +91,61 @@
               <h6 class="m-0 font-weight-bold text-primary">Users Table</h6>
             </div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="user_table" width="100%" cellspacing="0">
-                  <thead>
+              <table class="table table-striped table-bordered table-sm text-center" id="user_table" width="100%" cellspacing="0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Contact No.</th>
+                    <th>Account Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($users as $user): ?>
                     <tr>
-                      <th>First Name</th>
-                      <th>Middle Name</th>
-                      <th>Last Name</th>
-                      <th>Contact No.</th>
-                      <th>Account Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>First Name</th>
-                      <th>Middle Name</th>
-                      <th>Last Name</th>
-                      <th>Contact No.</th>
-                      <th>Account Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <?php foreach ($users as $user): ?>
-                      <tr>
-                        <td class="first_name"><?php echo $user['first_name'] ?></td>
-                        <td class="middle_name"><?php echo $user['middle_name'] ?></td>
-                        <td class="last_name"><?php echo $user['last_name'] ?></td>
-                        <td><?php echo $user['contact'] ?></td>
-                        <td><?php echo $user['status'] ?></td>
-                        <td>
-                          <div class="row justify-content-center">
-                            <div class="btn-group">
-                              <span data-toggle="tooltip" data-placement="top" title="Edit">
-                                <form action="<?php echo base_url('admin/setSelectedUserId') ?>" method="POST">
-                                  <button type="submit" name="user_id" class="btn btn-success btn-circle btn-sm edit_btn" value="<?php echo $user['user_id'] ?>">
-                                    <i class="fa fa-pen"></i>
-                                  </button>
-                                </form>
-                              </span>
-                              <?php if ($user['status'] == 'active'): ?>
-                                <span data-toggle="tooltip" data-placement="top" title="Deactivate">
-                                  <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $user['user_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
-                                    <i class="fas fa-toggle-off"></i>
-                                  </button>
-                                </span>
-                              <?php endif ?>
-                              <?php if ($user['status'] == 'inactive'): ?>
-                                <span data-toggle="tooltip" data-placement="top" title="Activate">
-                                  <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $user['user_id'] ?>,activate" data-toggle="modal" data-target="#update_status_modal">
-                                    <i class="fas fa-toggle-on"></i>
-                                  </button>
-                                </span>
-                              <?php endif ?>
-                              <span data-toggle="tooltip" data-placement="top" title="Delete">
-                                <button type="button" class="btn btn-danger btn-circle btn-sm delete_btn" value="<?php echo $user['user_id'] ?>" data-toggle="modal" data-target="#user_delete_modal">
-                                  <i class="fa fa-trash"></i>
+                      <td class="first_name"><?php echo $user['first_name'] ?></td>
+                      <td class="middle_name"><?php echo $user['middle_name'] ?></td>
+                      <td class="last_name"><?php echo $user['last_name'] ?></td>
+                      <td><?php echo $user['contact'] ?></td>
+                      <td><?php echo $user['status'] ?></td>
+                      <td>
+                        <div class="row justify-content-center">
+                          <div class="btn-group">
+                            <span data-toggle="tooltip" data-placement="top" title="Edit">
+                              <form action="<?php echo base_url('admin/setSelectedUserId') ?>" method="POST">
+                                <button type="submit" name="user_id" class="btn btn-success btn-circle btn-sm edit_btn" value="<?php echo $user['user_id'] ?>">
+                                  <i class="fa fa-pen"></i>
+                                </button>
+                              </form>
+                            </span>
+                            <?php if ($user['status'] == 'active'): ?>
+                              <span data-toggle="tooltip" data-placement="top" title="Deactivate">
+                                <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $user['user_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
+                                  <i class="fas fa-toggle-off"></i>
                                 </button>
                               </span>
-                            </div>
+                            <?php endif ?>
+                            <?php if ($user['status'] == 'inactive'): ?>
+                              <span data-toggle="tooltip" data-placement="top" title="Activate">
+                                <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $user['user_id'] ?>,activate" data-toggle="modal" data-target="#update_status_modal">
+                                  <i class="fas fa-toggle-on"></i>
+                                </button>
+                              </span>
+                            <?php endif ?>
+                            <span data-toggle="tooltip" data-placement="top" title="Delete">
+                              <button type="button" class="btn btn-danger btn-circle btn-sm delete_btn" value="<?php echo $user['user_id'] ?>" data-toggle="modal" data-target="#user_delete_modal">
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </span>
                           </div>
-                        </td>
-                      </tr>
-                    <?php endforeach ?>
-                  </tbody>
-                </table>
-              </div>
+                        </div>
+                      </td>
+                    </tr>
+                  <?php endforeach ?>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -192,17 +180,17 @@
           <div id="name_input" class="row justify-content-center">
             <div class="col">
               <div class="form-group">
-                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="first name..." valrequired="true" elementname="First Name">
+                <input type="text" class="form-control form-control-sm" id="first_name" name="first_name" placeholder="first name..." valrequired="true" elementname="First Name">
               </div>
             </div>
             <div class="col">
               <div class="form-group">
-                <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="middle name optional..." valrequired="false">
+                <input type="text" class="form-control form-control-sm" id="middle_name" name="middle_name" placeholder="middle name optional..." valrequired="false">
               </div>
             </div>
             <div class="col">
               <div class="form-group">
-                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="last name..." valrequired = "true" elementname="Last Name">
+                <input type="text" class="form-control form-control-sm" id="last_name" name="last_name" placeholder="last name..." valrequired = "true" elementname="Last Name">
               </div>
             </div>
           </div>
@@ -210,7 +198,7 @@
             <div class="col">
               <div class="form-group">
                 <label for="user_type"><small>User Type:<span class="required_sign">*</span></small></label>
-                <select name="user_type" id="user_type" class="form-control" valrequired="true" elementname="User Type">
+                <select name="user_type" id="user_type" class="form-control form-control-sm" valrequired="true" elementname="User Type">
                   <option disabled selected hidden>choose user type..</option>
                   <option value="admin">Admin</option>
                   <option value="employee">Employee</option>
@@ -220,7 +208,7 @@
             <div class="col">
               <div class="form-group">
                 <label for="gender"><small>Gender:<span class="required_sign">*</span></small></label>
-                <select name="gender" id="gender" class="form-control" valrequired="true" elementname="Gender">
+                <select name="gender" id="gender" class="form-control form-control-sm" valrequired="true" elementname="Gender">
                   <option disabled selected hidden>choose gender..</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
@@ -232,13 +220,13 @@
             <div class="col">
               <div class="form-group">
                 <label for="contact"><small>Contact No.:<span class="required_sign">*</span></small></label>
-                <input type="text" class="form-control" id="contact" name="contact" placeholder="contact number..." valrequired="true" elementname="Contact Number">
+                <input type="text" class="form-control form-control-sm" id="contact" name="contact" placeholder="contact number..." valrequired="true" elementname="Contact Number">
               </div>
             </div>
             <div class="col">
               <div class="form-group">
                 <label for="Username"><small>Username:<span class="required_sign">*</span></small></label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="username..." valrequired="true" elementname="User Name">
+                <input type="text" class="form-control form-control-sm" id="username" name="username" placeholder="username..." valrequired="true" elementname="User Name">
               </div>
             </div>
           </div>
@@ -246,17 +234,17 @@
             <div class="col">
               <div class="form-group">
                 <label for="address"><small>Address:<span class="required_sign">*</span></small></label>
-                <textarea name="address" id="address" cols="30" rows="5" class="form-control" valrequired="true" elementname="Address" style="resize: none"></textarea>
+                <textarea name="address" id="address" rows="4" class="form-control form-control-sm" valrequired="true" elementname="Address" style="resize: none"></textarea>
               </div>
             </div>
             <div class="col">
               <div class="form-group">
                 <label for="password_initial"><small>Password:<span class="required_sign">*</span></small></label>
-                <input type="text" class="form-control" id="password_initial" name="password_initial" placeholder="password..." valrequired="true" elementname="Initial Password">
+                <input type="text" class="form-control form-control-sm" id="password_initial" name="password_initial" placeholder="password..." valrequired="true" elementname="Initial Password">
               </div>
               <div class="form-group">
-                <label for="password"><small>Confirm:<span class="required_sign">*</span></small></label>
-                <input type="text" class="form-control" id="password" name="password" placeholder="confirm password..." valrequired="true" elementname="Password">
+                <label for="password"><small>Confirm Password:<span class="required_sign">*</span></small></label>
+                <input type="text" class="form-control form-control-sm" id="password" name="password" placeholder="confirm password..." valrequired="true" elementname="Password">
               </div>
             </div>
           </div>
@@ -272,7 +260,7 @@
 
 <!-- Modal for delete users-->
 <div class="modal fade" id="user_delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle"><strong>Delete</strong> User</h5>
@@ -284,8 +272,8 @@
         <div id="delete_message">
           
         </div>
-        <div class="text-center jumbotron">
-          <p>Delete this user?</p>
+        <div class="text-center alert alert-danger">
+          <p class="text-danger">Delete this user?</p>
           <p><strong id="user_name"></strong></p>
         </div>
         <form method="POST" action="<?php echo base_url('admin/deleteUser') ?>" id="delete_user_form">
@@ -293,8 +281,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button form="delete_user_form" type="submit" class="btn btn-primary">Confirm Delete</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <button form="delete_user_form" type="submit" class="btn btn-primary btn-sm">Confirm Delete</button>
       </div>
     </div>
   </div>
@@ -303,7 +291,7 @@
 
 <!-- Modal for activate or deactivate account users-->
 <div class="modal fade" id="update_status_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle"><strong class="status_action"></strong> User</h5>
@@ -315,8 +303,8 @@
         <div id="status_message">
           
         </div>
-        <div class="text-center jumbotron">
-          <p><strong class="status_action"></strong> this user?</p>
+        <div class="text-center alert alert-warning">
+          <p class="text-warning"><strong class="status_action"></strong> this user?</p>
           <p><strong id="status_user_name"></strong></p>
         </div>
         <form method="POST" action="<?php echo base_url('admin/updateUserStatus') ?>" id="status_update_form">
@@ -325,8 +313,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button form="status_update_form" type="submit" class="btn btn-primary">Confirm</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <button form="status_update_form" type="submit" class="btn btn-primary btn-sm">Confirm</button>
       </div>
     </div>
   </div>
