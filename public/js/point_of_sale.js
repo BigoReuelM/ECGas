@@ -24,9 +24,11 @@ $(document).ready(function(){
 		if (isNaN(discount_input)) {
 			alert('Enter aproper discount amount');
 		}else{
+
 			discount = parseFloat(discount_input);
 		}
 
+		total_payable = total;
 		total_payable = total_payable - discount;
 
 		$('#total_payable').html(total_payable);
