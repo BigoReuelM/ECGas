@@ -118,15 +118,16 @@ $(document).ready(function(){
 
 		// the following script is for adding quantity of an item by clicking on a button
 		
-		$(document).on('click', '.add_quantity_btn', function(){
+		$(document).on('click', '.add_quantity_btn', function(event){
+			event.stopImmediatePropagation();
 			var product_id = $(this).val();
 
 			for (var i = 0; i < cart.length; i++) {
-				if (cart[i]['product_id'] === product_id) {
-					cart[i]['count']++;
+				if (cart[i]['product_id'] == product_id) {
+					cart[i]['count'] = cart[i]['count']+1;
 					var count = cart[i]['count'];
 					var total_price = parseInt(count) * parseFloat(cart[i]['product_price']);
-					total_items++;
+					total_items = total_items+1;
 					total = total + parseFloat(cart[i]['product_price']);
 					total_payable = total_payable + parseFloat(cart[i]['product_price']);
 					updateSummary(total, total_items, total_payable);
@@ -138,16 +139,17 @@ $(document).ready(function(){
 
 		// the following script is for subtracting quantity of an item by clicking on a button
 		
-		$(document).on('click', '.sub_quantity_btn', function(){
+		$(document).on('click', '.sub_quantity_btn', function(event){
+			event.stopImmediatePropagation();
 			var product_id = $(this).val();
 
 			for (var i = 0; i < cart.length; i++) {
-				if (cart[i]['product_id'] === product_id) {
-					if (cart[i][count] > 1) {
-						cart[i]['count']--;
+				if (cart[i]['product_id'] == product_id) {
+					if (cart[i]['count'] > 1) {
+						cart[i]['count'] = cart[i]['count']-1;
 						var count = cart[i]['count'];
 						var total_price = parseInt(count) * parseFloat(cart[i]['product_price']);
-						total_items--;
+						total_items = total_items-1;
 						total = total + parseFloat(cart[i]['product_price']);
 						total_payable = total_payable + parseFloat(cart[i]['product_price']);
 						updateSummary(total, total_items, total_payable);
@@ -174,7 +176,6 @@ $(document).ready(function(){
 					$('#product_' + product_id).remove();
 					cart.splice(i, 1);
 					itemList.splice(itemList.indexOf(product_id), 1);
-					console.log(cart);
 					break;
 				}
 			}
