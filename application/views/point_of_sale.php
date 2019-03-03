@@ -29,13 +29,13 @@
                           <tr>
                             <th>Action</th>
                             <th>Product</th>
-                            <th>Quantity</th>
                             <th>Price</th>
+                            <th>Quantity</th>
                             <th>Total</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
+                        <tbody id="cart_table_body">
+                          <tr id="empty_product_row">
                             <td></td>
                             <td></td>
                             <td></td>
@@ -55,13 +55,13 @@
                         <p><small>Total Item:</small></p>
                       </div>
                       <div class="col">
-                        <p>2</p>
+                        <p id="total_items">0.00</p>
                       </div>
                       <div class="col">
                         <p><small>Total:</small></p>
                       </div>
                       <div class="col">
-                        <p>200</p>
+                        <p id="total">0.00</p>
                       </div>
                     </div>
                   </div>
@@ -74,13 +74,13 @@
                         <p><small>Discount:</small></p>
                       </div>
                       <div class="col">
-                        <p>2</p>
+                        <input type="text" class="form-control" id="discount_input">
                       </div>
                       <div class="col">
-                        <p><small>Total Payment:</small></p>
+                        <p><small>Total Payable:</small></p>
                       </div>
                       <div class="col">
-                        <p>200</p>
+                        <p id="total_payable">0.00</p>
                       </div>
                     </div>
                   </div>
