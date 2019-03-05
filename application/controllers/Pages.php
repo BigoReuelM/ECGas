@@ -35,13 +35,91 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$this->session->set_userdata('sidebarControl', 1);
 			}
 		}
+		//////////////POINT OF SALES FUNCTIONS
 
 		public function pointOfSale(){
 			$data['page_title'] = 'Point of Sale';
 			$data['products'] = $this->pages_model->getActiveProducts();
+			$data['clients'] = $this->pages_model->getClients();
 			$this->load->view('fragments/head', $data);
-			$this->load->view('point_of_sale');
+			$this->load->view('fragments/navigation');
+			$this->load->view('point_of_sales');
+			$this->load->view('fragments/footer');
 		}
+
+		public function addSales(){
+
+			$data['success'] = false;
+
+			$other_info = $this->input->post('other_info');
+			$cart = $this->input->post('cart');
+			///separate data
+			$total = $other_info['total'];
+			$discount = $other_info['discount'];
+			$total_payable = $other_info['total_payable'];
+			$client_id = $other_info['client'];
+			if (empty($client_id) || $client_id == "") {
+				$client_id = null;
+			}
+			$payment_method = $other_info['payment_method'];
+			$paid_amount = $other_info['paid_amount'];
+			$change = $other_info['change'];
+			$total_items = $other_info['total_items'];
+			$user_id = $this->session->userdata('user_details')['user_id'];
+
+			// record sales
+			$sales_id = $this->pages_model->addSales($client_id, $user_id, $total, $discount, $total_payable, $paid_amount, $change, $payment_method, $total_items);
+			
+			if ($sales_id) {
+
+				// record product sales
+
+				foreach ($cart as $item) {
+					$product_cost = $this->pages_model->getProductCost($item['product_id'])->product_cost;
+					$product_total_amount = $item['count'] * $item['product_price'];
+
+					$this->pages_model->recordProductSales($item['product_id'], $sales_id, $item['count'], $product_total_amount, $product_cost, $item['product_price']);
+				}
+
+				$data['success'] = true;
+				
+			}
+				
+			echo json_encode($data);
+
+		}
+
+		////////// END OF POINT OF SALES FUNCTIONS
+		///
+		//////
+		/// //
+		//////
+
+		////////////////////////////////
+		/////// for sales reports etc //
+		////////////////////////////////
+
+		public function sales(){
+			$date = date('Y-m-d');
+			$data['page_title'] = 'Sales';
+			$data['sales'] = $this->pages_model->getSales($date);
+			$this->load->view('fragments/head', $data);
+			$this->load->view('fragments/navigation');
+			$this->load->view('sales');
+			$this->load->view('fragments/footer');
+		}
+
+		public function getSaleDetails(){
+
+			$sales_id = htmlspecialchars(trim($this->input->get('sales_id')));
+
+			$data['sales_details'] = $this->pages_model->getSaleDetails($sales_id);
+			$data['sales_products'] = $this->pages_model->getSaleProducts($sales_id);
+
+			echo json_encode($data);
+		}
+
+		////
 
 		public function allProducts(){
 			$data['page_title'] = 'All Products';

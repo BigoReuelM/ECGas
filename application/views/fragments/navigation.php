@@ -37,11 +37,18 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <!-- Nav Item - products -->
+      <!-- Nav Item - pos -->
       <li class="nav-item">
         <a class="nav-link" href="<?php echo base_url('pages/pointOfSale') ?>">
-          <i class="fas fa-fw fa-list"></i>
-          <span>Point of Sail</span></a>
+          <i class="fas fa-fw fa-shopping-cart"></i>
+          <span>POS</span></a>
+      </li>
+
+      <!-- Nav Item - sales -->
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo base_url('pages/sales') ?>">
+          <i class="fas fa-fw fa-money-bill-wave"></i>
+          <span>Sales</span></a>
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
@@ -125,10 +132,6 @@
                 <a class="dropdown-item" href="<?php echo base_url('user/profile') ?>">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
-                </a>
-                <a class="dropdown-item" href="<?php echo base_url('user/activityLogs') ?>">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="<?php echo base_url('user/logout') ?>">

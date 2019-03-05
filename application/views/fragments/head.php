@@ -1,3 +1,10 @@
+<?php 
+  if (!isset($_SESSION['user_details'])) {
+    redirect('user');
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

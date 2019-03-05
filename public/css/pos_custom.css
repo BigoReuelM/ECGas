@@ -1,0 +1,43 @@
+.card-img-top{
+	height: 150px;
+}
+
+.pos_product_title{
+	padding: 0;
+	height: 30px;
+	overflow: hidden;
+	background: #59f785;
+	width: 100%;
+	text-align: center;
+	color: black;
+}
+
+.pos_product_price{
+	padding: 0;
+	height: 30px;
+	overflow: hidden;
+	background: #56f1f7;
+	width: 100%;
+	text-align: center;
+	color: black;
+}
+
+.pos_product_quantity{
+	padding: 0;
+	height: 30px;
+	overflow: hidden;
+	background: #f99a86;
+	width: 100%;
+	text-align: center;
+	color: black;
+}
+
+.pos_products_container{
+	height: 80vh;
+	overflow-y: auto;
+}
+
+
+.cart_table_container{
+	background: #e5e7ea;
+}

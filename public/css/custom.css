@@ -33,45 +33,26 @@
 	width: 100px;
 }
 
-.card-img-top{
-	height: 150px;
-}
+/*pos custom css*/
 
-.pos_product_title{
-	padding: 0;
-	height: 30px;
-	overflow: hidden;
-	background: #59f785;
-	width: 100%;
-	text-align: center;
-	color: black;
-}
-
-.pos_product_price{
-	padding: 0;
-	height: 30px;
-	overflow: hidden;
-	background: #56f1f7;
-	width: 100%;
-	text-align: center;
-	color: black;
-}
-
-.pos_product_quantity{
-	padding: 0;
-	height: 30px;
-	overflow: hidden;
-	background: #f99a86;
-	width: 100%;
-	text-align: center;
-	color: black;
-}
-
-.pos_products_container{
-	max-height: 730px;
+#pos_product_container{
+	height: 75vh;
 	overflow-y: auto;
+	overflow-x: hidden;
+	border-left: solid;
 }
 
-.cart_table_container{
-	background: #e5e7ea;
+#pos_cart_container{
+	height: 75vh;
 }
+
+#cart_table_container{
+	background: #edeeef;
+	height: 50vh;
+	overflow: auto;
+}
+
+
+
+
+
