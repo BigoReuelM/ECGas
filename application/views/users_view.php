@@ -10,7 +10,7 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div>
               <h1 class="h3 mb-2 text-gray-800">Users Management</h1>
-              <p class="mb-4">User management is where the admin can <strong>ADD, EDIT, DELETE and ACTIVATE or DEACTIVATE</strong> a user of this web application.</p>
+              <p>User management: <strong>ADD, EDIT, DELETE and ACTIVATE or DEACTIVATE</strong> a user of this web application.</p>
             </div>
             <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#user_add_modal">
               <i class="fas fa-plus fa-sm text-white-50"></i>
@@ -240,19 +240,19 @@
             <div class="col">
               <div class="form-group">
                 <label for="password_initial"><small>Password:<span class="required_sign">*</span></small></label>
-                <input type="text" class="form-control form-control-sm" id="password_initial" name="password_initial" placeholder="password..." valrequired="true" elementname="Initial Password">
+                <input type="password" class="form-control form-control-sm" id="password_initial" name="password_initial" placeholder="password..." valrequired="true" elementname="Initial Password">
               </div>
               <div class="form-group">
                 <label for="password"><small>Confirm Password:<span class="required_sign">*</span></small></label>
-                <input type="text" class="form-control form-control-sm" id="password" name="password" placeholder="confirm password..." valrequired="true" elementname="Password">
+                <input type="password" class="form-control form-control-sm" id="password" name="password" placeholder="confirm password..." valrequired="true" elementname="Password">
               </div>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button form="add_user_form" type="submit" class="btn btn-primary">Add User</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <button form="add_user_form" type="submit" class="btn btn-primary btn-sm">Add User</button>
       </div>
     </div>
   </div>
@@ -263,7 +263,7 @@
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><strong>Delete</strong> User</h5>
+        <h5 class="modal-title text-danger"><strong>Delete</strong> User</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -282,7 +282,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="delete_user_form" type="submit" class="btn btn-primary btn-sm">Confirm Delete</button>
+        <button form="delete_user_form" type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
       </div>
     </div>
   </div>
@@ -294,7 +294,7 @@
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><strong class="status_action"></strong> User</h5>
+        <h5 class="modal-title text-warning"><strong class="status_action"></strong> User</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -314,7 +314,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="status_update_form" type="submit" class="btn btn-primary btn-sm">Confirm</button>
+        <button form="status_update_form" type="submit" class="btn btn-warning btn-sm">Confirm</button>
       </div>
     </div>
   </div>

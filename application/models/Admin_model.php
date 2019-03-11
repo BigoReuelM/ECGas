@@ -146,6 +146,79 @@
 			$this->db->update('users', $data);
 		}
 
+		//////////////////////
+		// settings quiries //
+		//////////////////////
+		
+		public function getProductCategories(){
+			$result = $this->db->get('product_categories');
+			return $result->result_array();
+		}
+
+		public function getPaymentMethods(){
+			$result = $this->db->get('payment_methods');
+			return $result->result_array();
+		}
+
+		public function getIssues(){
+			$result = $this->db->get('issues');
+			return $result->result_array();
+		}
+
+		public function addProductCategory($product_category){
+			$data = array(
+				'product_category' => $product_category
+			);
+
+			$this->db->insert('product_categories', $data);
+		}
+
+		public function addPaymentMethod($payment_method){
+			$data = array(
+				'payment_method' => $payment_method
+			);
+
+			$this->db->insert('payment_methods', $data);
+		}
+
+		public function addIssue($issue){
+			$data = array(
+				'issue' => $issue
+			);
+
+			$this->db->insert('issues', $data);
+		}
+
+		public function deleteProductCategory($product_category_id){
+			$this->db->where('product_category_id', $product_category_id);
+
+			if ($this->db->delete('product_categories')) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		public function deletePaymentMethod($payment_method_id){
+			$this->db->where('payment_method_id', $payment_method_id);
+
+			if ($this->db->delete('payment_methods')) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		public function deleteIssue($issue_id){
+			$this->db->where('issue_id', $issue_id);
+
+			if ($this->db->delete('issues')) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
 	}
 
 ?>

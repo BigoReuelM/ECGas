@@ -62,6 +62,7 @@
             <a class="collapse-item" href="<?php echo base_url('pages/allProducts') ?>">All Products</a>
             <a class="collapse-item" href="<?php echo base_url('pages/inventory') ?>">Inventory</a>
             <a class="collapse-item" href="<?php echo base_url('pages/issues') ?>">Issues</a>
+            <a class="collapse-item" href="<?php echo base_url('pages/productAlertSettings') ?>">Set Product Alert</a>
           </div>
         </div>
       </li>
@@ -81,6 +82,15 @@
         <div class="sidebar-heading">
           Admin Control
         </div>
+
+        <!-- Nav item admin settings -->
+
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo base_url('admin/settings') ?>">
+            <i class="fa fa-cogs"></i>
+            <span>Settings</span>
+          </a>
+        </li>
 
         <!-- Nav Item - users -->
         <li class="nav-item">

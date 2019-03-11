@@ -8,7 +8,8 @@
           
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div>
-              <h1 class="h3 mb-2 text-gray-800">Products</h1>
+              <h1 class="h3 mb-2 text-gray-800">Products Management</h1>
+              <p>Product management: <strong>ADD or DELETE</strong> a product.</p>
             </div>
             <a href="<?php echo base_url('pages/addProduct') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
               <i class="fas fa-plus fa-sm text-white-50"></i>
@@ -28,6 +29,7 @@
                 <thead class="thead-dark">
                   <tr>
                     <th>Product</th>
+                    <th>Category</th>
                     <th>Description</th>
                     <th>Inventory</th>
                     <th>Price</th>
@@ -39,6 +41,7 @@
                   <?php foreach ($products as $product): ?>
                     <tr>
                       <td class="product_title"><?php echo $product['product_title'] ?></td>
+                      <td><?php echo $product['product_category'] ?></td>
                       <td><?php echo $product['product_description'] ?></td>
                       <td><?php echo $product['product_quantity'] ?></td>
                       <td><?php echo $product['product_price'] ?></td>
@@ -75,12 +78,12 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-<!-- Modal for delete users-->
+<!-- Modal for delete product-->
 <div class="modal fade" id="product_delete_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><strong>Delete</strong> Product</h5>
+        <h5 class="modal-title text-danger"><strong>Delete</strong> Product</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -102,7 +105,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="delete_product_form" type="submit" class="btn btn-primary btn-sm">Confirm Delete</button>
+        <button form="delete_product_form" type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
       </div>
     </div>
   </div>

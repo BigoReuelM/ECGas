@@ -21,7 +21,7 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div>
               <h1 class="h3 mb-2 text-gray-800">Product Details</h1>
-              <p class="mb-4">Product Details is where a user can <strong> VIEW</strong> and <strong>EDIT</strong> details of a product.</p>
+              <p class="mb-4">Product Details: <strong> VIEW</strong> and <strong>EDIT</strong> details of a product.</p>
             </div>
             <div>
               <span data-toggle="tooltip" title="Delete Product">
@@ -58,8 +58,17 @@
                           <input type="text" name="product_title" id="product_title" class="form-control form-control-sm detail" placeholder="<?php echo $product_details['product_title'] ?>">
                         </div>
                         <div class="form-group">
+                          <label for="product_category_id"><small>Product Category:</small></label>
+                          <select name="product_category_id" id="product_category_id" class="form-control form-control-sm detail">
+                            <option hidden selected disabled><?php echo $product_details['product_category'] ?></option>
+                            <?php foreach ($product_categories as $category): ?>
+                              <option value="<?php echo $category['product_category_id'] ?>"><?php echo $category['product_category'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                        </div>
+                        <div class="form-group">
                           <label for="product_description"><small>Product Description:</small></label>
-                          <textarea name="product_description" id="product_description" class="form-control form-control-sm detail" rows="5" style="resize: none" placeholder="<?php echo $product_details['product_description'] ?>"></textarea>
+                          <textarea name="product_description" id="product_description" class="form-control form-control-sm detail" rows="3" style="resize: none" placeholder="<?php echo $product_details['product_description'] ?>"></textarea>
                         </div>
                         <div class="form-group">
                           <label for="product_price"><small>Product Price:</small></label>
@@ -172,7 +181,7 @@
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><strong>Delete</strong> Product</h5>
+        <h5 class="modal-title text-danger"><strong>Delete</strong> Product</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -191,7 +200,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="delete_product_form_from_details" type="submit" class="btn btn-primary btn-sm">Confirm Delete</button>
+        <button form="delete_product_form_from_details" type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
       </div>
     </div>
   </div>

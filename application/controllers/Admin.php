@@ -12,6 +12,7 @@
 			parent::__construct();
 			$this->load->helper('form', 'url');
 			$this->load->model('admin_model');
+			$this->load->model('pages_model');
 			$this->load->library('form_validation');
 
 		}
@@ -33,6 +34,78 @@
 			$this->load->view('fragments/footer');
 		}
 
+		/////////////////////////
+		//settings controllers //
+		/////////////////////////
+
+
+		public function settings(){
+			$data['page_title'] = 'Admin | Settings';
+			$data['product_categories'] = $this->admin_model->getProductCategories();
+			$data['payment_methods'] = $this->admin_model->getPaymentMethods();
+			$data['issues'] = $this->admin_model->getIssues();
+			$this->load->view('fragments/head', $data);
+			$this->load->view('fragments/navigation');
+			$this->load->view('admin_settings');
+			$this->load->view('fragments/footer');
+		}
+
+		public function addProductCategory(){
+			$product_category = ucwords(htmlspecialchars(trim($this->input->post('product_category'))));
+
+			$this->admin_model->addProductCategory($product_category);
+		}
+
+		public function addPaymentMethod(){
+			$payment_method = ucwords(htmlspecialchars(trim($this->input->post('payment_method'))));
+
+			$this->admin_model->addPaymentMethod($payment_method);
+		}
+
+		public function addIssue(){
+			$issue = ucwords(htmlspecialchars(trim($this->input->post('issue'))));
+
+			$this->admin_model->addIssue($issue);
+		}
+
+		public function deleteProductCategory(){
+			$data['success'] = false;
+			$product_category_id = htmlspecialchars(trim($this->input->post('product_category_id')));
+
+			if ($this->admin_model->deleteProductCategory($product_category_id)) {
+				$data['success'] = true;
+			}
+
+			echo json_encode($data);
+		}
+
+		public function deletePaymentMethod(){
+			$data['success'] = false;
+			$payment_method_id = htmlspecialchars(trim($this->input->post('payment_method_id')));
+
+			if ($this->admin_model->deletePaymentMethod($payment_method_id)) {
+				$data['success'] = true;
+			}
+
+			echo json_encode($data);
+		}
+
+		public function deleteIssue(){
+			$data['success'] = false;
+			$issue_id = htmlspecialchars(trim($this->input->post('issue_id')));
+
+			if ($this->admin_model->deleteIssue($issue_id)) {
+				$data['success'] = true;
+			}
+
+			echo json_encode($data);
+		}
+
+		////////
+		//end //
+		////////
+
+
 		public function addUser(){
 
 			$data = array('success' => true, 'unique_username' => true);
@@ -40,14 +113,14 @@
 			$this->form_validation->set_rules('username', 'Username', 'is_unique[users.username]');
 
 			if ($this->form_validation->run()) {
-				$first_name = htmlspecialchars(trim($this->input->post('first_name')));
-				$middle_name = htmlspecialchars(trim($this->input->post('middle_name')));
-				$last_name = htmlspecialchars(trim($this->input->post('last_name')));
+				$first_name = ucwords(htmlspecialchars(trim($this->input->post('first_name'))));
+				$middle_name = ucwords(htmlspecialchars(trim($this->input->post('middle_name'))));
+				$last_name = ucwords(htmlspecialchars(trim($this->input->post('last_name'))));
 				$user_type = htmlspecialchars(trim($this->input->post('user_type')));
 				$gender = htmlspecialchars(trim($this->input->post('gender')));
 				$contact = htmlspecialchars(trim($this->input->post('contact')));
 				$username = htmlspecialchars(trim($this->input->post('username')));
-				$address = htmlspecialchars(trim($this->input->post('address')));
+				$address = ucwords(htmlspecialchars(trim($this->input->post('address'))));
 
 				$password = $this->input->post('password');
 
@@ -99,6 +172,7 @@
 		public function userDetails(){
 			$data['page_title'] = 'Admin | User Details';
 			$data['user_details'] = $this->admin_model->getUserDetails($this->session->userdata('selected_user_id'));
+			$data['user_sales'] = $this->pages_model->getUserSales($this->session->userdata('selected_user_id'));
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('user_details');

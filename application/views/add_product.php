@@ -38,26 +38,35 @@
                           <input type="text" name="product_title" id="product_title" class="form-control" valrequired="true" elementname="Product Title">
                         </div>
                         <div class="form-group">
+                          <label for="product_category">Product Category:<span class="required_sign">*</span></label>
+                          <select name="product_category" id="product_category" class="form-control" valrequired="true" elementname="Product Category">
+                            <option hidden selected disabled>Choose Category...</option>
+                            <?php foreach ($product_categories as $category): ?>
+                              <option value="<?php echo $category['product_category_id'] ?>"><?php echo $category['product_category'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                        </div>
+                        <div class="form-group">
                           <label for="product_description">Description:</label>
-                          <textarea name="product_description" id="product_description" class="form-control" rows="8" style="resize: none"></textarea>
+                          <textarea name="product_description" id="product_description" class="form-control" rows="4" style="resize: none"></textarea>
                         </div>
                       </div>
                       <div class="col">
                         <div class="form-group">
                           <label for="product_price">Price:<span class="required_sign">*</span></label>
-                          <input type="text" name="product_price" id="product_price" class="form-control" valrequired="true" elementname="Product Price">
+                          <input type="number" step="0.01" min="0" name="product_price" id="product_price" class="form-control" valrequired="true" elementname="Product Price">
                         </div>
                         <div class="form-group">
                           <label for="product_cost">Cost Per Item:<span class="required_sign">*</span></label>
-                          <input type="text" name="product_cost" id="product_cost" class="form-control" valrequired="true" elementname="Product Cost">
+                          <input type="number" step="0.01" min="0" name="product_cost" id="product_cost" class="form-control" valrequired="true" elementname="Product Cost">
                         </div>
                         <div class="form-group">
                           <label for="product_sku">SKU(stock keeping unit):<span class="required_sign">*</span> <i class="fa fa-info-circle" data-toggle="tooltip" title="Number of minimum stocks allowed!"></i></label>
-                          <input type="text" name="product_sku" id="product_sku" class="form-control" valrequired="true" elementname="Product SKU">
+                          <input type="number" min="0" name="product_sku" id="product_sku" class="form-control" valrequired="true" elementname="Product SKU">
                         </div>
                         <div class="form-group">
                           <label for="product_quantity">Quantity:</label>
-                          <input type="text" name="product_quantity" id="product_quantity" class="form-control">
+                          <input  type="number" min="0" name="product_quantity" id="product_quantity" class="form-control">
                         </div>
                       </div>
                     </div>

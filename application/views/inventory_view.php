@@ -6,9 +6,10 @@
           <!-- Page Heading -->
           <!-- Button for adding a new User -->
         
-          <h1 class="h3 mb-2 text-gray-800">Inventory</h1>
-       
+          <h1 class="h3 mb-2 text-gray-800">Inventory Management</h1>
+          <p>Inventory management: <strong>ADD or SET</strong> a products inventory and <strong>ACTIVATE or DEACTIVATE</strong> a product.</p>       
           <!-- Table of products -->
+              
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">
@@ -16,10 +17,56 @@
               </h6>
             </div>
             <div class="card-body">
+              <div class="row border-bottom mb-4">
+                <div class="col">
+                  <form action="<?php echo base_url('pages/getFilteredProducts') ?>" id="filter_product_form">
+                    <div class="row justify-content-left">
+                      <div class="col-1">
+                        <div class="row">
+                          <div class="col">
+                            <p><small><strong>Filters:</strong></small></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="form-group row">
+                          <label for="product_category_id" class="col-4 col-form-label col-form-label-sm">Category:</label>
+                          <div class="col-8">
+                            <select name="product_category_id" id="product_category_id" class="form-control form-control-sm">
+                              <option hidden selected dsabled>Choose Category</option>
+                              <?php foreach ($product_categories as $category): ?>
+                                <option value="<?php echo $category['product_category_id'] ?>"><?php echo $category['product_category'] ?></option>
+                              <?php endforeach ?>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="form-group row">
+                          <label for="product_status" class="col-3 col-form-label col-form-label-sm">Status:</label>
+                          <div class="col-8">
+                            <select name="product_status" id="product_status" class="form-control form-control-sm">
+                              <option hidden selected disabled>Choose Status</option>
+                              <option value="active">Active</option>
+                              <option value="inactive">Deactivated</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <button class="btn btn-primary btn-sm">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
               <table class="table table-striped table-bordered table-sm text-center" id="products_table" width="100%" cellspacing="0">
                 <thead class="thead-dark">
                   <tr>
                     <th>Product</th>
+                    <th>Product Category</th>
                     <th>SKU(stock keeping unit)</th>
                     <th>Current Inventory</th>
                     <th>Update Inventory</th>
@@ -39,6 +86,7 @@
                           </div>
                         </div>
                       </td>
+                      <td><?php echo $product['product_category'] ?></td>
                       <td><?php echo $product['product_sku'] ?></td>
                       <td>
                         <div class="row justify-content-center">
@@ -110,7 +158,7 @@
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><strong class="status_action"></strong> Product</h5>
+        <h5 class="modal-title text-warning"><strong class="status_action"></strong> Product</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -130,7 +178,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="status_update_form" type="submit" class="btn btn-primary btn-sm">Confirm</button>
+        <button form="status_update_form" type="submit" class="btn btn-warning btn-sm">Confirm</button>
       </div>
     </div>
   </div>

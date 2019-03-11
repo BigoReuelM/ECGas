@@ -13,6 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			parent::__construct();
 			$this->load->library('session');
 			$this->load->model('pages_model');
+			$this->load->model('admin_model');
 			$this->load->library('form_validation');
 
 		}
@@ -101,8 +102,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function sales(){
 			$date = date('Y-m-d');
+			$data['date'] = $date;
 			$data['page_title'] = 'Sales';
-			$data['sales'] = $this->pages_model->getSales($date);
+			$data['sales'] = $this->pages_model->getSales($date, null);
+			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($date, null)->sales_total_amount, 2);
+			$data['total_cost'] = number_format($this->pages_model->getTotalCost($date, null)->sales_total_cost, 2);
+			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($date, null)->sales_discount, 2);
+			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($date, null)->sales_total_payable, 2);
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('sales');
@@ -115,6 +121,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$data['sales_details'] = $this->pages_model->getSaleDetails($sales_id);
 			$data['sales_products'] = $this->pages_model->getSaleProducts($sales_id);
+
+			echo json_encode($data);
+		}
+
+		public function getFilteredSales(){
+			$from_date = htmlspecialchars(trim($this->input->get('from_date')));
+			$to_date = htmlspecialchars(trim($this->input->get('to_date')));
+
+			$data['sales'] = $this->pages_model->getSales($from_date, $to_date);
+			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($from_date, $to_date)->sales_total_amount, 2);
+			$data['total_cost'] = number_format($this->pages_model->getTotalCost($from_date, $to_date)->sales_total_cost, 2);
+			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($from_date, $to_date)->sales_discount, 2);
+			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($from_date, $to_date)->sales_total_payable, 2);
 
 			echo json_encode($data);
 		}
@@ -132,6 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function addProduct(){
 			$data['page_title'] = 'Add Products';
+			$data['product_categories'] = $this->admin_model->getProductCategories();
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('add_product');
@@ -155,8 +175,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	            $upload_data = array('upload_data' => $this->upload->data());
 	 
-	            $product_title = htmlspecialchars(trim($this->input->post('product_title')));
-	            $product_description = htmlspecialchars(trim($this->input->post('product_description')));
+	            $product_title = ucfirst(htmlspecialchars(trim($this->input->post('product_title'))));
+	            $product_category = htmlspecialchars(trim($this->input->post('product_category')));
+	            $product_description = ucfirst(htmlspecialchars(trim($this->input->post('product_description'))));
 	            $product_price = htmlspecialchars(trim($this->input->post('product_price')));
 	            $product_cost = htmlspecialchars(trim($this->input->post('product_cost')));
 	            $product_sku = htmlspecialchars(trim($this->input->post('product_sku')));
@@ -164,7 +185,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 	            $product_image_url= base_url() . 'uploads/products/' . $upload_data['upload_data']['file_name']; 
-	            $result= $this->pages_model->insertNewProduct($product_title, $product_description, $product_price, $product_cost, $product_sku, $product_quantity, $product_image_url); 
+	            $result= $this->pages_model->insertNewProduct($product_title, $product_category, $product_description, $product_price, $product_cost, $product_sku, $product_quantity, $product_image_url); 
 	            if ($result != false) {
 	            	$this->session->set_userdata('product_id', $result);
 	            	$this->session->set_userdata('prev_view', 'products');
@@ -181,6 +202,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['page_title'] = 'Product Details';
 			$product_id = $this->session->userdata('product_id');
 			$data['product_details'] = $this->pages_model->getProductDetails($product_id);
+			$data['product_categories'] = $this->admin_model->getProductCategories();
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('product_details');
@@ -231,8 +253,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['success'] = false;
 
 			$product_id = htmlspecialchars(trim($this->input->post('product_id')));
+			$old_image_url = $this->pages_model->getProductImageUrl($product_id)->product_image_url;
 
 			if ($this->pages_model->deleteProduct($product_id)) {
+	            $path = realpath($_SERVER['DOCUMENT_ROOT'] . parse_url( $old_image_url, PHP_URL_PATH ));
+	            unlink($path);
 				$data['success'] = true;
 			}
 
@@ -242,6 +267,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		public function inventory(){
 			$data['page_title'] = 'Inventory';
 			$data['products'] = $this->pages_model->getProducts();
+			$data['product_categories'] = $this->admin_model->getProductCategories();
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('inventory_view');
@@ -288,11 +314,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function issues(){
 			$data['page_title'] = 'Issues';
-			$this->load->view('fragments/head', $data);
+			$data['products'] = $this->pages_model->getProductNames();
+			$data['clients'] = $this->pages_model->getClientsName();
+			$data['issues'] = $this->pages_model->getIssues();
+ 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('issues');
 			$this->load->view('fragments/footer');	
 		}
+
+		public function productAlertSettings(){
+			$data['page_title'] = 'Alert Settings';
+			$this->load->view('fragments/head', $data);
+			$this->load->view('fragments/navigation');
+			$this->load->view('productAlertSettings');
+			$this->load->view('fragments/footer');
+		}
+
+		////////////////////
+		//Clients queries //
+		////////////////////
+
 
 		public function clients(){
 			$data['page_title'] = 'Clients';
@@ -315,6 +357,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['page_title'] = 'Client Details';
 			$client_id = $this->session->userdata('client_id');
 			$data['client_details'] = $this->pages_model->getClientDetails($client_id);
+			$data['client_sales'] = $this->pages_model->getClientSales($client_id);
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('client_details');
@@ -358,6 +401,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			echo json_encode($data);
 		}
+
+
+
+		///
 	}
 
 ?>

@@ -8,7 +8,8 @@
           
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div>
-              <h1 class="h3 mb-2 text-gray-800">Clients</h1>
+              <h1 class="h3 mb-2 text-gray-800">Clients Management</h1>
+              <p class="mb-4">Clients management: <strong>ADD or DELETE</strong> a Client.</p>
             </div>
             <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#client_add_modal">
               <i class="fas fa-plus fa-sm text-white-50"></i>
@@ -43,7 +44,7 @@
                         <div class="row justify-content-center">
                           <form method="POST" action="<?php echo base_url('pages/setCustomerID') ?>">
                             <input type="text" name="client_id" value="<?php echo $client['client_id'] ?>" hidden>
-                            <button type="submit" class="btn btn-primary btn-circle btn-sm" data-toggle="tooltip" title="View client details">
+                            <button type="submit" class="btn btn-info btn-circle btn-sm" data-toggle="tooltip" title="View client details">
                               <i class="fa fa-eye"></i>
                             </button>
                           </form>
