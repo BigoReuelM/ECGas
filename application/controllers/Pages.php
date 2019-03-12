@@ -139,10 +139,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 
 		////
+		//////////////////////////
+		///Products controllers //
+		//////////////////////////
+
 
 		public function allProducts(){
 			$data['page_title'] = 'All Products';
-			$data['products'] = $this->pages_model->getProducts();
+			$data['active_products'] = $this->pages_model->getActiveProducts();
+			$data['inactive_products'] = $this->pages_model->getInactiveProducts();
+			$data['product_count'] = $this->pages_model->getNumberOfProducts()->product_count;
+			$data['active_products_count'] = $this->pages_model->getNumberOfActiveProducts()->product_count;
+			$data['inactive_products_count'] = $this->pages_model->getNumberOfInactiveProducts()->product_count;
+			$data['newest_product'] = $this->pages_model->getNewestProduct()->product_title;
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('products_view');
@@ -265,13 +274,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 
 		public function inventory(){
+			if ($this->session->userdata('product_filters')) {
+				$product_category_id = $this->session->userdata('product_filters')['product_category_id'];
+			}else{
+				$product_category_id = null;
+			}
 			$data['page_title'] = 'Inventory';
-			$data['products'] = $this->pages_model->getProducts();
+			$data['products'] = $this->pages_model->getProducts($product_category_id);
 			$data['product_categories'] = $this->admin_model->getProductCategories();
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('inventory_view');
 			$this->load->view('fragments/footer');
+		}
+
+		public function getFilteredProducts(){
+			// get values of filter elements from get request
+			if (isset($_GET['product_category_id'])) {
+				$product_category_id = htmlspecialchars(trim($this->input->get('product_category_id')));
+			}else{
+				$product_category_id = null;
+			}
+			////////////////////////////////////
+			// set filter elements on session //
+			////////////////////////////////////
+			$data = array(
+				'product_category_id' => $product_category_id
+			);
+
+			$this->session->set_userdata('product_filters', $data);
+
+			redirect('pages/inventory');
 		}
 
 		public function updateProductInventory(){
@@ -309,36 +342,76 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$this->pages_model->updateProductStatus($product_id, 'active');
 			}
 
-			redirect('pages/inventory');
+			redirect('pages/allProducts');
 		}
+
+		///////////////////////
+		//issues controllers //
+		///////////////////////
+
 
 		public function issues(){
 			$data['page_title'] = 'Issues';
 			$data['products'] = $this->pages_model->getProductNames();
 			$data['clients'] = $this->pages_model->getClientsName();
 			$data['issues'] = $this->pages_model->getIssues();
+			$data['issue_records'] = $this->pages_model->getIssueRecords();
  			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('issues');
 			$this->load->view('fragments/footer');	
 		}
 
+		public function recordIssue(){
+			$user_id = $this->session->userdata('user_details')['user_id'];
+			$product_id = htmlspecialchars(trim($this->input->post('product')));
+			$client_id = htmlspecialchars(trim($this->input->post('client')));
+			$issue_id = htmlspecialchars(trim($this->input->post('issue')));
+			//$other_issue = htmlspecialchars(trim($this->input->post('other_issue')));
+
+			$this->pages_model->recordIssue($product_id, $client_id, $issue_id, $user_id);
+
+		}
+
+		///////////////////////////
+		//end issues controllers //
+		///////////////////////////
+
+		////////////////////////////
+		//product allert settings //
+		////////////////////////////
+
+
 		public function productAlertSettings(){
 			$data['page_title'] = 'Alert Settings';
+			$data['active_clients'] = $this->pages_model->getActiveClients();
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
-			$this->load->view('productAlertSettings');
+			$this->load->view('product_alert_settings');
 			$this->load->view('fragments/footer');
 		}
 
+		public function getCustomerAlertCOnfigs(){
+			
+		}
+
+		///////////////////////
+		//end alert settings //
+		///////////////////////
+
 		////////////////////
-		//Clients queries //
+		//Clients controllers //
 		////////////////////
 
 
 		public function clients(){
 			$data['page_title'] = 'Clients';
-			$data['clients'] = $this->pages_model->getClients();
+			$data['active_clients'] = $this->pages_model->getActiveClients();
+			$data['inactive_clients'] = $this->pages_model->getInactiveClients();
+			$data['clients_count'] = $this->pages_model->getNumberOfClients()->clients_count;
+			$data['active_clients_count'] = $this->pages_model->getNumberOfActiveClients()->clients_count;
+			$data['inactive_clients_count'] = $this->pages_model->getNumberOfInactiveClients()->clients_count;
+			$data['newest_client'] = $this->pages_model->getNewestClient()->name;
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('clients_view');
@@ -367,7 +440,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		public function updateClientDetails(){
 			$client_id = htmlspecialchars(trim($this->input->post('client_id')));
 			foreach ($_POST as $key => $value) {
-				$v = htmlspecialchars(trim($value));
+				$v = ucwords(htmlspecialchars(trim($value)));
 				if ($key != 'client_id') {
 					$this->pages_model->updateClientDetails($client_id, $key, $v);
 				}
@@ -378,11 +451,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function addClient(){
 			$data = array('success' => false);
-			$client_first_name = htmlspecialchars(trim($this->input->post('client_first_name')));
-			$client_middle_name = htmlspecialchars(trim($this->input->post('client_middle_name')));
-			$client_last_name = htmlspecialchars(trim($this->input->post('client_last_name')));
+			$client_first_name = ucwords(htmlspecialchars(trim($this->input->post('client_first_name'))));
+			$client_middle_name = ucwords(htmlspecialchars(trim($this->input->post('client_middle_name'))));
+			$client_last_name = ucwords(htmlspecialchars(trim($this->input->post('client_last_name'))));
 			$client_contact = htmlspecialchars(trim($this->input->post('client_contact')));
-			$client_address = htmlspecialchars(trim($this->input->post('client_address')));
+			$client_address = ucwords(htmlspecialchars(trim($this->input->post('client_address'))));
 
 			if ($this->pages_model->addClient($client_first_name, $client_middle_name, $client_last_name, $client_contact, $client_address)) {
 				$data['success'] = true;
@@ -400,6 +473,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 
 			echo json_encode($data);
+		}
+
+		public function updateClientStatus(){
+			$client_id = htmlspecialchars(trim($this->input->post('status_client_id')));
+			$action = htmlspecialchars(trim($this->input->post('update_action')));
+
+			if ($action == 'deactivate') {
+				$this->pages_model->updateClientStatus($client_id, 'inactive');
+			}else{
+				$this->pages_model->updateClientStatus($client_id, 'active');
+			}
+
+			redirect('pages/clients');
 		}
 
 

@@ -11,7 +11,7 @@
         <div class="card">
           <div class="card-header">
             <div class="row justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Product Types</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Product Categpries</h6>
               <button class="btn btn-sm" data-toggle="modal" data-target="#project_type_add_modal">
                 <i class="fa fa-plus"></i>
               </button>

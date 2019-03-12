@@ -7,7 +7,7 @@
           <!-- Button for adding a new User -->
         
           <h1 class="h3 mb-2 text-gray-800">Inventory Management</h1>
-          <p>Inventory management: <strong>ADD or SET</strong> a products inventory and <strong>ACTIVATE or DEACTIVATE</strong> a product.</p>       
+          <p>Inventory management: <strong>ADD or SET</strong> a products inventory.</p>       
           <!-- Table of products -->
               
           <div class="card shadow mb-4">
@@ -19,7 +19,7 @@
             <div class="card-body">
               <div class="row border-bottom mb-4">
                 <div class="col">
-                  <form action="<?php echo base_url('pages/getFilteredProducts') ?>" id="filter_product_form">
+                  <form method="GET" action="<?php echo base_url('pages/getFilteredProducts') ?>" id="filter_product_form">
                     <div class="row justify-content-left">
                       <div class="col-1">
                         <div class="row">
@@ -33,7 +33,7 @@
                           <label for="product_category_id" class="col-4 col-form-label col-form-label-sm">Category:</label>
                           <div class="col-8">
                             <select name="product_category_id" id="product_category_id" class="form-control form-control-sm">
-                              <option hidden selected dsabled>Choose Category</option>
+                              <option hidden selected disabled>Choose Category</option>
                               <?php foreach ($product_categories as $category): ?>
                                 <option value="<?php echo $category['product_category_id'] ?>"><?php echo $category['product_category'] ?></option>
                               <?php endforeach ?>
@@ -41,20 +41,8 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-3">
-                        <div class="form-group row">
-                          <label for="product_status" class="col-3 col-form-label col-form-label-sm">Status:</label>
-                          <div class="col-8">
-                            <select name="product_status" id="product_status" class="form-control form-control-sm">
-                              <option hidden selected disabled>Choose Status</option>
-                              <option value="active">Active</option>
-                              <option value="inactive">Deactivated</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
                       <div class="col">
-                        <button class="btn btn-primary btn-sm">
+                        <button type="submit" class="btn btn-primary btn-sm">
                           <i class="fa fa-search"></i>
                         </button>
                       </div>
@@ -122,20 +110,6 @@
                               </button>
                             </span>
                           </form>
-                          <?php if ($product['product_status'] == 'active'): ?>
-                            <span data-toggle="tooltip" data-placement="top" title="Deactivate">
-                              <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $product['product_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
-                                <i class="fas fa-toggle-off"></i>
-                              </button>
-                            </span>
-                          <?php endif ?>
-                          <?php if ($product['product_status'] == 'inactive'): ?>
-                            <span data-toggle="tooltip" data-placement="top" title="Activate">
-                              <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $product['product_id'] ?>,activate" data-toggle="modal" data-target="#update_status_modal">
-                                <i class="fas fa-toggle-on"></i>
-                              </button>
-                            </span>
-                          <?php endif ?>
                         </div>
                       </td>
                     </tr>
@@ -153,36 +127,6 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-  <!-- Modal for activate or deactivate product-->
-<div class="modal fade" id="update_status_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-warning"><strong class="status_action"></strong> Product</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div id="status_message">
-          
-        </div>
-        <div class="text-center alert alert-warning">
-          <p class="text-warning"><strong class="status_action"></strong> this Product?</p>
-          <p><strong id="status_product_name"></strong></p>
-        </div>
-        <form method="POST" action="<?php echo base_url('pages/updateProductStatus') ?>" id="status_update_form">
-          <input type="text" id="status_product_id" name="status_product_id" hidden>
-          <input type="text" id="update_action" name="update_action" hidden>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="status_update_form" type="submit" class="btn btn-warning btn-sm">Confirm</button>
-      </div>
-    </div>
-  </div>
-</div>
 
   <!-- Bootstrap core JavaScript-->
   <script src="<?php echo base_url() ?>public/vendor/jquery/jquery.min.js"></script>

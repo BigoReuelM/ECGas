@@ -6,9 +6,20 @@
 	class Admin_model extends CI_model
 	{
 		
-		public function getUsers(){
+		public function getActiveUsers(){
 			$this->db->select('user_id, first_name, middle_name, last_name, contact, status');
 			$this->db->from('users');
+			$this->db->where('status', 'active');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
+		public function getInactiveUsers(){
+			$this->db->select('user_id, first_name, middle_name, last_name, contact, status');
+			$this->db->from('users');
+			$this->db->where('status', 'inactive');
 
 			$result = $this->db->get();
 

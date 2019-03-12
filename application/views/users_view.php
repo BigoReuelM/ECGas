@@ -35,14 +35,14 @@
                 </div>
               </div>
             </div>
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- user type counts -->
             <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <p class="text-xs font-weight-bold text-warning text-uppercase mb-1">Admin Users: <span class="mb-0 font-weight-bold text-gray-800"><?php echo $admin_users_count ?></span></p>
-                      <p class="text-xs font-weight-bold text-warning text-uppercase mb-1">Employees: <span class="mb-0 font-weight-bold text-gray-800"><?php echo $employee_users_count ?></span></p>
+                      <p class="text-xs font-weight-bold text-info text-uppercase mb-1">Admin Users: <span class="mb-0 font-weight-bold text-gray-800"><?php echo $admin_users_count ?></span></p>
+                      <p class="text-xs font-weight-bold text-info text-uppercase mb-1">Employees: <span class="mb-0 font-weight-bold text-gray-800"><?php echo $employee_users_count ?></span></p>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -58,7 +58,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Users</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $active_users ?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $active_users_count ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-toggle-on fa-2x text-gray-300"></i>
@@ -73,8 +73,8 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Deactivated Users</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $inactive_users ?></div>
+                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Inactivated Users</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $inactive_users_count ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-toggle-off fa-2x text-gray-300"></i>
@@ -88,10 +88,10 @@
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Users Table</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Active Users Table</h6>
             </div>
             <div class="card-body">
-              <table class="table table-striped table-bordered table-sm text-center" id="user_table" width="100%" cellspacing="0">
+              <table class="table table-striped table-bordered table-sm text-center user_table" width="100%" cellspacing="0">
                 <thead class="thead-dark">
                   <tr>
                     <th>First Name</th>
@@ -103,39 +103,85 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($users as $user): ?>
+                  <?php foreach ($active_users as $active_user): ?>
                     <tr>
-                      <td class="first_name"><?php echo $user['first_name'] ?></td>
-                      <td class="middle_name"><?php echo $user['middle_name'] ?></td>
-                      <td class="last_name"><?php echo $user['last_name'] ?></td>
-                      <td><?php echo $user['contact'] ?></td>
-                      <td><?php echo $user['status'] ?></td>
+                      <td class="first_name"><?php echo $active_user['first_name'] ?></td>
+                      <td class="middle_name"><?php echo $active_user['middle_name'] ?></td>
+                      <td class="last_name"><?php echo $active_user['last_name'] ?></td>
+                      <td><?php echo $active_user['contact'] ?></td>
+                      <td><?php echo $active_user['status'] ?></td>
                       <td>
                         <div class="row justify-content-center">
                           <div class="btn-group">
                             <span data-toggle="tooltip" data-placement="top" title="Edit">
                               <form action="<?php echo base_url('admin/setSelectedUserId') ?>" method="POST">
-                                <button type="submit" name="user_id" class="btn btn-success btn-circle btn-sm edit_btn" value="<?php echo $user['user_id'] ?>">
+                                <button type="submit" name="user_id" class="btn btn-success btn-circle btn-sm edit_btn" value="<?php echo $active_user['user_id'] ?>">
                                   <i class="fa fa-pen"></i>
                                 </button>
                               </form>
                             </span>
-                            <?php if ($user['status'] == 'active'): ?>
-                              <span data-toggle="tooltip" data-placement="top" title="Deactivate">
-                                <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $user['user_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
-                                  <i class="fas fa-toggle-off"></i>
-                                </button>
-                              </span>
-                            <?php endif ?>
-                            <?php if ($user['status'] == 'inactive'): ?>
-                              <span data-toggle="tooltip" data-placement="top" title="Activate">
-                                <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $user['user_id'] ?>,activate" data-toggle="modal" data-target="#update_status_modal">
-                                  <i class="fas fa-toggle-on"></i>
-                                </button>
-                              </span>
-                            <?php endif ?>
+                            <span data-toggle="tooltip" data-placement="top" title="Deactivate">
+                              <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $active_user['user_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
+                                <i class="fas fa-toggle-off"></i>
+                              </button>
+                            </span>
                             <span data-toggle="tooltip" data-placement="top" title="Delete">
-                              <button type="button" class="btn btn-danger btn-circle btn-sm delete_btn" value="<?php echo $user['user_id'] ?>" data-toggle="modal" data-target="#user_delete_modal">
+                              <button type="button" class="btn btn-danger btn-circle btn-sm delete_btn" value="<?php echo $active_user['user_id'] ?>" data-toggle="modal" data-target="#user_delete_modal">
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  <?php endforeach ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Inactive Users Table</h6>
+            </div>
+            <div class="card-body">
+              <table class="table table-striped table-bordered table-sm text-center user_table" width="100%" cellspacing="0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Contact No.</th>
+                    <th>Account Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($inactive_users as $inactive_user): ?>
+                    <tr>
+                      <td class="first_name"><?php echo $inactive_user['first_name'] ?></td>
+                      <td class="middle_name"><?php echo $inactive_user['middle_name'] ?></td>
+                      <td class="last_name"><?php echo $inactive_user['last_name'] ?></td>
+                      <td><?php echo $inactive_user['contact'] ?></td>
+                      <td><?php echo $inactive_user['status'] ?></td>
+                      <td>
+                        <div class="row justify-content-center">
+                          <div class="btn-group">
+                            <span data-toggle="tooltip" data-placement="top" title="Edit">
+                              <form action="<?php echo base_url('admin/setSelectedUserId') ?>" method="POST">
+                                <button type="submit" name="user_id" class="btn btn-success btn-circle btn-sm edit_btn" value="<?php echo $inactive_user['user_id'] ?>">
+                                  <i class="fa fa-pen"></i>
+                                </button>
+                              </form>
+                            </span>
+                            <span data-toggle="tooltip" data-placement="top" title="Activate">
+                              <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $inactive_user['user_id'] ?>,activate" data-toggle="modal" data-target="#update_status_modal">
+                                <i class="fas fa-toggle-on"></i>
+                              </button>
+                            </span>
+                            <span data-toggle="tooltip" data-placement="top" title="Delete">
+                              <button type="button" class="btn btn-danger btn-circle btn-sm delete_btn" value="<?php echo $inactive_user['user_id'] ?>" data-toggle="modal" data-target="#user_delete_modal">
                                 <i class="fa fa-trash"></i>
                               </button>
                             </span>

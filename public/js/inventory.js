@@ -43,14 +43,4 @@ $(document).ready(function(){
 			$('.update_input').val("");
 		});
 	});
-
-	$(document).on('click', '.update_status_btn', function(){
-		var data = $(this).val().split(',');
-		$('#status_product_id').val(data[0]);
-		$('#update_action').val(data[1]);
-		$('.status_action').html(uCletter(data[1]));
-		var product_title = $(this).parents('tr').find('.product_title').html();
-
-		$('#status_product_name').html(uCletter(product_title));
-	});
 });

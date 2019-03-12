@@ -22,12 +22,13 @@
 		public function users(){
 
 			$data['page_title'] = 'Admin | Users';
-			$data['users'] = $this->admin_model->getUsers();
+			$data['active_users'] = $this->admin_model->getActiveUsers();
+			$data['inactive_users'] = $this->admin_model->getInactiveUsers();
 			$data['user_count'] = $this->admin_model->getNumberOfUsers()->user_count;
 			$data['admin_users_count'] = $this->admin_model->getNumberOfAdminUsers()->user_count;
 			$data['employee_users_count'] = $this->admin_model->getNumberOfEmployeeUsers()->user_count;
-			$data['active_users'] = $this->admin_model->getNumberOfActiveUsers()->user_count;
-			$data['inactive_users'] = $this->admin_model->getNumberOfInactiveUsers()->user_count;
+			$data['active_users_count'] = $this->admin_model->getNumberOfActiveUsers()->user_count;
+			$data['inactive_users_count'] = $this->admin_model->getNumberOfInactiveUsers()->user_count;
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('users_view');

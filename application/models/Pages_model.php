@@ -6,14 +6,70 @@
 	 */
 	class Pages_model extends CI_model
 	{
+
+		/////////////////////
+		// clients queries //
+		/////////////////////
+
 		
-		public function getClients(){
+		public function getActiveClients(){
 			$this->db->select('*, concat(client_first_name, " ", client_middle_name, " ", client_last_name) as name');
 			$this->db->from('clients');
+			$this->db->where('client_status', 'active');
 
 			$result = $this->db->get();
 
 			return $result->result_array();
+		}
+
+		public function getInactiveClients(){
+			$this->db->select('*, concat(client_first_name, " ", client_middle_name, " ", client_last_name) as name');
+			$this->db->from('clients');
+			$this->db->where('client_status', 'inactive');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
+		public function getNumberOfClients(){
+			$this->db->select('count(client_id) as clients_count');
+			$this->db->from('clients');
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getNumberOfActiveClients(){
+			$this->db->select('count(client_id) as clients_count');
+			$this->db->where('client_status', 'active');
+			$this->db->from('clients');
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getNumberOfInactiveClients(){
+			$this->db->select('count(client_id) as clients_count');
+			$this->db->where('client_status', 'inactive');
+			$this->db->from('clients');
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getNewestClient(){
+			$this->db->select('concat(client_first_name, " ", client_middle_name, " ", client_last_name) as name');
+			$this->db->from('clients');
+			$this->db->order_by('client_id', 'desc');
+			$this->db->limit(1);
+
+			$result = $this->db->get();
+
+			return $result->row();
 		}
 
 		public function getClientDetails($client_id){
@@ -26,11 +82,6 @@
 			return $result->row_array();
 		}
 
-		/*
-		
-		Update user details
-
-		 */
 		
 		public function updateClientDetails($client_id, $colomn_name, $value){
 			$data = array(
@@ -66,25 +117,91 @@
 			}
 		}
 
+		public function updateClientStatus($client_id, $status){
+			$data = array(
+				'client_status' => $status
+			);
+
+			$this->db->where('client_id', $client_id);
+			$this->db->update('clients', $data);
+		}
+
 
 		/*
 		products
 		 */
 		
-		public function getProducts(){
+		public function getActiveProducts(){
 			$this->db->select('product_id, product_title,  product_category, product_description, FORMAT(product_price, 2) as product_price, FORMAT(product_cost, 2) as product_cost, product_sku, product_quantity, product_image_url, product_status');
 			$this->db->from('products');
 			$this->db->join('product_categories', 'products.product_category_id = product_categories.product_category_id');
+			$this->db->where('product_status', 'active');
 
 			$result = $this->db->get();
 
 			return $result->result_array();
 		}
 
-		public function getActiveProducts(){
-			$this->db->select('*');
+		public function getInactiveProducts(){
+			$this->db->select('product_id, product_title,  product_category, product_description, FORMAT(product_price, 2) as product_price, FORMAT(product_cost, 2) as product_cost, product_sku, product_quantity, product_image_url, product_status');
 			$this->db->from('products');
+			$this->db->join('product_categories', 'products.product_category_id = product_categories.product_category_id');
+			$this->db->where('product_status', 'inactive');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
+		public function getNumberOfProducts(){
+			$this->db->select('count(product_id) as product_count');
+			$this->db->from('products');
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getNumberOfActiveProducts(){
+			$this->db->select('count(product_id) as product_count');
 			$this->db->where('product_status', 'active');
+			$this->db->from('products');
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getNumberOfInactiveProducts(){
+			$this->db->select('count(product_id) as product_count');
+			$this->db->where('product_status', 'inactive');
+			$this->db->from('products');
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getNewestProduct(){
+			$this->db->select('product_title');
+			$this->db->from('products');
+			$this->db->order_by('product_id', 'desc');
+			$this->db->limit(1);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+		
+		public function getProducts($product_category_id){
+			$this->db->select('product_id, product_title,  product_category, product_description, FORMAT(product_price, 2) as product_price, FORMAT(product_cost, 2) as product_cost, product_sku, product_quantity, product_image_url, product_status');
+			$this->db->from('products');
+			$this->db->join('product_categories', 'products.product_category_id = product_categories.product_category_id');
+			$this->db->where('product_status', 'active');
+			// initialize where when product category id is not null
+			if ($product_category_id != null) {
+				$this->db->where('products.product_category_id', $product_category_id);
+			}
 
 			$result = $this->db->get();
 
@@ -350,9 +467,25 @@
 		///////////
 		//issues //
 		///////////
+
+		public function getIssueRecords(){
+			$this->db->select('issue, product_title, concat(client_first_name, " ", client_last_name) as client_name, concat(first_name, " ", middle_name, " ", last_name) as recorder, DATE_FORMAT(date_recorded, "%b %d %Y %r") as date_recorded');
+			$this->db->from('issue_records');
+			$this->db->join('products', 'issue_records.product_id = products.product_id');
+			$this->db->join('issues', 'issue_records.issue_id = issues.issue_id');
+			$this->db->join('clients', 'issue_records.client_id = clients.client_id');
+			$this->db->join('users', 'issue_records.user_id = users.user_id');
+			$this->db->order_by('issue_record_id', 'desc');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
 		public function getProductNames(){
 		 	$this->db->select('product_id, product_title');
 		 	$this->db->from('products');
+		 	$this->db->where('product_status', 'active');
 
 		 	$result = $this->db->get();
 
@@ -362,6 +495,7 @@
 		public function getClientsName(){
 			$this->db->select('client_id, concat(client_first_name, " ", client_last_name) as name');
 			$this->db->from('clients');
+			$this->db->where('client_status', 'active');
 
 			$result = $this->db->get();
 
@@ -375,6 +509,17 @@
 			$result = $this->db->get();
 
 			return $result->result_array();
+		}
+
+		public function recordIssue($product_id, $client_id, $issue_id, $user_id){
+			$data = array(
+				'product_id' => $product_id,
+				'client_id' => $client_id,
+				'issue_id' => $issue_id,
+				'user_id' => $user_id
+			);
+
+			$this->db->insert('issue_records', $data);
 		}
 	}
 

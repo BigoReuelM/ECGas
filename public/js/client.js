@@ -1,4 +1,5 @@
-	//ajax call to adding new user
+$(document).ready(function(){
+		//ajax call to adding new user
 	$(document).on('submit', '#add_client_form', function(e){
 		e.preventDefault();
 
@@ -79,3 +80,15 @@
 			}
 		})
 	})
+
+	$(document).on('click', '.update_status_btn', function(){
+		var data = $(this).val().split(',');
+		$('#status_client_id').val(data[0]);
+		$('#update_action').val(data[1]);
+		$('.status_action').html(uCletter(data[1]));
+		var product_title = $(this).parents('tr').find('.client_name').html();
+
+		$('#status_client_name').html(uCletter(product_title));
+	});
+
+});

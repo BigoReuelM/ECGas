@@ -1,6 +1,6 @@
 // Call the dataTables jQuery plugin
 $(document).ready(function() {
- 	var table = $('#user_table').DataTable();
+ 	var table = $('.user_table').DataTable();
 
 	//ajax call to adding new user
 	$(document).on('submit', '#add_user_form', function(e){
