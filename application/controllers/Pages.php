@@ -40,8 +40,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function pointOfSale(){
 			$data['page_title'] = 'Point of Sale';
-			$data['products'] = $this->pages_model->getActiveProducts();
-			$data['clients'] = $this->pages_model->getClients();
+			$data['products'] = $this->pages_model->getActiveProductsForPos();
+			$data['clients'] = $this->pages_model->getActiveClients();
+			$data['payment_methods'] = $this->admin_model->getPaymentMethods();
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('point_of_sales');
@@ -78,6 +79,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				foreach ($cart as $item) {
 					$product_cost = $this->pages_model->getProductCost($item['product_id'])->product_cost;
 					$product_total_amount = $item['count'] * $item['product_price'];
+
+					$current_inventory = $this->pages_model->getProductInventory($item['product_id'])->product_quantity;
+					$final_inventory = $current_inventory - $item['count'];
+					$this->pages_model->updateProductInventory($item['product_id'], $final_inventory);
 
 					$this->pages_model->recordProductSales($item['product_id'], $sales_id, $item['count'], $product_total_amount, $product_cost, $item['product_price']);
 				}
@@ -212,6 +217,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$product_id = $this->session->userdata('product_id');
 			$data['product_details'] = $this->pages_model->getProductDetails($product_id);
 			$data['product_categories'] = $this->admin_model->getProductCategories();
+			$data['total_units_sold'] = $this->pages_model->getProductTotalUnitsSold($product_id)->total_units;
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('product_details');
@@ -382,16 +388,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		////////////////////////////
 
 
-		public function productAlertSettings(){
-			$data['page_title'] = 'Alert Settings';
-			$data['active_clients'] = $this->pages_model->getActiveClients();
-			$this->load->view('fragments/head', $data);
-			$this->load->view('fragments/navigation');
-			$this->load->view('product_alert_settings');
-			$this->load->view('fragments/footer');
+		public function getCustomerAlertSettings(){
+			$client_id = htmlspecialchars(trim($this->input->get('client_id')));
+
+			$data['alerts'] = $this->pages_model->getCustomerAlertSettings($client_id);		
+
+			echo json_encode($data);
 		}
 
-		public function getCustomerAlertCOnfigs(){
+		public function addProductAlert(){
+			$client_id = htmlspecialchars(trim($this->input->post('client_id')));
+			$product_id = htmlspecialchars(trim($this->input->post('product_id')));
+			$days_of_ussage = htmlspecialchars(trim($this->input->post('days_of_ussage')));
+
+			$result = $this->pages_model->checkAlertRecord($client_id, $product_id);
+
+			if ($result) {
+				$this->pages_model->updateProductAlert($result->alert_id, $days_of_ussage);
+			}else{
+				$this->pages_model->addProductAlert($client_id, $product_id, $days_of_ussage);
+			}
+
 			
 		}
 
@@ -411,6 +428,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['clients_count'] = $this->pages_model->getNumberOfClients()->clients_count;
 			$data['active_clients_count'] = $this->pages_model->getNumberOfActiveClients()->clients_count;
 			$data['inactive_clients_count'] = $this->pages_model->getNumberOfInactiveClients()->clients_count;
+			$data['active_products'] = $this->pages_model->getActiveProducts();
 			$data['newest_client'] = $this->pages_model->getNewestClient()->name;
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');

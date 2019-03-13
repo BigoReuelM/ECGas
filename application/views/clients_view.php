@@ -41,7 +41,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Newest Client</div>
-                      <p calss="mb-0 font-weight-bold text-gray-800"><?php echo $newest_client;  ?></a>
+                      <div calss="mb-0 font-weight-bold text-gray-800"><?php echo $newest_client;  ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-user fa-2x text-gray-300"></i>
@@ -115,6 +115,11 @@
                               <i class="fa fa-eye"></i>
                             </button>
                           </form>
+                          <span data-toggle="tooltip" data-placement="top" title="Product Alert Settings">
+                            <button type="button" class="btn btn-success btn-circle btn-sm product_alerts_btn" value="<?php echo $active_client['client_id'] . ',' . base_url('pages/getCustomerAlertSettings') ?>" data-toggle="modal" data-target="#product_alerts_modal">
+                              <i class="fas fa-bell"></i>
+                            </button>
+                          </span>
                           <span data-toggle="tooltip" data-placement="top" title="Deactivate">
                             <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $active_client['client_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
                               <i class="fas fa-toggle-off"></i>
@@ -311,6 +316,66 @@
   </div>
 </div>
 
+  <!-- Modal for product alerts of client-->
+<div class="modal fade" id="product_alerts_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong class="status_action">Product Alert Settings</strong> of Client</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="<?php echo base_url('pages/addProductAlert') ?>" id="product_alert_form">
+          <input type="text" name="client_id" id="alert_client_id" hidden>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="product_id"><small>Product:</small><span class="required_sign">*</span></label>
+                <select name="product_id" id="product_id" class="form-control form-control-sm" valrequired="true" elementname="Product">
+                  <option selected hidden disabled>Choose Product</option>
+                  <?php foreach ($active_products as $product): ?>
+                    <option value="<?php echo $product['product_id'] ?>"><?php echo $product['product_title'] ?></option>
+                  <?php endforeach ?>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="days_of_use"><small>Days till next order:</small><span class="required_sign">*</span></label>
+                <input type="text" class="form-control form-control-sm" name="days_of_ussage" id="days_of_ussage" valrequired="true" elementname="Day till next order">
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="row border-top">
+          <div class="col">
+            <table class="mt-2 table table-bordered table-striped table-sm" id="product_alert_table" width="100%" cellspacing="0">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Product name</th>
+                  <th>Days till next order</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <button form="product_alert_form" type="submit" class="btn btn-primary btn-sm">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="<?php echo base_url() ?>public/vendor/jquery/jquery.min.js"></script>
@@ -334,4 +399,9 @@
   <script class="text/JavaScript">
     
     $('.clients_table').DataTable();
+    $('#product_alert_table').DataTable({
+      'info': false,
+      'paging': false,
+      'searching': false
+    });
   </script>

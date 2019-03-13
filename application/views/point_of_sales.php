@@ -170,8 +170,11 @@
           <div class="form-group row">
             <label for="" class="col-form-label col-form-label-sm col-4">Paid By:</label>
             <div class="col-8">
-              <select id="payment_method" class="form-control form-control-sm">
-                <option value="cash">Cash</option>
+              <select id="payment_method" class="form-control form-control-sm" valrequired="true" elementname="Payment Method" >
+                <option disabled selected hidden>Choose Method..</option>
+                <?php foreach ($payment_methods as $method): ?>
+                  <option value="<?php echo $method['payment_method_id'] ?>"><?php echo $method['payment_method'] ?></option>
+                <?php endforeach ?>
               </select>
             </div>
           </div>

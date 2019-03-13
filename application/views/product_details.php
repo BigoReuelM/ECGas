@@ -133,7 +133,7 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="product_quantity">Total Units Sold:</label>
-                    <p type="text" class="form-control text-center form-control-lg">1000</p>
+                    <p type="text" class="form-control text-center form-control-lg"><?php echo $total_units_sold; ?></p>
                   </div>
                 </div>
                 <div class="card-footer">

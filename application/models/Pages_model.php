@@ -142,6 +142,17 @@
 			return $result->result_array();
 		}
 
+		public function getActiveProductsForPos(){
+			$this->db->select('product_id, product_title,  product_category, product_description, product_price, product_cost, product_sku, product_quantity, product_image_url, product_status');
+			$this->db->from('products');
+			$this->db->join('product_categories', 'products.product_category_id = product_categories.product_category_id');
+			$this->db->where('product_status', 'active');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
 		public function getInactiveProducts(){
 			$this->db->select('product_id, product_title,  product_category, product_description, FORMAT(product_price, 2) as product_price, FORMAT(product_cost, 2) as product_cost, product_sku, product_quantity, product_image_url, product_status');
 			$this->db->from('products');
@@ -228,6 +239,16 @@
 
 			return $result->row();
 		}
+
+		public function getProductInventory($product_id){
+			$this->db->select('product_quantity');
+			$this->db->from('products');
+			$this->db->where('product_id', $product_id);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
 		
 		public function insertNewProduct($product_title, $product_category, $product_description, $product_price, $product_cost, $product_sku, $product_quantity, $product_image_url){
 			$data = array(
@@ -288,6 +309,16 @@
 			$this->db->update('products', $data);
 		}
 
+		public function getProductTotalUnitsSold($product_id){
+			$this->db->select('sum(product_count) as total_units');
+			$this->db->from('product_sales');
+			$this->db->where('product_id', $product_id);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
 
 		//POS queries
 
@@ -310,7 +341,7 @@
 				'sales_total_payable' => $total_payable,
 				'sales_paid_amount' => $paid_amount,
 				'sales_change' => $change,
-				'sales_payment_method' => $payment_method,
+				'payment_method_id' => $payment_method,
 				'sales_total_items' => $total_items
 			);
 
@@ -520,6 +551,55 @@
 			);
 
 			$this->db->insert('issue_records', $data);
+		}
+
+		//////////////////////////
+		//product alert queries //
+		//////////////////////////
+
+		public function checkAlertRecord($client_id, $product_id){
+			$this->db->select('alert_id');
+			$this->db->from('product_customer_alert');
+			$this->db->where('client_id', $client_id);
+			$this->db->where('product_id', $product_id);
+
+			$result = $this->db->get();
+			if (sizeof($result) > 0) {
+				
+
+				return $result->row();
+			}else{
+				return false;
+			}		
+		}
+
+		public function addProductAlert($client_id, $product_id, $days_of_ussage){
+			$data = array(
+				'client_id' => $client_id,
+				'product_id' => $product_id,
+				'days_of_ussage' => $days_of_ussage
+			);
+
+			$this->db->insert('product_customer_alert', $data);
+		}
+
+		public function updateProductAlert($alert_id, $days_of_ussage){
+			$data = array(
+				'days_of_ussage' => $days_of_ussage
+			);
+
+			$this->db->where('alert_id', $alert_id);
+			$this->db->update('product_customer_alert', $data);
+		}
+
+		public function getCustomerAlertSettings($client_id){
+			$this->db->select('product_title, days_of_ussage');
+			$this->db->from('product_customer_alert');
+			$this->db->join('products', 'product_customer_alert.product_id = products.product_id');
+			$this->db->where('client_id', $client_id);
+			$result = $this->db->get();
+
+			return $result->result_array();
 		}
 	}
 

@@ -91,4 +91,44 @@ $(document).ready(function(){
 		$('#status_client_name').html(uCletter(product_title));
 	});
 
+	//////////////////////////////////////////////////////////////////////
+	//update value of alert_client_id input field in product_alert_form //
+	//////////////////////////////////////////////////////////////////////
+
+	$(document).on('click' , '.product_alerts_btn', function(){
+		data = $(this).val().split(','); 
+		var client_id = data[0];
+		var url	= data[1];
+		$('#alert_client_id').val(client_id);
+
+		$('#product_alert_table').DataTable().destroy();
+
+		$.get(url, {client_id: client_id}, function(data){
+			$('#product_alert_table').DataTable({
+				'paging': false,
+				'info': false,
+				'searching': false,
+				data: data.alerts,
+				columns: [
+					{data: 'product_title'},
+					{data: 'days_of_ussage'}
+				]
+			});
+		}, "json");
+		
+	})
+
+	/////////////////////////////////////////
+	//ajax for adding client product alert //
+	/////////////////////////////////////////
+
+	$(document).on('submit', '#product_alert_form', function(e){
+		e.preventDefault();
+
+		if (validateRequired($(this).attr('id'))) {
+			$.post($(this).attr('action'), $(this).serialize());
+			window.location.reload();
+		}
+	})
+
 });
