@@ -46,6 +46,9 @@
               </button>
             </div>
           </div>
+        </div>
+        <div class="col-9">
+
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Totals:</h6>
@@ -57,14 +60,20 @@
                     <label for=""><small>Overall Total:</small></label>
                     <p id="overall_total" class="form-control form-control-sm"><?php echo $overall_total ?></p>
                   </div>
+                </div>
+                <div class="col">
                   <div class="form-group">
                     <label for=""><small>Total Cost:</small></label>
                     <p id="total_cost" class="form-control form-control-sm"><?php echo $total_cost ?></p>
                   </div>
+                </div>
+                <div class="col">
                   <div class="form-group">
                     <label for=""><small>Total Discount:</small></label>
                     <p id="total_discount" class="form-control form-control-sm"><?php echo $total_discount ?></p>
                   </div>
+                </div>
+                <div class="col">
                   <div class="form-group">
                     <label for=""><small>Total Amout Paid:</small></label>
                     <p id="total_amount_paid" class="form-control form-control-sm"><?php echo $total_amount_paid ?></p>
@@ -73,8 +82,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-9">
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Sales Logs</h6>
@@ -86,6 +93,7 @@
                     <tr>
                       <th>Date and Time</th>
                       <th>Total</th>
+                      <th>Discount</th>
                       <th>Total Payable</th>
                       <th>Paid Amount</th>
                       <th>Change</th>
@@ -99,6 +107,7 @@
                       <tr>
                         <td><?php echo $sale['date'] ?></td>
                         <td><?php echo $sale['sales_total_amount'] ?></td>
+                        <td><?php echo $sale['sales_discount'] ?></td>
                         <td><?php echo $sale['sales_total_payable'] ?></td>
                         <td><?php echo $sale['sales_paid_amount'] ?></td>
                         <td><?php echo $sale['sales_change'] ?></td>
@@ -261,6 +270,7 @@
           data: response.sales,
           columns: [
             {data: 'date'},
+            {data: 'sales_discount'},
             {data: 'sales_total_amount'},
             {data: 'sales_total_payable'},
             {data: 'sales_paid_amount'},

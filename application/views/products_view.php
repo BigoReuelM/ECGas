@@ -116,7 +116,7 @@
                         <img src="<?php echo $active_product['product_image_url'] ?>" alt="" width="50px" height="50px">
                       </td>
                       <td>
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center mx-2">
                           <form method="POST" action="<?php echo base_url('pages/setProductID') ?>">
                             <input type="text" name="prev_view" value="products" hidden>
                             <input type="text" name="product_id" value="<?php echo $active_product['product_id'] ?>" hidden>
@@ -173,7 +173,7 @@
                         <img src="<?php echo $inactive_product['product_image_url'] ?>" alt="" width="50px" height="50px">
                       </td>
                       <td>
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center mx-2">
                           <form method="POST" action="<?php echo base_url('pages/setProductID') ?>">
                             <input type="text" name="prev_view" value="products" hidden>
                             <input type="text" name="product_id" value="<?php echo $inactive_product['product_id'] ?>" hidden>

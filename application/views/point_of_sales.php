@@ -170,7 +170,7 @@
           <div class="form-group row">
             <label for="" class="col-form-label col-form-label-sm col-4">Paid By:</label>
             <div class="col-8">
-              <select id="payment_method" class="form-control form-control-sm" valrequired="true" elementname="Payment Method" >
+              <select id="payment_method" class="form-control form-control-sm">
                 <option disabled selected hidden>Choose Method..</option>
                 <?php foreach ($payment_methods as $method): ?>
                   <option value="<?php echo $method['payment_method_id'] ?>"><?php echo $method['payment_method'] ?></option>
@@ -181,7 +181,7 @@
           <div class="form-group row">
             <label for="paid_amount" class="col-form-label col-form-label-sm col-4">Paid:</label>
             <div class="col-8">
-              <input type="number" step="0.01" min="0" id="paid_amount" class="form-control form-control-sm"  valrequired="true" elementname="Paid Amount">
+              <input type="number" step="0.01" min="0" id="paid_amount" class="form-control form-control-sm">
             </div>
           </div>
           <div class="form-group row">

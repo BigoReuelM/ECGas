@@ -64,6 +64,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$client_id = null;
 			}
 			$payment_method = $other_info['payment_method'];
+			if (empty($payment_method) || $payment_method == "") {
+				$payment_method = null;
+			}
 			$paid_amount = $other_info['paid_amount'];
 			$change = $other_info['change'];
 			$total_items = $other_info['total_items'];

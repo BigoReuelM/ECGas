@@ -153,7 +153,7 @@ $(document).ready(function(){
 	$(document).on('submit', '#payment_form',function(e){
 		e.preventDefault();
 		var client = $('#client').val();
-		var payment_method = $('#payment_method').children("option:selected").val();
+		var payment_method = $('#payment_method').val();
 		var paid_amount = $('#paid_amount').val();
 		var change = $('#change').val();
 		var other_info = {total: total, discount: discount, total_payable: total_payable, client: client, payment_method: payment_method, paid_amount: paid_amount, change: change, total_items: total_items};

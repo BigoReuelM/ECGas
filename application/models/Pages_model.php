@@ -378,8 +378,8 @@
 			if ($to_date == "" || $to_date == null) {
 				$this->db->where('DATE(sales_date)', $from_date);
 			}else{
-				$this->db->where('DATE(sales_date) >', $from_date);
-				$this->db->where('DATE(sales_date) <', $to_date);
+				$this->db->where('DATE(sales_date) >=', $from_date);
+				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
 
 			$result = $this->db->get();
@@ -393,8 +393,8 @@
 			if ($to_date == "" || $to_date == null) {
 				$this->db->where('DATE(sales_date)', $from_date);
 			}else{
-				$this->db->where('DATE(sales_date) >', $from_date);
-				$this->db->where('DATE(sales_date) <', $to_date);
+				$this->db->where('DATE(sales_date) >=', $from_date);
+				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
 
 			$result = $this->db->get();
@@ -409,8 +409,8 @@
 			if ($to_date == "" || $to_date == null) {
 				$this->db->where('DATE(sales_date)', $from_date);
 			}else{
-				$this->db->where('DATE(sales_date) >', $from_date);
-				$this->db->where('DATE(sales_date) <', $to_date);
+				$this->db->where('DATE(sales_date) >=', $from_date);
+				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
 
 			$result = $this->db->get();
@@ -424,8 +424,8 @@
 			if ($to_date == "" || $to_date == null) {
 				$this->db->where('DATE(sales_date)', $from_date);
 			}else{
-				$this->db->where('DATE(sales_date) >', $from_date);
-				$this->db->where('DATE(sales_date) <', $to_date);
+				$this->db->where('DATE(sales_date) >=', $from_date);
+				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
 
 			$result = $this->db->get();
@@ -439,8 +439,8 @@
 			if ($to_date == "" || $to_date == null) {
 				$this->db->where('DATE(sales_date)', $from_date);
 			}else{
-				$this->db->where('DATE(sales_date) >', $from_date);
-				$this->db->where('DATE(sales_date) <', $to_date);
+				$this->db->where('DATE(sales_date) >=', $from_date);
+				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
 
 			$result = $this->db->get();
