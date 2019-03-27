@@ -20,6 +20,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function index(){
 			$data['page_title'] = 'Dashboard';
+			$data['products_low_sku'] = $this->pages_model->getProductsWithLowSKU();
+			$data['possible_product_orders'] = $this->pages_model->getPossibleProductOrders();
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('index');
@@ -67,13 +69,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			if (empty($payment_method) || $payment_method == "") {
 				$payment_method = null;
 			}
-			$paid_amount = $other_info['paid_amount'];
-			$change = $other_info['change'];
+			$amount_tendered = $other_info['amount_tendered'];
 			$total_items = $other_info['total_items'];
+			$change = $other_info['change'];
 			$user_id = $this->session->userdata('user_details')['user_id'];
 
+			// get paid_amount, sales_balance and sales_status using total_payable and amount tendered
+
+			$paid_amount = 0;
+			$sales_balance = 0;
+			$sales_status = "fullyPaid";
+			if (!empty($amount_tendered) || $amount_tendered != "") {
+				if ($amount_tendered < $total_payable) {
+					$paid_amount = $amount_tendered;
+				 	$sales_balance = $total_payable - $amount_tendered;
+				 	$sales_status = "partialyPaid";
+				}else{
+					$paid_amount = $total_payable;
+				}
+			}else{
+				$sales_balance = $total_payable;
+				$sales_status = "credit";
+			}
+
+			
+
 			// record sales
-			$sales_id = $this->pages_model->addSales($client_id, $user_id, $total, $discount, $total_payable, $paid_amount, $change, $payment_method, $total_items);
+			$sales_id = $this->pages_model->addSales($client_id, $user_id, $total, $discount, $total_payable, $amount_tendered, $paid_amount, $sales_balance, $change, $payment_method, $total_items, $sales_status);
+
+			//record payment logs
+			 
+			if ($paid_amount > 0) {
+				$this->pages_model->addPaymentLog($sales_id, $this->session->userdata('user_details')['user_id'], $paid_amount);
+			}
+
+			// record products per sale
 			
 			if ($sales_id) {
 
@@ -98,6 +128,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		}
 
+
+
 		////////// END OF POINT OF SALES FUNCTIONS
 		///
 		//////
@@ -112,38 +144,79 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$date = date('Y-m-d');
 			$data['date'] = $date;
 			$data['page_title'] = 'Sales';
-			$data['sales'] = $this->pages_model->getSales($date, null);
-			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($date, null)->sales_total_amount, 2);
-			$data['total_cost'] = number_format($this->pages_model->getTotalCost($date, null)->sales_total_cost, 2);
-			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($date, null)->sales_discount, 2);
-			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($date, null)->sales_total_payable, 2);
+			$data['sales'] = $this->pages_model->getSales($date, null, null);
+			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($date, null, null)->sales_total_amount, 2);
+			//$data['total_cost'] = number_format($this->pages_model->getTotalCost($date, null)->sales_total_cost, 2);
+			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($date, null, null)->sales_discount, 2);
+			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($date, null, null)->sales_paid_amount, 2);
+			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivables($date, null, null)->sales_balance, 2);
+			$data['total_amount_payable'] = number_format($this->pages_model->getTotalAmountPayable($date, null, null)->sales_total_payable, 2);
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('sales');
 			$this->load->view('fragments/footer');
 		}
 
-		public function getSaleDetails(){
-
+		public function setCurrentSaleID(){
 			$sales_id = htmlspecialchars(trim($this->input->get('sales_id')));
+
+			$this->session->set_userdata('current_sale_id', $sales_id);
+
+			redirect('pages/saleDetails');
+		}
+
+		public function saleDetails(){
+
+
+			$data['page_title'] = 'Sales Details';
+
+			$sales_id = $this->session->userdata('current_sale_id');
 
 			$data['sales_details'] = $this->pages_model->getSaleDetails($sales_id);
 			$data['sales_products'] = $this->pages_model->getSaleProducts($sales_id);
-
-			echo json_encode($data);
+			$data['payment_logs'] = $this->pages_model->getPaymentLogs($sales_id);
+			$this->load->view('fragments/head', $data);
+			$this->load->view('fragments/navigation');
+			$this->load->view('sales_details');
+			$this->load->view('fragments/footer');
 		}
 
 		public function getFilteredSales(){
 			$from_date = htmlspecialchars(trim($this->input->get('from_date')));
 			$to_date = htmlspecialchars(trim($this->input->get('to_date')));
+			$sales_status = htmlspecialchars(trim($this->input->get('sale_status_filter')));
 
-			$data['sales'] = $this->pages_model->getSales($from_date, $to_date);
-			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($from_date, $to_date)->sales_total_amount, 2);
-			$data['total_cost'] = number_format($this->pages_model->getTotalCost($from_date, $to_date)->sales_total_cost, 2);
-			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($from_date, $to_date)->sales_discount, 2);
-			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($from_date, $to_date)->sales_total_payable, 2);
+			$data['sales'] = $this->pages_model->getSales($from_date, $to_date, $sales_status);
+			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($from_date, $to_date, $sales_status)->sales_total_amount, 2);
+			//$data['total_cost'] = number_format($this->pages_model->getTotalCost($from_date, $to_date)->sales_total_cost, 2);
+			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($from_date, $to_date, $sales_status)->sales_discount, 2);
+			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($from_date, $to_date, $sales_status)->sales_paid_amount, 2);
+			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivables($from_date, $to_date, $sales_status)->sales_balance, 2);
+			$data['total_amount_payable'] = number_format($this->pages_model->getTotalAmountPayable($from_date, $to_date, $sales_status)->sales_total_payable, 2);
 
 			echo json_encode($data);
+		}
+
+		public function addSalesPayment(){
+			$paid_amount = htmlspecialchars(trim($this->input->post('amount_paid')));
+			$sales_id = htmlspecialchars(trim($this->input->post('sales_id')));
+
+			$current_paid_amount = $this->pages_model->getSalePaidAmountAndBalance($sales_id)->sales_paid_amount;
+			$current_balance = $this->pages_model->getSalePaidAmountAndBalance($sales_id)->sales_balance;
+
+			$new_paid_amount =  $paid_amount + $current_paid_amount;
+			$new_balance = $current_balance - $paid_amount;
+
+			if ($new_balance == 0) {
+				$status = 'fullyPaid';
+			}else{
+				$status = 'partialyPaid';
+			}
+
+			$this->pages_model->updateSalePaidAmountBalanceAndStatus($sales_id, $new_paid_amount, $new_balance, $status);
+
+			$this->pages_model->addPaymentLog($sales_id, $this->session->userdata('user_details')['user_id'], $paid_amount);
+
 		}
 
 		////

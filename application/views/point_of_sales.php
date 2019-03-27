@@ -179,9 +179,9 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="paid_amount" class="col-form-label col-form-label-sm col-4">Paid:</label>
+            <label for="amount_tendered" class="col-form-label col-form-label-sm col-4">Amount Tendered:</label>
             <div class="col-8">
-              <input type="number" step="0.01" min="0" id="paid_amount" class="form-control form-control-sm">
+              <input type="number" step="0.01" min="0" id="amount_tendered" class="form-control form-control-sm">
             </div>
           </div>
           <div class="form-group row">

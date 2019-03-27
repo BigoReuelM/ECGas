@@ -332,17 +332,20 @@
 			return $result->row();
 		}
 
-		public function addSales($client_id, $user_id, $total, $discount, $total_payable, $paid_amount, $change, $payment_method, $total_items){
+		public function addSales($client_id, $user_id, $total, $discount, $total_payable, $amount_tendered, $paid_amount, $sales_balance, $change, $payment_method, $total_items, $sales_status){
 			$data = array(
 				'client_id' => $client_id,
 				'user_id' => $user_id,
 				'sales_total_amount' => $total,
 				'sales_discount' => $discount,
 				'sales_total_payable' => $total_payable,
+				'sales_amount_tendered' => $amount_tendered,
 				'sales_paid_amount' => $paid_amount,
+				'sales_balance' => $sales_balance,
 				'sales_change' => $change,
 				'payment_method_id' => $payment_method,
-				'sales_total_items' => $total_items
+				'sales_total_items' => $total_items,
+				'sales_status' => $sales_status
 			);
 
 			if ($this->db->insert('sales', $data)) {
@@ -365,21 +368,36 @@
 			$this->db->insert('product_sales', $data);
 		}
 
+		public function addPaymentLog($sales_id, $user_id, $paid_amount){
+			$data = array(
+				'sales_id' => $sales_id,
+				'user_id' => $user_id,
+				'amount' => $paid_amount
+			);
+
+			$this->db->insert('payment_logs', $data);
+		}
+
 
 		///////////////////
 		///Sales queries //
 		///////////////////
 
-		public function getSales($from_date, $to_date){
-			$this->db->select('sales_id, DATE_FORMAT(sales_date, "%b %d %Y %r") as date, FORMAT(sales_total_amount, 2) as sales_total_amount, FORMAT(sales_discount, 2) as sales_discount, FORMAT(sales_total_payable, 2) as sales_total_payable, FORMAT(sales_paid_amount, 2) as sales_paid_amount, FORMAT(sales_change, 2) as sales_change, concat(users.first_name, " ", users.last_name) as user, concat(clients.client_first_name, " ", clients.client_last_name) as client');
+		public function getSales($from_date, $to_date, $sales_status){
+			$this->db->select('sales_id, DATE_FORMAT(sales_date, "%b %d %Y %r") as date, FORMAT(sales_total_amount, 2) as sales_total_amount, FORMAT(sales_discount, 2) as sales_discount, FORMAT(sales_total_payable, 2) as sales_total_payable, FORMAT(sales_paid_amount, 2) as sales_paid_amount, FORMAT(sales_balance, 2) as sales_balance, concat(users.first_name, " ", users.last_name) as user, concat(clients.client_first_name, " ", clients.client_last_name) as client, sales_status');
 			$this->db->from('sales');
 			$this->db->join('clients', 'sales.client_id = clients.client_id', 'left');
 			$this->db->join('users', 'sales.user_id = users.user_id');
-			if ($to_date == "" || $to_date == null) {
-				$this->db->where('DATE(sales_date)', $from_date);
-			}else{
-				$this->db->where('DATE(sales_date) >=', $from_date);
-				$this->db->where('DATE(sales_date) <=', $to_date);
+			if ($from_date != "" || $from_date != null) {
+				if ($to_date == "" || $to_date == null) {
+					$this->db->where('DATE(sales_date)', $from_date);
+				}else{
+					$this->db->where('DATE(sales_date) >=', $from_date);
+					$this->db->where('DATE(sales_date) <=', $to_date);
+				}
+			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
 			}
 
 			$result = $this->db->get();
@@ -387,7 +405,7 @@
 			return $result->result_array();
 		}
 
-		public function getOverallTotal($from_date, $to_date){
+		public function getOverallTotal($from_date, $to_date, $sales_status){
 			$this->db->select_sum('sales_total_amount');
 			$this->db->from('sales');
 			if ($to_date == "" || $to_date == null) {
@@ -396,13 +414,19 @@
 				$this->db->where('DATE(sales_date) >=', $from_date);
 				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
+			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
+			}
 
 			$result = $this->db->get();
 
 			return $result->row();
 		}
 
-		public function getTotalCost($from_date, $to_date){
+		public function getTotalCost($from_date, $to_date, $sales_status){
 			$this->db->select('SUM(product_count * product_cost) as "sales_total_cost"');
 			$this->db->from('product_sales');
 			$this->db->join('sales', 'product_sales.sales_id = sales.sales_id');
@@ -412,13 +436,16 @@
 				$this->db->where('DATE(sales_date) >=', $from_date);
 				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
+			}
 
 			$result = $this->db->get();
 
 			return $result->row();
 		}
 
-		public function getTotalDiscount($from_date, $to_date){
+		public function getTotalDiscount($from_date, $to_date, $sales_status){
 			$this->db->select_sum('sales_discount');
 			$this->db->from('sales');
 			if ($to_date == "" || $to_date == null) {
@@ -427,13 +454,52 @@
 				$this->db->where('DATE(sales_date) >=', $from_date);
 				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
+			}
 
 			$result = $this->db->get();
 
 			return $result->row();
 		}
 
-		public function getTotalAmountPaid($from_date, $to_date){
+		public function getTotalAmountPaid($from_date, $to_date, $sales_status){
+			$this->db->select_sum('sales_paid_amount');
+			$this->db->from('sales');
+			if ($to_date == "" || $to_date == null) {
+				$this->db->where('DATE(sales_date)', $from_date);
+			}else{
+				$this->db->where('DATE(sales_date) >=', $from_date);
+				$this->db->where('DATE(sales_date) <=', $to_date);
+			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
+			}
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountReceivables($from_date, $to_date, $sales_status){
+			$this->db->select_sum('sales_balance');
+			$this->db->from('sales');
+			if ($to_date == "" || $to_date == null) {
+				$this->db->where('DATE(sales_date)', $from_date);
+			}else{
+				$this->db->where('DATE(sales_date) >=', $from_date);
+				$this->db->where('DATE(sales_date) <=', $to_date);
+			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
+			}
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountPayable($from_date, $to_date, $sales_status){
 			$this->db->select_sum('sales_total_payable');
 			$this->db->from('sales');
 			if ($to_date == "" || $to_date == null) {
@@ -442,6 +508,9 @@
 				$this->db->where('DATE(sales_date) >=', $from_date);
 				$this->db->where('DATE(sales_date) <=', $to_date);
 			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
+			}
 
 			$result = $this->db->get();
 
@@ -449,7 +518,7 @@
 		}
 
 		public function getSaleDetails($sales_id){
-			$this->db->select('sales_id, DATE_FORMAT(sales_date, "%b %d %Y %r") as date, FORMAT(sales_total_amount, 2) as sales_total_amount, FORMAT(sales_discount, 2) as sales_discount, FORMAT(sales_total_payable, 2) as sales_total_payable, FORMAT(sales_paid_amount, 2) as sales_paid_amount, FORMAT(sales_change, 2) as sales_change, sales_total_items, concat(users.first_name, " ", users.last_name) as user, concat(clients.client_first_name, " ", clients.client_last_name) as client');
+			$this->db->select('sales_id, DATE_FORMAT(sales_date, "%b %d %Y %r") as date, FORMAT(sales_total_amount, 2) as sales_total_amount, FORMAT(sales_discount, 2) as sales_discount, FORMAT(sales_total_payable, 2) as sales_total_payable, FORMAT(sales_paid_amount, 2) as sales_paid_amount, FORMAT(sales_balance, 2) as sales_balance, sales_balance as balance, concat(users.first_name, " ", users.last_name) as user, concat(clients.client_first_name, " ", clients.client_last_name) as client, sales_status, sales_total_items');
 			$this->db->from('sales');
 			$this->db->join('clients', 'sales.client_id = clients.client_id', 'left');
 			$this->db->join('users', 'sales.user_id = users.user_id');
@@ -465,6 +534,18 @@
 			$this->db->from('product_sales');
 			$this->db->join('products', 'products.product_id = product_sales.product_id');
 			$this->db->where('sales_id', $sales_id);
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
+		public function getPaymentLogs($sales_id){
+			$this->db->select('concat(users.first_name, " ", users.last_name) as user, DATE_FORMAT(time_of_payment, "%b %d %Y %r") as date, FORMAT(amount, 2) as amount');
+			$this->db->from('payment_logs');
+			$this->db->join('sales', 'sales.sales_id = payment_logs.sales_id');
+			$this->db->join('users', 'users.user_id = payment_logs.user_id');
+			$this->db->where('payment_logs.sales_id', $sales_id);
 
 			$result = $this->db->get();
 
@@ -493,6 +574,27 @@
 			$result = $this->db->get();
 
 			return $result->result_array();
+		}
+
+		public function getSalePaidAmountAndBalance($sales_id){
+			$this->db->select('sales_paid_amount, sales_balance');
+			$this->db->from('sales');
+			$this->db->where('sales_id', $sales_id);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function updateSalePaidAmountBalanceAndStatus($sales_id, $paid_amount, $balance, $status){
+			$data = array(
+				'sales_paid_amount' => $paid_amount,
+				'sales_balance' => $balance,
+				'sales_status' => $status
+			);
+
+			$this->db->where('sales_id', $sales_id);
+			$this->db->update('sales', $data);
 		}
 
 		///////////
@@ -601,6 +703,41 @@
 
 			return $result->result_array();
 		}
+
+
+		//////////////////////
+		//queries for alarm //
+		//////////////////////
+
+		public function getProductsWithLowSKU(){
+			$this->db->select('*');
+			$this->db->from('products');
+			$this->db->where('product_sku >= product_quantity');
+			$this->db->where('product_status', 'active');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
+		public function getPossibleProductOrders(){
+			$this->db->select('concat(client_first_name, " ", client_middle_name, " ", client_last_name) as client_name, product_title, days_of_ussage, DATE_FORMAT(sales_date, "%b %d %Y %r") as sales_date');
+			$this->db->from('product_customer_alert');
+			$this->db->join('products', 'product_customer_alert.product_id = products.product_id');
+			$this->db->join('product_sales', 'product_customer_alert.product_id = product_sales.product_id');
+			$this->db->join('sales', 'product_sales.sales_id = sales.sales_id');
+			$this->db->join('clients', 'sales.client_id = clients.client_id');
+			$this->db->where('days_of_ussage >= DATEDIFF(CURDATE(), sales_date)');
+			$this->db->where('days_of_ussage <= (DATEDIFF(CURDATE(), sales_date)) + 5');
+			$this->db->group_by('sales.client_id');
+			$this->db->order_by('sales.sales_id');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
+
 	}
 
 

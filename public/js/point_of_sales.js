@@ -104,8 +104,8 @@ $(document).ready(function(){
 					var count = cart[i]['count'];
 					var total_price = parseInt(count) * parseFloat(cart[i]['product_price']);
 					total_items = total_items-1;
-					total = total + parseFloat(cart[i]['product_price']);
-					total_payable = total_payable + parseFloat(cart[i]['product_price']);
+					total = total - parseFloat(cart[i]['product_price']);
+					total_payable = total_payable - parseFloat(cart[i]['product_price']);
 					updateSummary(total, total_items, total_payable);
 					updateProduct(product_id, count, total_price);
 				}
@@ -144,9 +144,14 @@ $(document).ready(function(){
 
 	// calculate chage
 
-	$(document).on('keyup', '#paid_amount', function(){
-		var paid_amount = $(this).val();
-		$('#change').val(paid_amount - total_payable);
+	$(document).on('keyup', '#amount_tendered', function(){
+		var amount_tendered = $(this).val();
+		var change = amount_tendered - total_payable;
+		if (change > 0) {
+			$('#change').val(change);
+		}else{
+			$('#change').val(0);
+		}
 	})
 	// confirm payment
 	
@@ -154,9 +159,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		var client = $('#client').val();
 		var payment_method = $('#payment_method').val();
-		var paid_amount = $('#paid_amount').val();
+		var amount_tendered = $('#amount_tendered').val();
 		var change = $('#change').val();
-		var other_info = {total: total, discount: discount, total_payable: total_payable, client: client, payment_method: payment_method, paid_amount: paid_amount, change: change, total_items: total_items};
+		var other_info = {total: total, discount: discount, total_payable: total_payable, client: client, payment_method: payment_method, amount_tendered: amount_tendered, change: change, total_items: total_items};
 		if (validateRequired($(this).attr('id'))) {
 			$.ajax({
 				type: 'POST',
@@ -187,6 +192,8 @@ $(document).ready(function(){
 		total_payable = total_payable + parseFloat(product_price);
 		updateSummary(total, total_items, total_payable);
 	}
+
+	// appemd the new selected item on the preview table
 
 	function appendTotable(product_id, product_title, product_price){
 		$('#empty_product_row').remove();
