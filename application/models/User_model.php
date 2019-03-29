@@ -12,6 +12,7 @@
 			$this->db->from('users');
 			$this->db->where('username like binary', $username);
 			$this->db->where('password', $password);
+			$this->db->where('status', 'active');
 
 			if ($query = $this->db->get()) {
 				if (count($query->result_array()) > 0) {

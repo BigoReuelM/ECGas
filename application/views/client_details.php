@@ -249,7 +249,12 @@
             </div>
           </div>
         </div>
+        <div class="text-primary">
+          Products
+        </div>
+        <hr>
         <div class="row">
+          
           <div class="col">
             <table class="table table-striped table-bordered table-sm text-center" id="sale_products_table" width="100%" cellspacing="0">
               <thead class="thead-dark">
@@ -267,6 +272,26 @@
                   <td></td>
                   <td></td>
                 </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="text-primary">
+          Payment Logs
+        </div>
+        <hr>
+        <div class="row">
+          
+          <div class="col">
+            <table class="table table-striped table-bordered table-sm text-center" id="sale_payments_stable" width="100%" cellspacing="0">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Payment Date</th>
+                  <th scope="col">Receiver</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
               </tbody>
             </table>
           </div>

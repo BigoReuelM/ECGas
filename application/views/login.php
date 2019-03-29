@@ -31,7 +31,7 @@
 
       <div class="col-xl-5 col-lg-12 col-md-9">
 
-        <div class="card o-hidden border-0 shadow-lg mt-5">
+        <div class="card o-hidden border-0 shadow-lg" style="margin-top: 25%">
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row justify-content-center">
@@ -41,6 +41,9 @@
                     <h1 class="text-gray-900 mb-4">ECGas</h1>
                   </div>
                   <hr>
+                  <div id="login_error">
+                    
+                  </div>
                   <form class="user" id="login" autocomplete="off">
                     <div class="form-group">
                       <input type="text" class="form-control form-control-user" id="username" name="username" placeholder="Enter Username" valrequired="true" elementname="Username">
@@ -52,7 +55,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                    <a class="small" href="#" data-toggle="modal" data-target="#forgot_password_modal">Forgot Password?</a>
                   </div>
                 </div>
               </div>
@@ -65,6 +68,29 @@
     </div>
 
   </div>
+
+
+
+<div class="modal fade" id="forgot_password_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary"><strong class="status_action"></strong> Forgot Password?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          Consult with your administrator for any problems or concerns relating your acount. 
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Bootstrap core JavaScript-->
   <script src="<?php echo base_url() ?>public/vendor/jquery/jquery.min.js"></script>
@@ -83,34 +109,6 @@
       var username = $('#username').val().trim();
       var password = $('#password').val().trim();
 
-      // $('p').remove('.text-warning');
-
-      // if (!username || !password) {
-
-      //   if (!username && !password) {
-      //     $('#username').after('<p class="text-warning text-center"><small>The Username field is required!</small></p>')
-      //     $('#password').after('<p class="text-warning text-center"><small>The Password field is required!</small></p>');
-      //   }else if(!username && password){
-      //     $('#username').after('<p class="text-warning text-center"><small>The Password field is required!</small></p>')
-      //   }else if (username && !password){
-      //     $('#password').after('<p class="text-warning text-center"><small>The Password field is required!</small></p>');
-      //   }
-      // }else{
-
-      //   $.ajax({
-      //     type: 'POST',
-      //     url: '<?php echo base_url('user/login') ?>',
-      //     data: $(this).serialize(),
-      //     dataType: 'json'
-      //   }).done(function(response){
-      //     if (response.success == true) {
-      //       window.location.replace("<?php echo base_url('pages') ?>");
-      //     }else{
-      //       $('#login').prepend('<div class="alert alert-warning"><p class="text-center"><small>Something went wrong. Try Again!</small></p></div>');
-      //     }
-      //   })
-
-      // }
 
       if (validateRequired($(this).attr('id'))) {
         $.ajax({
@@ -122,7 +120,8 @@
           if (response.success == true) {
             window.location.replace("<?php echo base_url('pages') ?>");
           }else{
-            $('#login').prepend('<div class="alert alert-warning"><p class="text-center"><small>Something went wrong. Try Again!</small></p></div>');
+            $('#login_error').empty();
+            $('#login_error').html('<div class="alert alert-warning text-center"><small>Something went wrong. Try Again!</small></div>');
           }
         })
       }

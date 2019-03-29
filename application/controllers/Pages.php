@@ -22,13 +22,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['page_title'] = 'Dashboard';
 			$data['products_low_sku'] = $this->pages_model->getProductsWithLowSKU();
 			$data['possible_product_orders'] = $this->pages_model->getPossibleProductOrders();
+			$data['clients_count'] = $this->pages_model->getNumberOfClients()->clients_count;
+			$data['newest_client'] = $this->pages_model->getNewestClient()->name;
+			$data['active_clients_count'] = $this->pages_model->getNumberOfActiveClients()->clients_count;
+			$data['inactive_clients_count'] = $this->pages_model->getNumberOfInactiveClients()->clients_count;
+			$data['product_count'] = $this->pages_model->getNumberOfProducts()->product_count;
+			$data['newest_product'] = $this->pages_model->getNewestProduct()->product_title;
+			$data['active_products_count'] = $this->pages_model->getNumberOfActiveProducts()->product_count;
+			$data['inactive_products_count'] = $this->pages_model->getNumberOfInactiveProducts()->product_count;
+			$data['issues'] = $this->pages_model->getLatestIssues();
+			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivablesDashboard()->sales_balance, 2);
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('index');
 			$this->load->view('fragments/footer');
 		}
 
-		
+		//////////////////////////////////////////////////////////////////////
+		//function to be called by ajax ti get number of alerts return json //
+		//////////////////////////////////////////////////////////////////////
+
+		public function getAlertCounts(){
+			$low_sku_count = $this->pages_model->getProductsWithLowSKUCount()->low_sku_count;
+			$alert_count = $this->pages_model->getPossibleProductOrdersCount()->alert_count;
+
+			$total_count = $low_sku_count + $alert_count;
+
+			$data['low_sku_count'] = $low_sku_count;
+			$data['alert_count'] = $alert_count;
+			$data['total_count'] = $total_count;
+
+			echo json_encode($data);
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		//sets and controls the side bar toggle for our site navigation sidebar //
+		//////////////////////////////////////////////////////////////////////////
 		public function sidebarToggle(){
 			$sidebarControl = $this->session->userdata('sidebarControl');
 
@@ -217,6 +246,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$this->pages_model->addPaymentLog($sales_id, $this->session->userdata('user_details')['user_id'], $paid_amount);
 
+		}
+
+		public function getSaleDetails(){
+			$sales_id = htmlspecialchars(trim($this->input->get('sales_id')));
+
+			$data['sales_details'] = $this->pages_model->getSaleDetails($sales_id);
+			$data['sales_products'] = $this->pages_model->getSaleProducts($sales_id);
+			$data['payment_logs'] = $this->pages_model->getPaymentLogs($sales_id);
+
+			echo json_encode($data);
+		}
+
+		/////////////////////////////
+		//for expenses reports etc //
+		/////////////////////////////
+
+		public function expenses(){
+			$data['page_title'] = 'Expenses';
+			$data['expenses'] = $this->pages_model->getExpense();
+			$this->load->view('fragments/head', $data);
+			$this->load->view('fragments/navigation');
+			$this->load->view('expenses');
+			$this->load->view('fragments/footer');
+		}
+
+		public function addExpenses(){
+
+			$user_id = $this->session->userdata('user_details')['user_id'];
+			$expense_name = ucwords(htmlspecialchars(trim($this->input->post('expense_name'))));
+			$expense_description = ucfirst(htmlspecialchars(trim($this->input->post('expense_description'))));
+			$expense_amount = htmlspecialchars(trim($this->input->post('expense_amount')));
+			$expense_date = htmlspecialchars(trim($this->input->post('expense_date')));
+
+			$this->pages_model->addExpenses($expense_name, $expense_description, $expense_amount, $expense_date, $user_id);
+
+		}
+
+		////////////////////////////////////////
+		//for refunds and returns reports etc //
+		////////////////////////////////////////
+
+		public function refundsAndReturns(){
+			$data['page_title'] = 'Refund/Returns';
+			$this->load->view('fragments/head', $data);
+			$this->load->view('fragments/navigation');
+			$this->load->view('returns_refund');
+			$this->load->view('fragments/footer');
 		}
 
 		////

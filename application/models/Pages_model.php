@@ -499,6 +499,15 @@
 			return $result->row();
 		}
 
+		public function getTotalAmountReceivablesDashboard(){
+			$this->db->select_sum('sales_balance');
+			$this->db->from('sales');
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
 		public function getTotalAmountPayable($from_date, $to_date, $sales_status){
 			$this->db->select_sum('sales_total_payable');
 			$this->db->from('sales');
@@ -597,6 +606,33 @@
 			$this->db->update('sales', $data);
 		}
 
+		/////////////////////
+		//expenses queries //
+		/////////////////////
+
+		public function getExpense(){
+			$this->db->select('concat(first_name, " ", middle_name, " ", last_name) as recorder, expense_description, expense_name, DATE_FORMAT(expense_date, "%b %d %Y") as expense_date, FORMAT(expense_amount, 2) as expense_amount');
+			$this->db->from('expenses');
+			$this->db->join('users', 'expenses.user_id = users.user_id');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
+		public function addExpenses($expense_name, $expense_description, $expense_amount, $expense_date, $user_id){
+
+			$data = array(
+				'expense_name' => $expense_name,
+				'expense_description' => $expense_description,
+				'expense_amount' => $expense_amount,
+				'expense_date' => $expense_date,
+				'user_id' => $user_id
+			);
+
+			$this->db->insert('expenses', $data);
+		}
+
 		///////////
 		//issues //
 		///////////
@@ -653,6 +689,21 @@
 			);
 
 			$this->db->insert('issue_records', $data);
+		}
+
+		public function getLatestIssues(){
+			$this->db->select('concat(first_name, " ", middle_name, " ", last_name) as user_name, concat(client_first_name, " ", client_middle_name, " ", client_last_name) as client_name, product_title, issue, DATE_FORMAT(date_recorded, "%b %d %Y %r") as date_recorded');
+			$this->db->from('issue_records');
+			$this->db->join('products', 'products.product_id = issue_records.product_id');
+			$this->db->join('clients', 'issue_records.client_id = clients.client_id');
+			$this->db->join('users', 'issue_records.user_id = users.user_id');
+			$this->db->join('issues', 'issue_records.issue_id = issues.issue_id');
+			$this->db->limit(5);
+			$this->db->order_by('issue_record_id', 'desc');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
 		}
 
 		//////////////////////////
@@ -729,12 +780,36 @@
 			$this->db->join('clients', 'sales.client_id = clients.client_id');
 			$this->db->where('days_of_ussage >= DATEDIFF(CURDATE(), sales_date)');
 			$this->db->where('days_of_ussage <= (DATEDIFF(CURDATE(), sales_date)) + 5');
-			$this->db->group_by('sales.client_id');
-			$this->db->order_by('sales.sales_id');
 
 			$result = $this->db->get();
 
 			return $result->result_array();
+		}
+
+		public function getProductsWithLowSKUCount(){
+			$this->db->select('count(product_id) as low_sku_count');
+			$this->db->from('products');
+			$this->db->where('product_sku >= product_quantity');
+			$this->db->where('product_status', 'active');
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getPossibleProductOrdersCount(){
+			$this->db->select('count(alert_id) as alert_count');
+			$this->db->from('product_customer_alert');
+			$this->db->join('products', 'product_customer_alert.product_id = products.product_id');
+			$this->db->join('product_sales', 'product_customer_alert.product_id = product_sales.product_id');
+			$this->db->join('sales', 'product_sales.sales_id = sales.sales_id');
+			$this->db->join('clients', 'sales.client_id = clients.client_id');
+			$this->db->where('days_of_ussage >= DATEDIFF(CURDATE(), sales_date)');
+			$this->db->where('days_of_ussage <= (DATEDIFF(CURDATE(), sales_date)) + 5');
+
+			$result = $this->db->get();
+
+			return $result->row();
 		}
 
 

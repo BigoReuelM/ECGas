@@ -20,13 +20,12 @@
             <div class="col-9">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Activity Logs</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Purchase Logs</h6>
                 </div>
                 <div class="card-body">
                   <table class="table table-striped table-bordered table-sm text-center" id="user_sales_table" width="100%" cellspacing="0">
                     <thead class="thead-dark">
                       <tr>
-                        <th>#</th>
                         <th>Date and Time</th>
                         <th>Total</th>
                         <th>Total Payable</th>
@@ -38,11 +37,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php
-                        $count = 1; 
-                        foreach ($user_sales as $sale): ?>
+                      <?php foreach ($user_sales as $sale): ?>
                         <tr>
-                          <td><?php echo $count ?></td>
                           <td><?php echo $sale['date'] ?></td>
                           <td><?php echo $sale['sales_total_amount'] ?></td>
                           <td><?php echo $sale['sales_total_payable'] ?></td>
@@ -59,9 +55,7 @@
                             </form>
                           </td>
                         </tr>
-                      <?php 
-                        $count++;
-                        endforeach ?>
+                      <?php endforeach ?>
                     </tbody>
                   </table>                
                 </div>
@@ -218,12 +212,17 @@
               <p id="paid_amount" class="form-control form-control-sm"></p>
             </div>
             <div class="form-group">
-              <label for="change"><small>Change:</small></label>
-              <p id="change" class="form-control form-control-sm"></p>
+              <label for="balance"><small>Balance:</small></label>
+              <p id="balance" class="form-control form-control-sm"></p>
             </div>
           </div>
         </div>
+        <div class="text-primary">
+          Products
+        </div>
+        <hr>
         <div class="row">
+          
           <div class="col">
             <table class="table table-striped table-bordered table-sm text-center" id="sale_products_table" width="100%" cellspacing="0">
               <thead class="thead-dark">
@@ -241,6 +240,26 @@
                   <td></td>
                   <td></td>
                 </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="text-primary">
+          Payment Logs
+        </div>
+        <hr>
+        <div class="row">
+          
+          <div class="col">
+            <table class="table table-striped table-bordered table-sm text-center" id="sale_payments_stable" width="100%" cellspacing="0">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Payment Date</th>
+                  <th scope="col">Receiver</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
               </tbody>
             </table>
           </div>
@@ -268,9 +287,8 @@
   <script src="<?php echo base_url() ?>public/vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="<?php echo base_url() ?>public/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-  <script src="<?php echo base_url() ?>public/js/sales_details.js"></script>
-
   <!-- Custom js for this page -->
+  <script src="<?php echo base_url() ?>public/js/sales_details.js"></script>
   <script src="<?php echo base_url() ?>public/js/update_detail.js"></script>
   <script src="<?php echo base_url() ?>public/js/custom.js"></script>
 

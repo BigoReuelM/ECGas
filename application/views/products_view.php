@@ -18,7 +18,7 @@
           </div>
 
           <div class="row">
-            <!-- total number of clients -->
+            <!-- total number of products -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
@@ -28,13 +28,13 @@
                       <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $product_count;  ?></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-users fa-2x text-gray-300"></i>
+                      <i class="fas fa-boxes fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- newest client -->
+            <!-- newest product -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
@@ -44,7 +44,7 @@
                       <div calss="mb-0 font-weight-bold text-gray-800"><?php echo $newest_product;  ?></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-user fa-2x text-gray-300"></i>
+                      <i class="fas fa-box fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>

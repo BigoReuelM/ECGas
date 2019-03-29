@@ -32,6 +32,18 @@
     $.ajax({
       type: 'get',
       url: '<?php echo base_url('pages/sidebarToggle') ?>'
-    })
+    });
+  });
+
+  $(document).ready(function(){
+    $.ajax({
+      type: 'get',
+      url: '<?php echo base_url('pages/getAlertCounts') ?>',
+      dataType: 'json'
+    }).done(function(response){
+      $('#alert_badge').html(response.total_count);
+      $('#low_sku_count').html(response.low_sku_count);
+      $('#alert_count').html(response.alert_count);
+    });
   })
 </script>
