@@ -16,6 +16,14 @@
           <h1 class="h3 mb-2 text-gray-800">Sales Details</h1>
           <p class="mb-4">Sales Details: <strong>View</strong> Sale Details and <strong>Add</strong> payment/s.</p>
         </div>
+        <div>
+          <span data-toggle="tooltip" title="Return/Refund Items">
+            <a href="<?php echo base_url('pages/saleReturnOrRefund') ?>" class="btn btn-danger btn-sm" id="delete_btn">
+              <i class="fa fa-undo"></i>
+              Return/Refund
+            </a>
+          </span>
+        </div>
       </div>
 
       <div class="row">
@@ -71,72 +79,6 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Products</h6>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <table class="table table-striped table-bordered table-sm text-center" id="sale_products_table" width="100%" cellspacing="0">
-                        <thead class="thead-dark">
-                          <tr>
-                            <th scope="col">Product Name</th>
-                            <th scope="col">Count</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php foreach ($sales_products as $product): ?>
-                            <tr>
-                              <td><?php echo $product['product_title'] ?></td>
-                              <td><?php echo $product['product_count'] ?></td>
-                              <td><?php echo $product['product_price'] ?></td>
-                              <td><?php echo $product['product_total_amount'] ?></td>
-                            </tr>
-                          <?php endforeach ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Payment Logs</h6>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <table class="table table-striped table-bordered table-sm text-center" id="sale_products_table" width="100%" cellspacing="0">
-                        <thead class="thead-dark">
-                          <tr>
-                            <th scope="col">Payment Date</th>
-                            <th scope="col">Receiver</th>
-                            <th scope="col">Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php foreach ($payment_logs as $log): ?>
-                            <tr>
-                              <td><?php echo $log['date'] ?></td>
-                              <td><?php echo $log['user'] ?></td>
-                              <td><?php echo $log['amount'] ?></td>
-                            </tr>
-                          <?php endforeach ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="col-4">
           <div class="card shadow mb-4">
@@ -181,6 +123,72 @@
             <?php endif ?>
         </div>
       </div>
+      <div class="row">
+      <div class="col">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Products</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <table class="table table-striped table-bordered table-sm text-center" id="sale_products_table" width="100%" cellspacing="0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Count</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($sales_products as $product): ?>
+                      <tr>
+                        <td><?php echo $product['product_title'] ?></td>
+                        <td><?php echo $product['product_count'] ?></td>
+                        <td><?php echo $product['product_price'] ?></td>
+                        <td><?php echo $product['product_total_amount'] ?></td>
+                      </tr>
+                    <?php endforeach ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Payment Logs</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <table class="table table-striped table-bordered table-sm text-center" id="sale_products_table" width="100%" cellspacing="0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Payment Date</th>
+                      <th scope="col">Receiver</th>
+                      <th scope="col">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($payment_logs as $log): ?>
+                      <tr>
+                        <td><?php echo $log['date'] ?></td>
+                        <td><?php echo $log['user'] ?></td>
+                        <td><?php echo $log['amount'] ?></td>
+                      </tr>
+                    <?php endforeach ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
       
     </div>
@@ -190,6 +198,7 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+
 
 
   <!-- Bootstrap core JavaScript-->

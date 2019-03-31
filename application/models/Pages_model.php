@@ -526,8 +526,244 @@
 			return $result->row();
 		}
 
+
+		///////////////////////////////////////////////////////
+		//OVERALL TOTAL YEAR, MONTH, WEEK, Yesterday queries //
+		///////////////////////////////////////////////////////
+
+		public function getOverallTotalYear($year){
+			$this->db->select_sum('sales_total_amount');
+			$this->db->from('sales');
+			$this->db->where('YEAR(sales_date)', $year);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getOverallTotalMonth($month){
+			$this->db->select_sum('sales_total_amount');
+			$this->db->from('sales');
+			$this->db->where('MONTH(sales_date)', $month);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getOverallTotalWeek($week){
+			$this->db->select_sum('sales_total_amount');
+			$this->db->from('sales');
+			$this->db->where('WEEKOFYEAR(sales_date)', $week);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getOverallTotalYesterday($date){
+			$this->db->select_sum('sales_total_amount');
+			$this->db->from('sales');
+			$this->db->where('DATE_ADD(DATE(sales_date), INTERVAL 1 DAY) =', $date);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		///////////////////////////////////////////////////////
+		//OVERALL TOTAL Discount YEAR, MONTH, WEEK, Yesterday queries //
+		///////////////////////////////////////////////////////
+
+		public function getTotalDiscountYear($year){
+			$this->db->select_sum('sales_discount');
+			$this->db->from('sales');
+			$this->db->where('YEAR(sales_date)', $year);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalDiscountMonth($month){
+			$this->db->select_sum('sales_discount');
+			$this->db->from('sales');
+			$this->db->where('MONTH(sales_date)', $month);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalDiscountWeek($week){
+			$this->db->select_sum('sales_discount');
+			$this->db->from('sales');
+			$this->db->where('WEEKOFYEAR(sales_date)', $week);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalDiscountYesterday($date){
+			$this->db->select_sum('sales_discount');
+			$this->db->from('sales');
+			$this->db->where('DATE_ADD(DATE(sales_date), INTERVAL 1 DAY) =', $date);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+		///////////////////////////////////////////////////////
+		//OVERALL TOTAL payable YEAR, MONTH, WEEK, Yesterday queries //
+		///////////////////////////////////////////////////////
+
+		public function getTotalAmountPayableYear($year){
+			$this->db->select_sum('sales_total_payable');
+			$this->db->from('sales');
+			$this->db->where('YEAR(sales_date)', $year);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountPayableMonth($month){
+			$this->db->select_sum('sales_total_payable');
+			$this->db->from('sales');
+			$this->db->where('MONTH(sales_date)', $month);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountPayableWeek($week){
+			$this->db->select_sum('sales_total_payable');
+			$this->db->from('sales');
+			$this->db->where('WEEKOFYEAR(sales_date)', $week);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountPayableYesterday($date){
+			$this->db->select_sum('sales_total_payable');
+			$this->db->from('sales');
+			$this->db->where('DATE_ADD(DATE(sales_date), INTERVAL 1 DAY) =', $date);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+		///////////////////////////////////////////////////////
+		//OVERALL TOTAL paid YEAR, MONTH, WEEK, Yesterday queries //
+		///////////////////////////////////////////////////////
+
+		public function getTotalAmountPaidYear($year){
+			$this->db->select_sum('sales_paid_amount');
+			$this->db->from('sales');
+			$this->db->where('YEAR(sales_date)', $year);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountPaidMonth($month){
+			$this->db->select_sum('sales_paid_amount');
+			$this->db->from('sales');
+			$this->db->where('MONTH(sales_date)', $month);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountPaidWeek($week){
+			$this->db->select_sum('sales_paid_amount');
+			$this->db->from('sales');
+			$this->db->where('WEEKOFYEAR(sales_date)', $week);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountPaidYesterday($date){
+			$this->db->select_sum('sales_paid_amount');
+			$this->db->from('sales');
+			$this->db->where('DATE_ADD(DATE(sales_date), INTERVAL 1 DAY) =', $date);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		///////////////////////////////////////////////////////
+		//OVERALL TOTAL receivable YEAR, MONTH, WEEK, Yesterday queries //
+		///////////////////////////////////////////////////////
+
+		public function getTotalAmountReceivablesYear($year){
+			$this->db->select_sum('sales_balance');
+			$this->db->from('sales');
+			$this->db->where('YEAR(sales_date)', $year);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountReceivablesMonth($month){
+			$this->db->select_sum('sales_balance');
+			$this->db->from('sales');
+			$this->db->where('MONTH(sales_date)', $month);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountReceivablesWeek($week){
+			$this->db->select_sum('sales_balance');
+			$this->db->from('sales');
+			$this->db->where('WEEKOFYEAR(sales_date)', $week);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountReceivablesYesterday($date){
+			$this->db->select_sum('sales_balance');
+			$this->db->from('sales');
+			$this->db->where('DATE_ADD(DATE(sales_date), INTERVAL 1 DAY) =', $date);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		//////////////////////////////
+		//get sales count per month //
+		//////////////////////////////
+
+		public function getSalesCountMonth($month){
+			$this->db->select('count(sales_id) as sales_count');
+			$this->db->from('sales');
+			$this->db->where('MONTH(sales_date)', $month);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		//////////////////
+		//sales details //
+		//////////////////
 		public function getSaleDetails($sales_id){
-			$this->db->select('sales_id, DATE_FORMAT(sales_date, "%b %d %Y %r") as date, FORMAT(sales_total_amount, 2) as sales_total_amount, FORMAT(sales_discount, 2) as sales_discount, FORMAT(sales_total_payable, 2) as sales_total_payable, FORMAT(sales_paid_amount, 2) as sales_paid_amount, FORMAT(sales_balance, 2) as sales_balance, sales_balance as balance, concat(users.first_name, " ", users.last_name) as user, concat(clients.client_first_name, " ", clients.client_last_name) as client, sales_status, sales_total_items');
+			$this->db->select('sales_id, DATE_FORMAT(sales_date, "%b %d %Y %r") as date, FORMAT(sales_total_amount, 2) as sales_total_amount, FORMAT(sales_discount, 2) as sales_discount, FORMAT(sales_total_payable, 2) as sales_total_payable, FORMAT(sales_paid_amount, 2) as sales_paid_amount, sales_paid_amount as total_paid_amount, FORMAT(sales_balance, 2) as sales_balance, sales_balance as balance, concat(users.first_name, " ", users.last_name) as user, concat(clients.client_first_name, " ", clients.client_last_name) as client, sales_status, sales_total_items');
 			$this->db->from('sales');
 			$this->db->join('clients', 'sales.client_id = clients.client_id', 'left');
 			$this->db->join('users', 'sales.user_id = users.user_id');
@@ -539,7 +775,7 @@
 		}
 
 		public function getSaleProducts($sales_id){
-			$this->db->select('product_count, FORMAT(product_sales.product_price, 2) as product_price, FORMAT(product_sales.product_cost, 2) as product_cost, FORMAT(product_total_amount, 2) as product_total_amount, product_title');
+			$this->db->select('product_count, FORMAT(product_sales.product_price, 2) as product_price, FORMAT(product_sales.product_cost, 2) as product_cost, FORMAT(product_total_amount, 2) as product_total_amount, product_title, products.product_id, product_image_url');
 			$this->db->from('product_sales');
 			$this->db->join('products', 'products.product_id = product_sales.product_id');
 			$this->db->where('sales_id', $sales_id);
@@ -610,14 +846,79 @@
 		//expenses queries //
 		/////////////////////
 
-		public function getExpense(){
+		public function getExpense($from_date, $to_date){
 			$this->db->select('concat(first_name, " ", middle_name, " ", last_name) as recorder, expense_description, expense_name, DATE_FORMAT(expense_date, "%b %d %Y") as expense_date, FORMAT(expense_amount, 2) as expense_amount');
 			$this->db->from('expenses');
 			$this->db->join('users', 'expenses.user_id = users.user_id');
+			if ($from_date != "" || $from_date != null) {
+				if ($to_date == "" || $to_date == null) {
+					$this->db->where('DATE(expense_date)', $from_date);
+				}else{
+					$this->db->where('DATE(expense_date) >=', $from_date);
+					$this->db->where('DATE(expense_date) <=', $to_date);
+				}
+			}
 
 			$result = $this->db->get();
 
 			return $result->result_array();
+		}
+
+		public function getTotalExpensesYear($year){
+			$this->db->select_sum('expense_amount');
+			$this->db->from('expenses');
+			$this->db->where('YEAR(expense_date)', $year);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalExpensesMonth($month){
+			$this->db->select_sum('expense_amount');
+			$this->db->from('expenses');
+			$this->db->where('MONTH(expense_date)', $month);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalExpensesWeek($week){
+			$this->db->select_sum('expense_amount');
+			$this->db->from('expenses');
+			$this->db->where('WEEKOFYEAR(expense_date)', $week);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalExpensesYesterday($date){
+			$this->db->select_sum('expense_amount');
+			$this->db->from('expenses');
+			$this->db->where('DATE_ADD(expense_date, INTERVAL 1 DAY) =', $date);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function totalExpensesFromRange($from_date, $to_date){
+			$this->db->select_sum('expense_amount');
+			$this->db->from('expenses');
+			if ($from_date != "" || $from_date != null) {
+				if ($to_date == "" || $to_date == null) {
+					$this->db->where('DATE(expense_date)', $from_date);
+				}else{
+					$this->db->where('DATE(expense_date) >=', $from_date);
+					$this->db->where('DATE(expense_date) <=', $to_date);
+				}
+			}
+
+			$result = $this->db->get();
+
+			return $result->row();
 		}
 
 		public function addExpenses($expense_name, $expense_description, $expense_amount, $expense_date, $user_id){
@@ -773,14 +1074,14 @@
 
 		public function getPossibleProductOrders(){
 			$this->db->select('concat(client_first_name, " ", client_middle_name, " ", client_last_name) as client_name, product_title, days_of_ussage, DATE_FORMAT(sales_date, "%b %d %Y %r") as sales_date');
-			$this->db->from('product_customer_alert');
+			$this->db->from('clients');
+			$this->db->join('product_customer_alert', 'clients.client_id = product_customer_alert.client_id');
 			$this->db->join('products', 'product_customer_alert.product_id = products.product_id');
-			$this->db->join('product_sales', 'product_customer_alert.product_id = product_sales.product_id');
-			$this->db->join('sales', 'product_sales.sales_id = sales.sales_id');
-			$this->db->join('clients', 'sales.client_id = clients.client_id');
-			$this->db->where('days_of_ussage >= DATEDIFF(CURDATE(), sales_date)');
-			$this->db->where('days_of_ussage <= (DATEDIFF(CURDATE(), sales_date)) + 5');
-
+			$this->db->join('sales', 'sales.client_id = clients.client_id');
+			$this->db->join('product_sales', 'sales.sales_id = product_sales.sales_id and product_customer_alert.product_id = product_sales.product_id');
+			$this->db->where('days_of_ussage >= DATEDIFF(CURDATE(), sales_date)', null);
+			$this->db->where('days_of_ussage <= (DATEDIFF(CURDATE(), sales_date)) + 5', null);
+			
 			$result = $this->db->get();
 
 			return $result->result_array();
@@ -799,13 +1100,13 @@
 
 		public function getPossibleProductOrdersCount(){
 			$this->db->select('count(alert_id) as alert_count');
-			$this->db->from('product_customer_alert');
+			$this->db->from('clients');
+			$this->db->join('product_customer_alert', 'clients.client_id = product_customer_alert.client_id');
 			$this->db->join('products', 'product_customer_alert.product_id = products.product_id');
-			$this->db->join('product_sales', 'product_customer_alert.product_id = product_sales.product_id');
-			$this->db->join('sales', 'product_sales.sales_id = sales.sales_id');
-			$this->db->join('clients', 'sales.client_id = clients.client_id');
-			$this->db->where('days_of_ussage >= DATEDIFF(CURDATE(), sales_date)');
-			$this->db->where('days_of_ussage <= (DATEDIFF(CURDATE(), sales_date)) + 5');
+			$this->db->join('sales', 'sales.client_id = clients.client_id');
+			$this->db->join('product_sales', 'sales.sales_id = product_sales.sales_id and product_customer_alert.product_id = product_sales.product_id');
+			$this->db->where('days_of_ussage >= DATEDIFF(CURDATE(), sales_date)', null);
+			$this->db->where('days_of_ussage <= (DATEDIFF(CURDATE(), sales_date)) + 5', null);
 
 			$result = $this->db->get();
 

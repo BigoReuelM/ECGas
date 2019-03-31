@@ -3,30 +3,140 @@
 <!-- Begin Page Content -->
   <div class="container-fluid">
 
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="d-sm-flex align-items-center justify-content-between">
       <div>
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">Expenses Monitoring</h1>
-        <p class="mb-4">Expenses Monitoring: <strong>View</strong> reports and <strong>Add</strong> expenses.</p>
+        <p class="mb-4">Expenses Monitoring: <strong>View</strong> Expenses reports and <strong>Add</strong> expenses.</p>
       </div>
       <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#expenses_add_modal">
         <i class="fas fa-plus fa-sm text-white-50"></i>
         Add Expenses
       </button>
     </div>
-
-        
-
-    <!-- DataTales Example -->
+    <hr>
+    <div class="row">
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Expenses This Year:</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Php <?php echo $total_year_expenses ?></div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-money-bill fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Expenses This Month:</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Php <?php echo $total_month_expenses ?></div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-money-bill fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Expenses This Week:</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Php <?php echo $total_week_expenses ?></div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-money-bill fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Expenses Yesterday:</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Php <?php echo $total_yesterday_expenses ?></div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-money-bill fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
     <div class="row">
 
       <div class="col-3">
+        <div class="mb-4">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Expenses from the Table</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">Php <span id="total_amount_expenses"><?php echo $total_expenses_range ?></span></div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-money-bill fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Filters:</h6>
+          </div>
+          <div class="card-body">
+            <form action="<?php echo base_url('pages/getFilteredExpenses') ?>" id ="expenses_filter_form">
+              <div class="row">
+                <div class="col">
+                  <label><small><strong>Dates:</strong></small></label>
+                  <div class="row">
+                    <div class="col mx-2" style="background: #eaecef">
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="from_date"><small>From:</small></label>
+                            <input type="date" name="from_date" class="form-control form-control-sm" value="">
+                          </div>
+                          <div class="form-group">
+                            <label for="to_date"><small>To:</small></label>
+                            <input type="date" name="to_date" class="form-control form-control-sm">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary btn-sm" form="expenses_filter_form">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
       </div>
       
       <div class="col-9">
         <div class="card shadow mb-4">
           <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Activity Logs</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Expenses Table</h6>
           </div>
           <div class="card-body">
             <table class="table table-bordered table-striped table-sm" width="100%" cellspacing="0" id="expenses_table">
@@ -144,6 +254,27 @@
             window.location.reload();
           })
         }
+      });
+
+      $(document).on('submit', '#expenses_filter_form', function(e){
+        e.preventDefault();
+
+        $.get($(this).attr('action'), $(this).serialize(), function(data){
+          $('#total_amount_expenses').html(data.total_expenses_range);
+
+          $('#expenses_table').DataTable().destroy();
+
+          $('#expenses_table').DataTable({
+            data: data.expenses,
+            columns: [
+              {data: 'expense_name'},
+              {data: 'expense_description'},
+              {data: 'expense_amount'},
+              {data: 'expense_date'},
+              {data: 'recorder'}
+            ]
+          });
+        }, 'json');
       });
 
     });

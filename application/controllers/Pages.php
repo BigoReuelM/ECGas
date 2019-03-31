@@ -20,6 +20,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function index(){
 			$data['page_title'] = 'Dashboard';
+			$date = date('Y-m-d');
+			$year = date('Y');
+			$month = date('m');
+			$week = date('W');
+			//total
+			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($date, null, null)->sales_total_amount, 2);
+			$data['overall_total_year'] = number_format($this->pages_model->getOverallTotalYear($year)->sales_total_amount, 2);
+			$data['overall_total_month'] = number_format($this->pages_model->getOverallTotalMonth($month)->sales_total_amount, 2);
+			$data['overall_total_week'] = number_format($this->pages_model->getOverallTotalWeek($week)->sales_total_amount, 2);
+			$data['overall_total_yesterday'] = number_format($this->pages_model->getOverallTotalYesterday($date)->sales_total_amount, 2);
+			//discount
+			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($date, null, null)->sales_discount, 2);
+			$data['total_discount_year'] = number_format($this->pages_model->getTotalDiscountYear($year)->sales_discount, 2);
+			$data['total_discount_month'] = number_format($this->pages_model->getTotalDiscountMonth($month)->sales_discount, 2);
+			$data['total_discount_week'] = number_format($this->pages_model->getTotalDiscountWeek($week)->sales_discount, 2);
+			$data['total_discount_yesterday'] = number_format($this->pages_model->getTotalDiscountYesterday($date)->sales_discount, 2);
+			//amount payable
+			$data['total_amount_payable'] = number_format($this->pages_model->getTotalAmountPayable($date, null, null)->sales_total_payable, 2);
+			$data['total_amount_payable_year'] = number_format($this->pages_model->getTotalAmountPayableYear($year)->sales_total_payable, 2);
+			$data['total_amount_payable_month'] = number_format($this->pages_model->getTotalAmountPayableMonth($month)->sales_total_payable, 2);
+			$data['total_amount_payable_week'] = number_format($this->pages_model->getTotalAmountPayableWeek($week)->sales_total_payable, 2);
+			$data['total_amount_payable_yesterday'] = number_format($this->pages_model->getTotalAmountPayableYesterday($date)->sales_total_payable, 2);
+			//amount paid
+			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($date, null, null)->sales_paid_amount, 2);
+			$data['total_amount_paid_year'] = number_format($this->pages_model->getTotalAmountPaidYear($year)->sales_paid_amount, 2);
+			$data['total_amount_paid_month'] = number_format($this->pages_model->getTotalAmountPaidMonth($month)->sales_paid_amount, 2);
+			$data['total_amount_paid_week'] = number_format($this->pages_model->getTotalAmountPaidWeek($week)->sales_paid_amount, 2);
+			$data['total_amount_paid_yesterday'] = number_format($this->pages_model->getTotalAmountPaidYesterday($date)->sales_paid_amount, 2);
+			//amount receivable
+			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivables($date, null, null)->sales_balance, 2);
+			$data['total_amount_receivable_year'] = number_format($this->pages_model->getTotalAmountReceivablesYear($year)->sales_balance, 2);
+			$data['total_amount_receivable_month'] = number_format($this->pages_model->getTotalAmountReceivablesMonth($month)->sales_balance, 2);
+			$data['total_amount_receivable_week'] = number_format($this->pages_model->getTotalAmountReceivablesWeek($week)->sales_balance, 2);
+			$data['total_amount_receivable_yesterday'] = number_format($this->pages_model->getTotalAmountReceivablesYesterday($date)->sales_balance, 2);
 			$data['products_low_sku'] = $this->pages_model->getProductsWithLowSKU();
 			$data['possible_product_orders'] = $this->pages_model->getPossibleProductOrders();
 			$data['clients_count'] = $this->pages_model->getNumberOfClients()->clients_count;
@@ -171,15 +205,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function sales(){
 			$date = date('Y-m-d');
-			$data['date'] = $date;
 			$data['page_title'] = 'Sales';
+			$data['date'] = $date;
 			$data['sales'] = $this->pages_model->getSales($date, null, null);
+			//total
 			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($date, null, null)->sales_total_amount, 2);
-			//$data['total_cost'] = number_format($this->pages_model->getTotalCost($date, null)->sales_total_cost, 2);
+			//discount
 			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($date, null, null)->sales_discount, 2);
-			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($date, null, null)->sales_paid_amount, 2);
-			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivables($date, null, null)->sales_balance, 2);
+			//amount payable
 			$data['total_amount_payable'] = number_format($this->pages_model->getTotalAmountPayable($date, null, null)->sales_total_payable, 2);
+			//amount paid
+			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($date, null, null)->sales_paid_amount, 2);
+			//amount receivable
+			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivables($date, null, null)->sales_balance, 2);
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('sales');
@@ -217,7 +255,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$data['sales'] = $this->pages_model->getSales($from_date, $to_date, $sales_status);
 			$data['overall_total'] = number_format($this->pages_model->getOverallTotal($from_date, $to_date, $sales_status)->sales_total_amount, 2);
-			//$data['total_cost'] = number_format($this->pages_model->getTotalCost($from_date, $to_date)->sales_total_cost, 2);
 			$data['total_discount'] = number_format($this->pages_model->getTotalDiscount($from_date, $to_date, $sales_status)->sales_discount, 2);
 			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($from_date, $to_date, $sales_status)->sales_paid_amount, 2);
 			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivables($from_date, $to_date, $sales_status)->sales_balance, 2);
@@ -258,17 +295,88 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			echo json_encode($data);
 		}
 
+		public function getMonthlySales(){
+			$data['jan'] = $this->pages_model->getOverallTotalMonth(1)->sales_total_amount;
+			$data['feb'] = $this->pages_model->getOverallTotalMonth(2)->sales_total_amount;
+			$data['mar'] = $this->pages_model->getOverallTotalMonth(3)->sales_total_amount;
+			$data['apr'] = $this->pages_model->getOverallTotalMonth(4)->sales_total_amount;
+			$data['may'] = $this->pages_model->getOverallTotalMonth(5)->sales_total_amount;
+			$data['jun'] = $this->pages_model->getOverallTotalMonth(6)->sales_total_amount;
+			$data['jul'] = $this->pages_model->getOverallTotalMonth(7)->sales_total_amount;
+			$data['aug'] = $this->pages_model->getOverallTotalMonth(8)->sales_total_amount;
+			$data['sep'] = $this->pages_model->getOverallTotalMonth(9)->sales_total_amount;
+			$data['oct'] = $this->pages_model->getOverallTotalMonth(10)->sales_total_amount;
+			$data['nov'] = $this->pages_model->getOverallTotalMonth(11)->sales_total_amount;
+			$data['dec'] = $this->pages_model->getOverallTotalMonth(12)->sales_total_amount;
+			echo json_encode($data);
+		}
+
+		public function getMonthlySalesCount(){
+			$data['jan'] = $this->pages_model->getSalesCountMonth(1)->sales_count;
+			$data['feb'] = $this->pages_model->getSalesCountMonth(2)->sales_count;
+			$data['mar'] = $this->pages_model->getSalesCountMonth(3)->sales_count;
+			$data['apr'] = $this->pages_model->getSalesCountMonth(4)->sales_count;
+			$data['may'] = $this->pages_model->getSalesCountMonth(5)->sales_count;
+			$data['jun'] = $this->pages_model->getSalesCountMonth(6)->sales_count;
+			$data['jul'] = $this->pages_model->getSalesCountMonth(7)->sales_count;
+			$data['aug'] = $this->pages_model->getSalesCountMonth(8)->sales_count;
+			$data['sep'] = $this->pages_model->getSalesCountMonth(9)->sales_count;
+			$data['oct'] = $this->pages_model->getSalesCountMonth(10)->sales_count;
+			$data['nov'] = $this->pages_model->getSalesCountMonth(11)->sales_count;
+			$data['dec'] = $this->pages_model->getSalesCountMonth(12)->sales_count;
+			echo json_encode($data);
+		}
+
+
+
+		//////////////////////////
+		//sale refund or return //
+		//////////////////////////
+
+		public function saleReturnOrRefund(){
+			$data['page_title'] = 'Return/Refund';
+			$sales_id = $this->session->userdata('current_sale_id');
+
+			$data['sales_details'] = $this->pages_model->getSaleDetails($sales_id);
+			$data['sales_products'] = $this->pages_model->getSaleProducts($sales_id);
+			$this->load->view('fragments/head', $data);
+			$this->load->view('fragments/navigation');
+			$this->load->view('return_refund');
+			$this->load->view('fragments/footer');
+		}
+
 		/////////////////////////////
 		//for expenses reports etc //
 		/////////////////////////////
 
 		public function expenses(){
 			$data['page_title'] = 'Expenses';
-			$data['expenses'] = $this->pages_model->getExpense();
+			$date = date('Y-m-d');
+			$year = date('Y');
+			$month = date('m');
+			$week = date('W');
+			$data['date'] = $date;
+			$data['total_year_expenses'] = number_format($this->pages_model->getTotalExpensesYear($year)->expense_amount, 2);
+			$data['total_month_expenses'] = number_format($this->pages_model->getTotalExpensesMonth($month)->expense_amount, 2);
+			$data['total_week_expenses'] = number_format($this->pages_model->getTotalExpensesWeek($week)->expense_amount, 2);
+			$data['total_yesterday_expenses'] = number_format($this->pages_model->getTotalExpensesYesterday($date)->expense_amount, 2);
+			$data['total_expenses_range'] = number_format($this->pages_model->totalExpensesFromRange($date, null)->expense_amount, 2);
+			$data['expenses'] = $this->pages_model->getExpense($date, null);
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('expenses');
 			$this->load->view('fragments/footer');
+		}
+
+		public function getFilteredExpenses(){
+
+			$from_date = htmlspecialchars(trim($this->input->get('from_date')));
+			$to_date = htmlspecialchars(trim($this->input->get('to_date')));
+
+			$data['total_expenses_range'] = number_format($this->pages_model->totalExpensesFromRange($from_date, $to_date)->expense_amount, 2);
+			$data['expenses'] = $this->pages_model->getExpense($from_date, $to_date);
+
+			echo json_encode($data);
 		}
 
 		public function addExpenses(){
