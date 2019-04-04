@@ -62,4 +62,6 @@ $(document).ready(function(){
 			$('#sale_view_modal').modal('show');
 		});
 	});
+
+	
 });

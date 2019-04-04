@@ -55,7 +55,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="<?php echo base_url('pages/sales') ?>">Sales</a>
             <a class="collapse-item" href="<?php echo base_url('pages/expenses') ?>">Expenses</a>
-            <a class="collapse-item" href="<?php echo base_url('pages/refundsAndReturns') ?>">Returns/Refund</a>
+            <a class="collapse-item" href="<?php echo base_url('pages/returnsAndRefunds') ?>">Returns/Refund</a>
           </div>
         </div>
       </li>

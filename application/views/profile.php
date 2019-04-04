@@ -8,129 +8,70 @@
           <p class="mb-4"><strong>View</strong> and <strong>EDIT</strong> user details. Review tabular <strong>REPORT</strong> of actions done while using this web application.</p>
 
           <!-- DataTales Example -->
-          <div class="row">
-            
-            <div class="col-9">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Activity Logs</h6>
-                </div>
-                <div class="card-body">
-                  <table class="table table-bordered" width="100%" cellspacing="0" id="report_table">
-                    <thead>
-                      <tr>
-                        <td>Activity</td>
-                        <td>Date</td>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <td>Activity</td>
-                        <td>Date</td>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                      <tr>
-                        <td>Sell</td>
-                        <td>June 12, 2018</td>
-                      </tr>
-                    </tbody>
-                  </table>                </div>
-              </div>
-            </div>
-            <div class="col-3">
+          <div class="row justify-content-center">
+            <div class="col-10">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Edit User Details</h6>
                 </div>
                 <div class="card-body" id="details_container">
-                  <div class="form-group">
-                    <label for="first_name"><small>First Name:</small></label>
-                    <input type="text" class="form-control form-control-sm detail" id="first_name" name="first_name" placeholder="<?php echo $user_details['first_name'] ?>">
-                  </div>
-                  <div class="form-group">
-                    <label for="middle_name"><small>Middle Name:</small></label>
-                    <input type="text" class="form-control form-control-sm detail" id="middle_name" name="middle_name" placeholder="<?php echo $user_details['middle_name'] ?>">
-                  </div>
-                  <div class="form-group">
-                    <label for="last_name"><small>Last Name:</small></label>
-                    <input type="text" class="form-control form-control-sm detail" id="last_name" name="last_name" placeholder="<?php echo $user_details['last_name'] ?>">
-                  </div>
-                  <div class="form-group">
-                    <label for="gender"><small>Gender:</small></label>
-                    <select name="gender" id="gender" class="form-control form-control-sm detail">
-                      <option hidden selected disabled><?php echo $user_details['gender'] ?></option>
-                      <?php if ($user_details['gender'] == 'male'): ?>
-                        <option value="female">Female</option>
-                      <?php endif ?>
-                      <?php if ($user_details['gender'] == 'female'): ?>
-                        <option value="male">Male</option>
-                      <?php endif ?>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="user_type"><small>User Type:</small></label>
-                    <select name="user_type" id="user_type" class="form-control form-control-sm detail">
-                      <option hidden selected disabled><?php echo $user_details['user_type'] ?></option>
-                      <?php if ($user_details['user_type'] == 'employee'): ?>
-                        <option value="admin">Admin</option>
-                      <?php endif ?>
-                      <?php if ($user_details['user_type'] == 'admin'): ?>
-                        <option value="employee">Employee</option>
-                      <?php endif ?>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="contact"><small>Contact Number:</small></label>
-                    <input type="text" id="contact" name="contact" class="form-control form-control-sm detail" placeholder="<?php echo $user_details['contact'] ?>">
-                  </div>
-                  <div class="form-group">
-                    <label for="address"><small>Address:</small></label>
-                    <textarea name="address" id="address" class="form-control form-control-sm detail" rows="3" style="resize: none" placeholder="<?php echo $user_details['address'] ?>"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="username"><small>Username:</small></label>
-                    <input type="text" name="username" id="username" class="form-control form-control-sm detail" placeholder="<?php echo $user_details['username'] ?>">
-                  </div>
-                  <div class="form-group">
-                    <label for="password"><small>Password:</small></label>
-                    <input type="text" name="password" id="password" class="form-control form-control-sm detail" placeholder="<?php echo $user_details['password'] ?>">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group">
+                        <label for="first_name"><small>First Name:</small></label>
+                        <input type="text" class="form-control form-control-sm detail" id="first_name" name="first_name" placeholder="<?php echo $user_details['first_name'] ?>">
+                      </div>
+                      <div class="form-group">
+                        <label for="middle_name"><small>Middle Name:</small></label>
+                        <input type="text" class="form-control form-control-sm detail" id="middle_name" name="middle_name" placeholder="<?php echo $user_details['middle_name'] ?>">
+                      </div>
+                      <div class="form-group">
+                        <label for="last_name"><small>Last Name:</small></label>
+                        <input type="text" class="form-control form-control-sm detail" id="last_name" name="last_name" placeholder="<?php echo $user_details['last_name'] ?>">
+                      </div>
+                      <div class="form-group">
+                        <label for="gender"><small>Gender:</small></label>
+                        <select name="gender" id="gender" class="form-control form-control-sm detail">
+                          <option hidden selected disabled><?php echo $user_details['gender'] ?></option>
+                          <?php if ($user_details['gender'] == 'male'): ?>
+                            <option value="female">Female</option>
+                          <?php endif ?>
+                          <?php if ($user_details['gender'] == 'female'): ?>
+                            <option value="male">Male</option>
+                          <?php endif ?>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="user_type"><small>User Type:</small></label>
+                        <select name="user_type" id="user_type" class="form-control form-control-sm detail">
+                          <option hidden selected disabled><?php echo $user_details['user_type'] ?></option>
+                          <?php if ($user_details['user_type'] == 'employee'): ?>
+                            <option value="admin">Admin</option>
+                          <?php endif ?>
+                          <?php if ($user_details['user_type'] == 'admin'): ?>
+                            <option value="employee">Employee</option>
+                          <?php endif ?>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group">
+                        <label for="contact"><small>Contact Number:</small></label>
+                        <input type="text" id="contact" name="contact" class="form-control form-control-sm detail" placeholder="<?php echo $user_details['contact'] ?>">
+                      </div>
+                      <div class="form-group">
+                        <label for="address"><small>Address:</small></label>
+                        <textarea name="address" id="address" class="form-control form-control-sm detail" rows="3" style="resize: none" placeholder="<?php echo $user_details['address'] ?>"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="username"><small>Username:</small></label>
+                        <input type="text" name="username" id="username" class="form-control form-control-sm detail" placeholder="<?php echo $user_details['username'] ?>">
+                      </div>
+                      <div class="form-group">
+                        <label for="password"><small>Password:</small></label>
+                        <input type="text" name="password" id="password" class="form-control form-control-sm detail" placeholder="<?php echo $user_details['password'] ?>">
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="card-footer">

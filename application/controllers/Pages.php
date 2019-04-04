@@ -54,6 +54,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['total_amount_receivable_month'] = number_format($this->pages_model->getTotalAmountReceivablesMonth($month)->sales_balance, 2);
 			$data['total_amount_receivable_week'] = number_format($this->pages_model->getTotalAmountReceivablesWeek($week)->sales_balance, 2);
 			$data['total_amount_receivable_yesterday'] = number_format($this->pages_model->getTotalAmountReceivablesYesterday($date)->sales_balance, 2);
+			//refunds total
+			$data['total_returned_amount'] = number_format($this->pages_model->getTotalAmountReturned($date, null, null)->sales_refund_amount, 2);
+			$data['total_returned_amount_year'] = number_format($this->pages_model->getTotalAmountReturnedYear($year)->sales_refund_amount, 2);
+			$data['total_returned_amount_month'] = number_format($this->pages_model->getTotalAmountReturnedMonth($month)->sales_refund_amount, 2);
+			$data['total_returned_amount_week'] = number_format($this->pages_model->getTotalAmountReturnedWeek($week)->sales_refund_amount, 2);
+			$data['total_returned_amount_yesterday'] = number_format($this->pages_model->getTotalAmountReturnedYesterday($date)->sales_refund_amount, 2);
+			//others
 			$data['products_low_sku'] = $this->pages_model->getProductsWithLowSKU();
 			$data['possible_product_orders'] = $this->pages_model->getPossibleProductOrders();
 			$data['clients_count'] = $this->pages_model->getNumberOfClients()->clients_count;
@@ -65,7 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['active_products_count'] = $this->pages_model->getNumberOfActiveProducts()->product_count;
 			$data['inactive_products_count'] = $this->pages_model->getNumberOfInactiveProducts()->product_count;
 			$data['issues'] = $this->pages_model->getLatestIssues();
-			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivablesDashboard()->sales_balance, 2);
+			
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('index');
@@ -218,6 +225,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($date, null, null)->sales_paid_amount, 2);
 			//amount receivable
 			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivables($date, null, null)->sales_balance, 2);
+			//refunded amount
+			$data['total_returned_amount'] = number_format($this->pages_model->getTotalAmountReturned($date, null, null)->sales_refund_amount, 2);
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('sales');
@@ -242,6 +251,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['sales_details'] = $this->pages_model->getSaleDetails($sales_id);
 			$data['sales_products'] = $this->pages_model->getSaleProducts($sales_id);
 			$data['payment_logs'] = $this->pages_model->getPaymentLogs($sales_id);
+			$data['rr_logs'] = $this->pages_model->getReturnAndRefundLogs($sales_id);
+			$data['returned_product_count'] = $this->pages_model->getSalesReturnProductCount($sales_id)->product_returned_count;
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('sales_details');
@@ -259,6 +270,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['total_amount_paid'] = number_format($this->pages_model->getTotalAmountPaid($from_date, $to_date, $sales_status)->sales_paid_amount, 2);
 			$data['total_amount_receivable'] = number_format($this->pages_model->getTotalAmountReceivables($from_date, $to_date, $sales_status)->sales_balance, 2);
 			$data['total_amount_payable'] = number_format($this->pages_model->getTotalAmountPayable($from_date, $to_date, $sales_status)->sales_total_payable, 2);
+			$data['total_returned_amount'] = number_format($this->pages_model->getTotalAmountReturned($from_date, $to_date, $sales_status)->sales_refund_amount, 2);
 
 			echo json_encode($data);
 		}
@@ -345,6 +357,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view('fragments/footer');
 		}
 
+		public function recordReturnRefund(){
+			$user_id = $this->session->userdata('user_details')['user_id'];
+			$product_ids = $this->input->post('product_ids[]');
+			$returned_product_count = $this->input->post('returned_product_count[]');
+
+			$rr_reason = htmlspecialchars(trim($this->input->post('rr_reason')));
+			$rr_amount = htmlspecialchars(trim($this->input->post('rr_amount')));
+			$sales_id = htmlspecialchars(trim($this->input->post('sales_id')));
+
+			//////////////////////////////////////////////////////////////
+			//record refund / return logs and update product_sales_data //
+			//////////////////////////////////////////////////////////////
+
+			$rr_id = $this->pages_model->recordReturnRefund($user_id, $sales_id, $rr_reason, $rr_amount);
+
+			if (!empty($rr_amount || $rr_amount != null || $rr_amount !=  "")) {
+				$current_sales_refund_amount = $this->pages_model->getSaleRefundAmount($sales_id)->sales_refund_amount;
+
+				$new_sales_refund_amount = $rr_amount + $current_sales_refund_amount;
+
+				$this->pages_model->updateSalesRefundAmount($sales_id, $new_sales_refund_amount);
+			}
+
+			for ($i=0; $i < sizeof($product_ids) ; $i++) { 
+				$this->pages_model->recordReturnProducts($rr_id, $product_ids[$i], $returned_product_count[$i]);
+				$post_returned_product_count = $this->pages_model->getReturned_product_count($sales_id, $product_ids[$i])->returned_product_count;
+				$new_returned_product_count = $post_returned_product_count + $returned_product_count[$i]; 
+				$this->pages_model->updateReturnProductCount($sales_id, $product_ids[$i], $new_returned_product_count);
+			}
+
+			redirect('pages/saleDetails');
+		}
+
+		public function getProductReturns(){
+			if (!isset($_POST['sales_id'])) {
+				$sales_id = null;
+			}else{
+				$sales_id = htmlspecialchars(trim($this->input->get('sales_id')));
+			}
+			$rr_id = htmlspecialchars(trim($this->input->get('rr_id')));
+
+			$data['products_returned'] = $this->pages_model->getProductReturns($sales_id, $rr_id);
+
+			echo json_encode($data);
+		}
+
 		/////////////////////////////
 		//for expenses reports etc //
 		/////////////////////////////
@@ -395,11 +453,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		//for refunds and returns reports etc //
 		////////////////////////////////////////
 
-		public function refundsAndReturns(){
+		public function returnsAndRefunds(){
 			$data['page_title'] = 'Refund/Returns';
+			$data['logs'] = $this->pages_model->getAllReturnAndRefundLogs();
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
-			$this->load->view('returns_refund');
+			$this->load->view('return_refund_list');
 			$this->load->view('fragments/footer');
 		}
 

@@ -14,46 +14,44 @@
         </div>
       </div>
       <hr>
-      <div class="row">
-        <div class="col-3">
+      <div class="row">     
+        <div class="col">
           <div class="mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
               <div class="card-body">
-                <div class="row no-gutters align-items-center">
+                <div class="row">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Sales:</div>
                     <div class="h5 mb-1 ml-2 font-weight-bold text-gray-800">Php <span id="overall_total"> <?php echo $overall_total;  ?></span></div>
                   </div>
-                </div>
-                <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Discount:</div>
                     <div class="h5 mb-1 ml-2 font-weight-bold text-gray-800">Php <span id="total_discount"> <?php echo $total_discount;  ?></span></div>
                   </div>
-                </div>
-                <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Amount Payable:</div>
                     <div class="h5 mb-1 ml-2 font-weight-bold text-gray-800">Php <span id="total_amount_payable"> <?php echo $total_amount_payable;  ?></span></div>
                   </div>
-                </div>
-                <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Amount Paid:</div>
                     <div class="h5 mb-1 ml-2 font-weight-bold text-gray-800">Php <span id="total_amount_paid"> <?php echo $total_amount_paid;  ?></span></div>
                   </div>
-                </div>
-                <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Total Amount Receivable:</div>
                     <div class="h5 mb-1 ml-2 font-weight-bold text-gray-800">Php <span id="total_amount_receivable"> <?php echo $total_amount_receivable;  ?></span></div>
+                  </div>
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Total Refunded Amount:</div>
+                    <div class="h5 mb-1 ml-2 font-weight-bold text-gray-800">Php <span id="total_returned_amount"> <?php echo $total_returned_amount;  ?></span></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-9">    
+      </div>
+      <div class="row">
+        <div class="col">    
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Sales Logs</h6>
@@ -200,6 +198,7 @@
         $('#total_amount_paid').html(response.total_amount_paid);
         $('#total_amount_receivable').html(response.total_amount_receivable);
         $('#total_amount_payable').html(response.total_amount_payable);
+        $('#total_returned_amount').html(response.total_returned_amount);
 
         $('#sales_table').DataTable().destroy();
 

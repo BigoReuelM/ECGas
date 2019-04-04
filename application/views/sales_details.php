@@ -77,6 +77,20 @@
                   </div>
                 </div>
               </div>
+              <div class="row justify-content-center">
+                <div class="col-4 border-right">
+                  <div class="form-group">
+                    <label for="returned_products_count"><small>Product Returned Count:</small></label>
+                    <p id="returned_products_count" class="form-control form-control-sm"><?php echo $returned_product_count ?></p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="refund_total"><small>Refund Total:</small></label>
+                    <p id="refund_total" class="form-control form-control-sm"><?php echo $sales_details['sales_refund_amount'] ?></p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -160,6 +174,49 @@
       <div class="col">
         <div class="card shadow mb-4">
           <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Return/Refund Logs</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <table class="table table-striped table-bordered table-sm text-center" width="100%" cellspacing="0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">User</th>
+                      <th scope="col">Reason</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Returns</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($rr_logs as $rr_log): ?>
+                      <tr>
+                        <td><?php echo $rr_log['rr_date'] ?></td>
+                        <td><?php echo $rr_log['user'] ?></td>
+                        <td><?php echo $rr_log['rr_reason'] ?></td>
+                        <td><?php echo $rr_log['rr_amount'] ?></td>
+                        <td>
+                          <form action="<?php echo base_url('pages/getProductReturns') ?>" class="view_product_return_form">
+                            <input type="text" name="sales_id" value="<?php echo $sales_details['sales_id'] ?>" hidden>
+                            <input type="text" name="rr_id" value="<?php echo $rr_log['rr_id'] ?>" hidden>
+                            <button type="submit" class="btn btn-sm btn-info btn-circle">
+                              <i class="fa fa-eye"></i>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                    <?php endforeach ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Payment Logs</h6>
           </div>
           <div class="card-body">
@@ -199,6 +256,38 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
+<div class="modal fade" id="returned_products_modal" tabindex="-1" role="dialog"aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Returned Products</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <table class="table table-striped table-bordered table-sm text-center" id="returned_products_table" width="100%" cellspacing="0">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Image</th>
+                  <th scope="col">Product Name</th>
+                  <th scope="col">Count</th>
+                </tr>
+              </thead>
+              <tbody id="table_body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
   <!-- Bootstrap core JavaScript-->
@@ -218,5 +307,6 @@
 
   <!-- custom script for this page -->
   <script src="<?php echo base_url() ?>public/js/sales_details.js"></script>
+  <script src="<?php echo base_url() ?>public/js/returned_products.js"></script>
   <script src="<?php echo base_url() ?>public/js/validation.js"></script>
   <script src="<?php echo base_url() ?>public/js/custom.js"></script>

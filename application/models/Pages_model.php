@@ -499,17 +499,27 @@
 			return $result->row();
 		}
 
-		public function getTotalAmountReceivablesDashboard(){
-			$this->db->select_sum('sales_balance');
+
+		public function getTotalAmountPayable($from_date, $to_date, $sales_status){
+			$this->db->select_sum('sales_total_payable');
 			$this->db->from('sales');
+			if ($to_date == "" || $to_date == null) {
+				$this->db->where('DATE(sales_date)', $from_date);
+			}else{
+				$this->db->where('DATE(sales_date) >=', $from_date);
+				$this->db->where('DATE(sales_date) <=', $to_date);
+			}
+			if ($sales_status != "" || $sales_status != null) {
+				$this->db->where('sales_status', $sales_status);
+			}
 
 			$result = $this->db->get();
 
 			return $result->row();
 		}
 
-		public function getTotalAmountPayable($from_date, $to_date, $sales_status){
-			$this->db->select_sum('sales_total_payable');
+		public function getTotalAmountReturned($from_date, $to_date, $sales_status){
+			$this->db->select_sum('sales_refund_amount');
 			$this->db->from('sales');
 			if ($to_date == "" || $to_date == null) {
 				$this->db->where('DATE(sales_date)', $from_date);
@@ -745,6 +755,50 @@
 			return $result->row();
 		}
 
+		///////////////////////////////////////////////////////
+		//OVERALL TOTAL refund YEAR, MONTH, WEEK, Yesterday queries //
+		///////////////////////////////////////////////////////
+
+		public function getTotalAmountReturnedYear($year){
+			$this->db->select_sum('sales_refund_amount');
+			$this->db->from('sales');
+			$this->db->where('YEAR(sales_date)', $year);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountReturnedMonth($month){
+			$this->db->select_sum('sales_refund_amount');
+			$this->db->from('sales');
+			$this->db->where('MONTH(sales_date)', $month);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountReturnedWeek($week){
+			$this->db->select_sum('sales_refund_amount');
+			$this->db->from('sales');
+			$this->db->where('WEEKOFYEAR(sales_date)', $week);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getTotalAmountReturnedYesterday($date){
+			$this->db->select_sum('sales_refund_amount');
+			$this->db->from('sales');
+			$this->db->where('DATE_ADD(DATE(sales_date), INTERVAL 1 DAY) =', $date);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
 		//////////////////////////////
 		//get sales count per month //
 		//////////////////////////////
@@ -763,7 +817,7 @@
 		//sales details //
 		//////////////////
 		public function getSaleDetails($sales_id){
-			$this->db->select('sales_id, DATE_FORMAT(sales_date, "%b %d %Y %r") as date, FORMAT(sales_total_amount, 2) as sales_total_amount, FORMAT(sales_discount, 2) as sales_discount, FORMAT(sales_total_payable, 2) as sales_total_payable, FORMAT(sales_paid_amount, 2) as sales_paid_amount, sales_paid_amount as total_paid_amount, FORMAT(sales_balance, 2) as sales_balance, sales_balance as balance, concat(users.first_name, " ", users.last_name) as user, concat(clients.client_first_name, " ", clients.client_last_name) as client, sales_status, sales_total_items');
+			$this->db->select('sales_id, DATE_FORMAT(sales_date, "%b %d %Y %r") as date, FORMAT(sales_total_amount, 2) as sales_total_amount, FORMAT(sales_discount, 2) as sales_discount, FORMAT(sales_total_payable, 2) as sales_total_payable, FORMAT(sales_paid_amount, 2) as sales_paid_amount, sales_paid_amount as total_paid_amount, FORMAT(sales_balance, 2) as sales_balance, sales_balance as balance, FORMAT(sales_refund_amount, 2) as sales_refund_amount, concat(users.first_name, " ", users.last_name) as user, concat(clients.client_first_name, " ", clients.client_last_name) as client, sales_status, sales_total_items');
 			$this->db->from('sales');
 			$this->db->join('clients', 'sales.client_id = clients.client_id', 'left');
 			$this->db->join('users', 'sales.user_id = users.user_id');
@@ -775,14 +829,27 @@
 		}
 
 		public function getSaleProducts($sales_id){
-			$this->db->select('product_count, FORMAT(product_sales.product_price, 2) as product_price, FORMAT(product_sales.product_cost, 2) as product_cost, FORMAT(product_total_amount, 2) as product_total_amount, product_title, products.product_id, product_image_url');
+			$this->db->select('(product_count - returned_product_count) as product_count, FORMAT(product_sales.product_price, 2) as product_price, FORMAT(product_sales.product_cost, 2) as product_cost, FORMAT(product_total_amount, 2) as product_total_amount, product_title, products.product_id, product_image_url');
 			$this->db->from('product_sales');
 			$this->db->join('products', 'products.product_id = product_sales.product_id');
 			$this->db->where('sales_id', $sales_id);
+			$this->db->where('product_sales.product_count > product_sales.returned_product_count');
 
 			$result = $this->db->get();
 
 			return $result->result_array();
+		}
+
+		public function getReturnAndRefundLogs($sales_id){
+			$this->db->select('rr_id, rr_reason, DATE_FORMAT(rr_date, "%b %d %Y %r") as rr_date, FORMAT(rr_amount, 2) as rr_amount, rr_reason, concat(users.first_name, " ", users.last_name) as user');
+			$this->db->from('returns_refunds');
+			$this->db->join('users', 'returns_refunds.user_id = users.user_id');
+			$this->db->where('returns_refunds.sales_id', $sales_id);
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+
 		}
 
 		public function getPaymentLogs($sales_id){
@@ -840,6 +907,33 @@
 
 			$this->db->where('sales_id', $sales_id);
 			$this->db->update('sales', $data);
+		}
+
+		public function getProductReturns($sales_id, $rr_id){
+			$this->db->select('product_title, product_image_url, product_returned_count');
+			$this->db->from('product_return');
+			$this->db->join('returns_refunds', 'product_return.rr_id = returns_refunds.rr_id');
+			$this->db->join('products', 'product_return.product_id = products.product_id');
+			if ($sales_id != null) {
+				$this->db->where('returns_refunds.sales_id', $sales_id);
+			}
+			$this->db->where('returns_refunds.rr_id', $rr_id);
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+		}
+
+		public function getSalesReturnProductCount($sales_id){
+			$this->db->select_sum('product_returned_count');
+			$this->db->from('product_return');
+			$this->db->join('returns_refunds', 'product_return.rr_id = returns_refunds.rr_id');
+			$this->db->where('returns_refunds.sales_id', $sales_id);
+
+			$result = $this->db->get();
+
+			return $result->row();
+
 		}
 
 		/////////////////////
@@ -1111,6 +1205,84 @@
 			$result = $this->db->get();
 
 			return $result->row();
+		}
+
+		////////////////////////////
+		//return / refund queries //
+		////////////////////////////
+
+		public function recordReturnRefund($user_id, $sales_id, $rr_reason, $rr_amount){
+			$data = array(
+				'user_id' => $user_id,
+				'sales_id' => $sales_id,
+				'rr_reason' => $rr_reason,
+				'rr_amount' => $rr_amount
+			);
+
+			$this->db->insert('returns_refunds', $data);
+
+			return $this->db->insert_id();
+		}
+
+		public function recordReturnProducts($rr_id, $product_id, $product_returned_count){
+			$data = array(
+				'rr_id' => $rr_id,
+				'product_id' => $product_id,
+				'product_returned_count' => $product_returned_count
+			);
+
+			$this->db->insert('product_return', $data);
+		}
+
+		public function getReturned_product_count($sales_id, $product_id){
+			$this->db->select('returned_product_count');
+			$this->db->from('product_sales');
+			$this->db->where('sales_id', $sales_id);
+			$this->db->where('product_id', $product_id);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function getSaleRefundAmount($sales_id){
+			$this->db->select('sales_refund_amount');
+			$this->db->from('sales');
+			$this->db->where('sales_id', $sales_id);
+
+			$result = $this->db->get();
+
+			return $result->row();
+		}
+
+		public function updateReturnProductCount($sales_id, $product_id, $new_returned_product_count){
+			$data = array(
+				'returned_product_count' => $new_returned_product_count
+			);
+
+			$this->db->where('sales_id', $sales_id);
+			$this->db->where('product_id', $product_id);
+			$this->db->update('product_sales', $data);
+		}
+
+		public function updateSalesRefundAmount($sales_id, $sales_refund_amount){
+			$data = array(
+				'sales_refund_amount' => $sales_refund_amount
+			);
+
+			$this->db->where('sales_id', $sales_id);
+			$this->db->update('sales', $data);
+		}
+
+		public function getAllReturnAndRefundLogs(){
+			$this->db->select('rr_id, rr_reason, DATE_FORMAT(rr_date, "%b %d %Y %r") as rr_date, FORMAT(rr_amount, 2) as rr_amount, rr_reason, concat(users.first_name, " ", users.last_name) as user');
+			$this->db->from('returns_refunds');
+			$this->db->join('users', 'returns_refunds.user_id = users.user_id');
+
+			$result = $this->db->get();
+
+			return $result->result_array();
+
 		}
 
 
