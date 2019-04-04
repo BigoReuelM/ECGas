@@ -11,10 +11,12 @@
               <h1 class="h3 mb-2 text-gray-800">Products Management</h1>
               <p>Product management: <strong>Add, Delete or Activate and Deactivate</strong> a product.</p>
             </div>
-            <a href="<?php echo base_url('pages/addProduct') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-              <i class="fas fa-plus fa-sm text-white-50"></i>
-              Add Product
-            </a>
+            <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
+              <a href="<?php echo base_url('pages/addProduct') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-plus fa-sm text-white-50"></i>
+                Add Product
+              </a>
+            <?php endif ?>
           </div>
 
           <div class="row">
@@ -124,14 +126,16 @@
                               <i class="fa fa-eye"></i>
                             </button>
                           </form>
-                          <span data-toggle="tooltip" data-placement="top" title="Deactivate">
-                            <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $active_product['product_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
-                              <i class="fas fa-toggle-off"></i>
+                          <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
+                            <span data-toggle="tooltip" data-placement="top" title="Deactivate">
+                              <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $active_product['product_id'] ?>,deactivate" data-toggle="modal" data-target="#update_status_modal">
+                                <i class="fas fa-toggle-off"></i>
+                              </button>
+                            </span>
+                            <button class="btn btn-circle btn-danger btn-sm delete_btn" data-toggle="tooltip" title="Delete Product" value="<?php echo $active_product['product_id'] ?>">
+                              <i class="fa fa-trash"></i>
                             </button>
-                          </span>
-                          <button class="btn btn-circle btn-danger btn-sm delete_btn" data-toggle="tooltip" title="Delete Product" value="<?php echo $active_product['product_id'] ?>">
-                            <i class="fa fa-trash"></i>
-                          </button>
+                          <?php endif ?>
                         </div>
                       </td>
                     </tr>
@@ -181,14 +185,16 @@
                               <i class="fa fa-eye"></i>
                             </button>
                           </form>
-                          <span data-toggle="tooltip" data-placement="top" title="Activate">
-                            <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $inactive_product['product_id'] ?>,activate" data-toggle="modal" data-target="#update_status_modal">
-                              <i class="fas fa-toggle-on"></i>
+                          <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
+                            <span data-toggle="tooltip" data-placement="top" title="Activate">
+                              <button type="button" class="btn btn-warning btn-circle btn-sm update_status_btn" value="<?php echo $inactive_product['product_id'] ?>,activate" data-toggle="modal" data-target="#update_status_modal">
+                                <i class="fas fa-toggle-on"></i>
+                              </button>
+                            </span>
+                            <button class="btn btn-circle btn-danger btn-sm delete_btn" data-toggle="tooltip" title="Delete Product" value="<?php echo $inactive_product['product_id'] ?>">
+                              <i class="fa fa-trash"></i>
                             </button>
-                          </span>
-                          <button class="btn btn-circle btn-danger btn-sm delete_btn" data-toggle="tooltip" title="Delete Product" value="<?php echo $inactive_product['product_id'] ?>">
-                            <i class="fa fa-trash"></i>
-                          </button>
+                          <?php endif ?>
                         </div>
                       </td>
                     </tr>

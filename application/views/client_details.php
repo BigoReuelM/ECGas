@@ -40,7 +40,6 @@
                   <table class="table table-striped table-bordered table-sm text-center" id="client_sales_table" width="100%" cellspacing="0">
                     <thead class="thead-dark">
                       <tr>
-                        <th>#</th>
                         <th>Date and Time</th>
                         <th>Total</th>
                         <th>Total Payable</th>
@@ -52,11 +51,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php
-                        $count = 1; 
-                        foreach ($client_sales as $sale): ?>
+                      <?php foreach ($client_sales as $sale): ?>
                         <tr>
-                          <td><?php echo $count ?></td>
                           <td><?php echo $sale['date'] ?></td>
                           <td><?php echo $sale['sales_total_amount'] ?></td>
                           <td><?php echo $sale['sales_total_payable'] ?></td>
@@ -73,9 +69,7 @@
                             </form>
                           </td>
                         </tr>
-                      <?php 
-                        $count++;
-                        endforeach ?>
+                      <?php endforeach ?>
                     </tbody>
                   </table>
 

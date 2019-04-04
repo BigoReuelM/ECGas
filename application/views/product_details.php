@@ -24,12 +24,14 @@
               <p class="mb-4">Product Details: <strong> VIEW</strong> and <strong>EDIT</strong> details of a product.</p>
             </div>
             <div>
-              <span data-toggle="tooltip" title="Delete Product">
-                <button class="btn btn-danger btn-sm" id="delete_btn" data-toggle="modal" data-target="#product_delete_modal">
-                  <i class="fa fa-trash"></i>
-                  DELETE Product
-                </button>
-              </span>
+              <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
+                <span data-toggle="tooltip" title="Delete Product">
+                  <button class="btn btn-danger btn-sm" id="delete_btn" data-toggle="modal" data-target="#product_delete_modal">
+                    <i class="fa fa-trash"></i>
+                    DELETE Product
+                  </button>
+                </span>
+              <?php endif ?>
             </div>
           </div>
 
@@ -86,12 +88,14 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-footer">
-                  <button type="button" class="btn btn-sm btn-primary float-right" id="save_edits">
-                    <i class="fa fa-save"></i>
-                    Save Changes
-                  </button>
-                </div>
+                <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
+                  <div class="card-footer">
+                    <button type="button" class="btn btn-sm btn-primary float-right" id="save_edits">
+                      <i class="fa fa-save"></i>
+                      Save Changes
+                    </button>
+                  </div>
+                <?php endif ?>
               </div>
             </div>
             <div class="col-3">
@@ -152,59 +156,61 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-<div class="modal fade" id="update_details_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><strong>UPDATE</strong> User Details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class="text-center">Confirm Inputs.</p>
-        <input type="text" name="product_id" value="<?php echo $product_details['product_id'] ?>" form="detail_update_form" hidden>
-        <form method="POST" action="<?php echo base_url('pages/updateProductDetails') ?>" id="detail_update_form" enctype="multipart/form-data">
-          
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button form="detail_update_form" type="submit" class="btn btn-primary">Confirm</button>
+<?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
+  <div class="modal fade" id="update_details_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"><strong>UPDATE</strong> User Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-center">Confirm Inputs.</p>
+          <input type="text" name="product_id" value="<?php echo $product_details['product_id'] ?>" form="detail_update_form" hidden>
+          <form method="POST" action="<?php echo base_url('pages/updateProductDetails') ?>" id="detail_update_form" enctype="multipart/form-data">
+            
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button form="detail_update_form" type="submit" class="btn btn-primary">Confirm</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal for delete users-->
-<div class="modal fade" id="product_delete_modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-danger"><strong>Delete</strong> Product</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div id="delete_message">
-          
+  <!-- Modal for delete users-->
+  <div class="modal fade" id="product_delete_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger"><strong>Delete</strong> Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <div class="text-center alert alert-danger">
-          <p class="text-danger">Delete this Product?</p>
+        <div class="modal-body">
+          <div id="delete_message">
+            
+          </div>
+          <div class="text-center alert alert-danger">
+            <p class="text-danger">Delete this Product?</p>
+          </div>
+          <form method="POST" action="<?php echo base_url('pages/deleteProduct') ?>" id="delete_product_form_from_details">
+            <input type="text" id="url" value="<?php echo base_url('pages/allProducts') ?>" hidden>
+            <input type="text" name="product_id" value="<?php echo $product_details['product_id'] ?>" hidden>
+          </form>
         </div>
-        <form method="POST" action="<?php echo base_url('pages/deleteProduct') ?>" id="delete_product_form_from_details">
-          <input type="text" id="url" value="<?php echo base_url('pages/allProducts') ?>" hidden>
-          <input type="text" name="product_id" value="<?php echo $product_details['product_id'] ?>" hidden>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="delete_product_form_from_details" type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+          <button form="delete_product_form_from_details" type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<?php endif ?>
 
   <!-- Bootstrap core JavaScript-->
   <script src="<?php echo base_url() ?>public/vendor/jquery/jquery.min.js"></script>

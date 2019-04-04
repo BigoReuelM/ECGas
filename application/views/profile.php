@@ -74,12 +74,14 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-footer">
-                  <button class="btn btn-primary btn-sm float-right" id="save_edits">
-                    <i class="fa fa-save"></i>
-                    Save
-                  </button>
-                </div>
+                <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
+                  <div class="card-footer">
+                    <button class="btn btn-primary btn-sm float-right" id="save_edits">
+                      <i class="fa fa-save"></i>
+                      Save
+                    </button>
+                  </div>
+                <?php endif ?>
               </div>
             </div>
           </div>
