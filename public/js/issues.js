@@ -2,7 +2,9 @@ $(document).ready(function(){
 	/////////////////////
 	//Initialize table //
 	/////////////////////
-	$('#issue_record_table').DataTable();
+	$('#issue_record_table').DataTable({
+		ordering: false
+	});
 
 	//////////////////////////////////////////
 	// submit via post the new issue record //

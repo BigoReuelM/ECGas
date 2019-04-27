@@ -148,7 +148,7 @@
             <label for="" class="col-form-label col-form-label-sm col-4">Customer:</label>
             <div class="col-8">
               <select id="client" class="form-control form-control-sm">
-                <option selected disabled>Walk-in Customer</option>
+                <option selected value="">Walk-in Customer</option>
                 <?php foreach ($clients as $client): ?>
                   <option value="<?php echo $client['client_id'] ?>"><?php echo $client['name'] ?></option>
                 <?php endforeach ?>

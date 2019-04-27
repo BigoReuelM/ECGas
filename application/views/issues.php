@@ -6,7 +6,7 @@
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <div>
           <h1 class="h3 mb-2 text-gray-800">Issue Monitoring</h1>
-          <p>Issue Monitoring: <strong>Add and View</strong> records and reports issues.</p>
+          <p>Issue Monitoring: <strong>Add and View</strong> records issues.</p>
         </div>
         <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#add_issue_modal">
           <i class="fas fa-plus fa-sm text-white-50"></i>

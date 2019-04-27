@@ -8,8 +8,8 @@
           
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div>
-              <h1 class="h3 mb-2 text-gray-800">Products Management</h1>
-              <p>Product management: <strong>Add, Delete or Activate and Deactivate</strong> a product.</p>
+              <h1 class="h3 mb-2 text-gray-800">Products Monitoring and Management</h1>
+              <p>Product Monitoring and Management: <strong>Add, Delete, or Activate and Deactivate</strong> a product.</p>
             </div>
             <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
               <a href="<?php echo base_url('pages/addProduct') ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">

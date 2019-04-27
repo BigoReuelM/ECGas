@@ -101,7 +101,7 @@
                 <h1 class="text-danger text-center">On Credit</h1>
               <?php endif ?>
               <?php if ($sales_details['sales_status'] == 'partialyPaid'): ?>
-                <h1 class="text-warning text-center">Partialy Paid</h1>
+                <h1 class="text-warning text-center">Partially Paid</h1>
               <?php endif ?>
               <?php if ($sales_details['sales_status'] == 'fullyPaid'): ?>
                 <h1 class="text-success text-center">Fully Paid</h1>

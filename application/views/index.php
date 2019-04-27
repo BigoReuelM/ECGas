@@ -499,7 +499,7 @@
                 <tr>
                   <th>Product Name</th>
                   <th>Client Name</th>
-                  <th>Days of Ussage</th>
+                  <th>Days Till Next Order</th>
                   <th>Last Order Date</th>
                 </tr>
               </thead>

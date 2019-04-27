@@ -6,8 +6,8 @@
           <!-- Page Heading -->
           <!-- Button for adding a new User -->
         
-          <h1 class="h3 mb-2 text-gray-800">Inventory Management</h1>
-          <p>Inventory management: <strong>ADD or SET</strong> a products inventory.</p>       
+          <h1 class="h3 mb-2 text-gray-800">Inventory Monitoring and Management</h1>
+          <p>Inventory Monitoring and management: <strong>ADD or SET</strong> a products inventory.</p>       
           <!-- Table of products -->
               
           <div class="card shadow mb-4">

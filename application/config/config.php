@@ -26,7 +26,7 @@ date_default_timezone_set('Asia/Manila');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/project/';
+$config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/ECGas/';
 
 /*
 |--------------------------------------------------------------------------

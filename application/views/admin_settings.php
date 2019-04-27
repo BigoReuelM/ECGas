@@ -4,14 +4,14 @@
   <div class="container-fluid">
 
     <!-- header --> 
-    <h1 class="h3 mb-2 text-gray-800">Settings</h1>
-    <p>Settings: <strong>Add or Delete</strong> project types, payment methods or product and customer issues.</p>
+    <h1 class="h3 mb-2 text-gray-800">Admin Settings</h1>
+    <p>Admin Settings: <strong>Add or Delete</strong> project types, payment methods or product and customer issues.</p>
     <div class="row">
       <div class="col">
         <div class="card">
           <div class="card-header">
             <div class="row justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Product Categpries</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Product Categories</h6>
               <button class="btn btn-sm" data-toggle="modal" data-target="#project_type_add_modal">
                 <i class="fa fa-plus"></i>
               </button>

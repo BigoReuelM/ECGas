@@ -87,7 +87,7 @@
                                 <option selected disabled hidden>Choose Status..</option>
                                 <option value="">All</option>
                                 <option value="credit">Credit</option>
-                                <option value="partialyPaid">Partialy Paid</option>
+                                <option value="partialyPaid">Partially Paid</option>
                                 <option value="fullyPaid">Fully Paid</option>
                               </select>
                             </div>

@@ -1039,7 +1039,7 @@
 			$this->db->join('issues', 'issue_records.issue_id = issues.issue_id');
 			$this->db->join('clients', 'issue_records.client_id = clients.client_id');
 			$this->db->join('users', 'issue_records.user_id = users.user_id');
-			$this->db->order_by('issue_record_id', 'desc');
+			$this->db->order_by('issue_record_id', 'ASC');
 
 			$result = $this->db->get();
 

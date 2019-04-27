@@ -20,7 +20,7 @@
             <div class="col-9">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Purchase Logs</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Sales Logs</h6>
                 </div>
                 <div class="card-body">
                   <table class="table table-striped table-bordered table-sm text-center" id="user_sales_table" width="100%" cellspacing="0">

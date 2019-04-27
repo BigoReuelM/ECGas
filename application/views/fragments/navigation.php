@@ -45,20 +45,7 @@
       </li>
 
 
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-list"></i>
-          <span>Records</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="<?php echo base_url('pages/sales') ?>">Sales</a>
-            <a class="collapse-item" href="<?php echo base_url('pages/expenses') ?>">Expenses</a>
-            <a class="collapse-item" href="<?php echo base_url('pages/returnsAndRefunds') ?>">Returns/Refund</a>
-          </div>
-        </div>
-      </li>
+      
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
@@ -70,7 +57,6 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="<?php echo base_url('pages/allProducts') ?>">All Products</a>
             <a class="collapse-item" href="<?php echo base_url('pages/inventory') ?>">Inventory</a>
-            <a class="collapse-item" href="<?php echo base_url('pages/issues') ?>">Issues</a>
           </div>
         </div>
       </li>
@@ -81,6 +67,24 @@
           <i class="fas fa-fw fa-users"></i>
           <span>Clients</span></a>
       </li>
+
+      <!-- Nav Item - Utilities Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+          <i class="fas fa-fw fa-list"></i>
+          <span>Records</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="<?php echo base_url('pages/sales') ?>">Sales</a>
+            <a class="collapse-item" href="<?php echo base_url('pages/expenses') ?>">Expenses</a>
+            <a class="collapse-item" href="<?php echo base_url('pages/returnsAndRefunds') ?>">Returns/Refund</a>
+            <a class="collapse-item" href="<?php echo base_url('pages/issues') ?>">Issues</a>
+          </div>
+        </div>
+      </li>
+
+      
 
       <?php if ($_SESSION['user_details']['user_type'] == 'admin'): ?>
         <!-- Divider -->

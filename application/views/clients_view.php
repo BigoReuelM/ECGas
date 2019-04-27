@@ -8,8 +8,8 @@
           
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div>
-              <h1 class="h3 mb-2 text-gray-800">Clients Management</h1>
-              <p class="mb-4">Clients management: <strong>Add, Delete or Activate and Deactivate</strong> a Client.</p>
+              <h1 class="h3 mb-2 text-gray-800">Clients Monitoring and Management</h1>
+              <p class="mb-4">Clients Monitoring and management: <strong>Add, Delete or Activate and Deactivate</strong> a Client.</p>
             </div>
             <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#client_add_modal">
               <i class="fas fa-plus fa-sm text-white-50"></i>
@@ -143,7 +143,7 @@
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">
-                Active Clients Table
+                Inactive Clients Table
               </h6>
             </div>
             <div class="card-body">
