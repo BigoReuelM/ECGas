@@ -248,7 +248,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="add_client_form" type="submit" class="btn btn-primary btn-sm">Add Client</button>
+        <button form="add_client_form" type="submit" class="btn btn-primary btn-sm">Save</button>
       </div>
     </div>
   </div>

@@ -68,8 +68,13 @@
 			$this->db->limit(1);
 
 			$result = $this->db->get();
+			if ($result->row() == null) {
+				return $result->row();	
+			}else{
+				return false;
+			}
 
-			return $result->row();
+			
 		}
 
 		public function getClientDetails($client_id){
@@ -200,8 +205,11 @@
 			$this->db->limit(1);
 
 			$result = $this->db->get();
-
-			return $result->row();
+			if ($result->row() == null) {
+				return $result->row();	
+			}else{
+				return false;
+			}
 		}
 		
 		public function getProducts($product_category_id){

@@ -64,11 +64,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['products_low_sku'] = $this->pages_model->getProductsWithLowSKU();
 			$data['possible_product_orders'] = $this->pages_model->getPossibleProductOrders();
 			$data['clients_count'] = $this->pages_model->getNumberOfClients()->clients_count;
-			$data['newest_client'] = $this->pages_model->getNewestClient()->name;
+			if ($this->pages_model->getNewestClient()) {
+				$data['newest_client'] = $this->pages_model->getNewestClient()->name;
+			}else{
+				$data['newest_client'] = null;
+			}
+			
 			$data['active_clients_count'] = $this->pages_model->getNumberOfActiveClients()->clients_count;
 			$data['inactive_clients_count'] = $this->pages_model->getNumberOfInactiveClients()->clients_count;
 			$data['product_count'] = $this->pages_model->getNumberOfProducts()->product_count;
-			$data['newest_product'] = $this->pages_model->getNewestProduct()->product_title;
+
+			if ($this->pages_model->getNewestProduct()) {
+				$data['newest_product'] = $this->pages_model->getNewestProduct()->product_title;
+			}else{
+				$data['newest_product'] = null;
+			}
+			
 			$data['active_products_count'] = $this->pages_model->getNumberOfActiveProducts()->product_count;
 			$data['inactive_products_count'] = $this->pages_model->getNumberOfInactiveProducts()->product_count;
 			$data['issues'] = $this->pages_model->getLatestIssues();
@@ -475,7 +486,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['product_count'] = $this->pages_model->getNumberOfProducts()->product_count;
 			$data['active_products_count'] = $this->pages_model->getNumberOfActiveProducts()->product_count;
 			$data['inactive_products_count'] = $this->pages_model->getNumberOfInactiveProducts()->product_count;
-			$data['newest_product'] = $this->pages_model->getNewestProduct()->product_title;
+			if ($this->pages_model->getNewestProduct()) {
+				$data['newest_product'] = $this->pages_model->getNewestProduct()->product_title;
+			}else{
+				$data['newest_product'] = null;
+			}
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('products_view');
@@ -748,7 +763,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$data['active_clients_count'] = $this->pages_model->getNumberOfActiveClients()->clients_count;
 			$data['inactive_clients_count'] = $this->pages_model->getNumberOfInactiveClients()->clients_count;
 			$data['active_products'] = $this->pages_model->getActiveProducts();
-			$data['newest_client'] = $this->pages_model->getNewestClient()->name;
+			if ($this->pages_model->getNewestClient()) {
+				$data['newest_client'] = $this->pages_model->getNewestClient()->name;
+			}else{
+				$data['newest_client'] = null;
+			}
 			$this->load->view('fragments/head', $data);
 			$this->load->view('fragments/navigation');
 			$this->load->view('clients_view');

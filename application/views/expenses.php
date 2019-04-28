@@ -216,7 +216,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button form="add_expenses_form" type="submit" class="btn btn-primary btn-sm">Add Expenses</button>
+        <button form="add_expenses_form" type="submit" class="btn btn-primary btn-sm">Save</button>
       </div>
     </div>
   </div>
