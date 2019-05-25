@@ -68,7 +68,7 @@
 			$this->db->limit(1);
 
 			$result = $this->db->get();
-			if ($result->row() == null) {
+			if ($result->row() != null) {
 				return $result->row();	
 			}else{
 				return false;
@@ -205,7 +205,7 @@
 			$this->db->limit(1);
 
 			$result = $this->db->get();
-			if ($result->row() == null) {
+			if ($result->row() != null) {
 				return $result->row();	
 			}else{
 				return false;
