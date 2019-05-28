@@ -97,16 +97,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		public function getAlertCounts(){
 			$low_sku_count = $this->pages_model->getProductsWithLowSKUCount()->low_sku_count;
 			$alert_count = $this->pages_model->getPossibleProductOrdersCount()->alert_count;
+			$session_low_sku_count = $this->session->userdata('low_sku_count');
+
+			if ($low_sku_count > $session_low_sku_count) {
+				$this->session->set_userdata('low_sku_count', $low_sku_count);
+			}
 
 			$total_count = $low_sku_count + $alert_count;
 
 			$data['low_sku_count'] = $low_sku_count;
 			$data['alert_count'] = $alert_count;
 			$data['total_count'] = $total_count;
+			$data['session_low_sku_count'] = $session_low_sku_count;
 
 			echo json_encode($data);
 		}
 
+		// function to return list of products with low SKU
+
+		public function getProductsWithLowSKU(){
+			$data['products'] = $this->pages_model->getProductsWithLowSKU();
+
+			echo json_encode($data);
+		}
 		//////////////////////////////////////////////////////////////////////////
 		//sets and controls the side bar toggle for our site navigation sidebar //
 		//////////////////////////////////////////////////////////////////////////

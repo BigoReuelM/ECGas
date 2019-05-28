@@ -26,6 +26,7 @@ class User extends CI_Controller {
 			$user_details = $this->user_model->login($username, $password);
 
 			$this->session->set_userdata('user_details', $user_details);
+			$this->session->set_userdata('low_sku_count', 0);
 
 			//control the side bar 1 not toggled, 0 if toggled
 			$this->session->set_userdata('sidebarControl', 1);
